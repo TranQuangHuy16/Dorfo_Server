@@ -1,0 +1,6 @@
+@Dorfo.API_HostAddress = http://localhost:5124
+
+GET {{Dorfo.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
