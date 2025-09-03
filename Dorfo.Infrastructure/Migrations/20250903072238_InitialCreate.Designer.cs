@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    [Migration("20250903043233_InitialCreate")]
+    [Migration("20250903072238_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -717,6 +717,9 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Property<string>("AvatarUrl")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateOnly?>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()

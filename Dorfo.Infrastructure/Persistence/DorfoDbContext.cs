@@ -58,6 +58,7 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.Phone).HasMaxLength(20);
                 b.Property(x => x.Email).HasMaxLength(200);
                 b.Property(x => x.DisplayName).HasMaxLength(200);
+                b.Property(x => x.BirthDate).HasColumnType("date");
                 b.Property(x => x.AvatarUrl).HasMaxLength(1000);
                 b.Property(x => x.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
                 b.Property(x => x.IsActive).HasDefaultValue(true);

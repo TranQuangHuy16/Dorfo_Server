@@ -48,6 +48,7 @@ namespace Dorfo.Infrastructure.Migrations
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
                     AvatarUrl = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "SYSUTCDATETIME()"),
                     LastLoginAt = table.Column<DateTime>(type: "datetime2", nullable: true),

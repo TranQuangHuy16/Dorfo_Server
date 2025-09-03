@@ -14,6 +14,7 @@ namespace Dorfo.Domain.Entities
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public string? DisplayName { get; set; }
+        public DateOnly? BirthDate { get; set; }
         public string? AvatarUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastLoginAt { get; set; }
