@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dorfo.Application\Dorfo.Application.csproj" />
+    <ProjectReference Include="..\Dorfo.Domain\Dorfo.Domain.csproj" />
     <ProjectReference Include="..\Dorfo.Infrastructure\Dorfo.Infrastructure.csproj" />
     <ProjectReference Include="..\Dorfo.Shared\Dorfo.Shared.csproj" />
   </ItemGroup>

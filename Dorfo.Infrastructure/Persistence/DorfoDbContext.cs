@@ -12,6 +12,10 @@ namespace Dorfo.Infrastructure.Persistence
 {
     public class DorfoDbContext : DbContext
     {
+        public DorfoDbContext()
+        {
+        }
+
         public DorfoDbContext(DbContextOptions<DorfoDbContext> options) : base(options) { }
 
         // DbSets

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dorfo.Application.DTOs
+namespace Dorfo.Application.DTOs.Responses
 {
     internal class Class1
     {
