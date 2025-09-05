@@ -40,6 +40,7 @@ namespace Dorfo.Infrastructure.Persistence
         public DbSet<Voucher> Vouchers => Set<Voucher>();
         public DbSet<ChatConversation> ChatConversations => Set<ChatConversation>();
         public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
+        public DbSet<OtpCode> Otps => Set<OtpCode>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -369,6 +370,14 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
                 b.HasOne(x => x.Conversation).WithMany(c => c.Messages).HasForeignKey(x => x.ConversationId).OnDelete(DeleteBehavior.Cascade);
                 b.HasOne(x => x.FromUser).WithMany().HasForeignKey(x => x.FromUserId).OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // OtpCode
+            modelBuilder.Entity<OtpCode>(entity =>
+            {
+                entity.HasKey(o => o.Id);
+                entity.Property(o => o.PhoneNumber).IsRequired().HasMaxLength(20);
+                entity.Property(o => o.Code).IsRequired().HasMaxLength(10);
             });
 
             // Enum -> string hoặc int

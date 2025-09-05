@@ -1,7 +1,7 @@
 ﻿using Dorfo.Application.Interfaces;
 using Dorfo.Application.Interfaces.Repositories;
 using Dorfo.Application.Interfaces.Services;
-using Dorfo.Infrastructure.Persistence.Repositories;
+using Dorfo.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,7 @@ namespace Dorfo.Infrastructure.Persistence
     {
         private readonly DorfoDbContext _context;
         private IUserRepository _userRepository;
+        private IOtpRepository _otpRepository;
 
         public UnitOfWork()
         {
@@ -26,6 +27,11 @@ namespace Dorfo.Infrastructure.Persistence
         public IUserRepository UserRepository
         {
             get { return _userRepository ??= new UserRepository(_context); }
+        }
+
+        public IOtpRepository OtpRepository
+        {
+            get { return _otpRepository ??= new OtpRepository(_context); }
         }
 
         public void Dispose()

@@ -1,5 +1,6 @@
 ﻿using Dorfo.Application.DTOs.Requests;
 using Dorfo.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dorfo.API.Controllers
@@ -15,6 +16,7 @@ namespace Dorfo.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserUpdateRequest request)
         {
             var user = await _serviceProvider.UserService.UpdateAsync(id, request);

@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace Dorfo.Application.Interfaces.Repositories
 {
-    public interface IUserRepository
+    public interface IOtpRepository
     {
-        Task<User?> GetUserByIdAsync(Guid userId);
-        Task<User?> GetUserByPhoneAsync(string phone);
-        Task<int> UpdateAsync(User user);
+        Task CreateAsync(OtpCode otpCode);
+        Task IsUsedOtp(Guid id);
+        Task<OtpCode> GetOtpByPhoneAndCode(string phone, string code);
+
     }
 }

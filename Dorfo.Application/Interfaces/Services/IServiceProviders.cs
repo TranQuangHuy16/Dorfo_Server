@@ -10,5 +10,6 @@ namespace Dorfo.Application.Interfaces.Services
     public interface IServiceProviders
     {
         IUserService UserService { get; }
+        IOtpService OtpService { get; }
     }
 }

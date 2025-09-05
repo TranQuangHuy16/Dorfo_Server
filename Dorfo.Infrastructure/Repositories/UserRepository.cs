@@ -1,13 +1,15 @@
 ﻿using Dorfo.Application.Interfaces.Repositories;
 using Dorfo.Domain.Entities;
-using DrugPrevention.Repositories.HuyTQ.Basic;
+using Dorfo.Infrastructure.Persistence;
+using Dorfo.Infrastructure.Repositories.Basic;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dorfo.Infrastructure.Persistence.Repositories
+namespace Dorfo.Infrastructure.Repositories
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
@@ -21,8 +23,12 @@ namespace Dorfo.Infrastructure.Persistence.Repositories
         }
         public async Task<User?> GetUserByIdAsync(Guid userId)
         {
-            return await base.GetByIdAsync(userId);
+            return await GetByIdAsync(userId);
         }
 
+        public async Task<User?> GetUserByPhoneAsync(string phone)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Phone == phone);
+        }
     }
 }

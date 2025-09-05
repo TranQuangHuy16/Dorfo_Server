@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrugPrevention.Repositories.HuyTQ.Basic
+namespace Dorfo.Infrastructure.Repositories.Basic
 {
     public class GenericRepository<T> where T : class
     {
@@ -26,6 +26,7 @@ namespace DrugPrevention.Repositories.HuyTQ.Basic
         {
             return _context.Set<T>().ToList();
         }
+
         public async Task<List<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dorfo.Application.Services
+namespace Dorfo.Application.Interfaces.Services
 {
-    internal class Class1
+    public interface IJwtProvider 
     {
+        string GenerateToken(Guid id);
     }
 }

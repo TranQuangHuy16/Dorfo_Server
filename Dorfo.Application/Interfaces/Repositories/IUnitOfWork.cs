@@ -10,6 +10,7 @@ namespace Dorfo.Application.Interfaces.Repositories
     public interface IUnitOfWork : IDisposable
     {
         IUserRepository UserRepository { get; }
+        IOtpRepository OtpRepository { get; }
         int SaveChangesWithTransaction();
         Task<int> SaveChangesWithTransactionAsync();
     }
