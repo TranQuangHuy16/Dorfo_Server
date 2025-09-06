@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Dorfo.Infrastructure.Persistence.Services;
 using Dorfo.Infrastructure.Repositories;
 using Dorfo.Infrastructure.Services;
+using Dorfo.Infrastructure.Services.Background;
 
 namespace Dorfo.Infrastructure
 {
@@ -35,6 +36,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IOtpService, OtpService>();
             services.AddScoped<IJwtProvider, JwtProvider>();
+            services.AddHostedService<OtpCleanupService>();
 
 
 

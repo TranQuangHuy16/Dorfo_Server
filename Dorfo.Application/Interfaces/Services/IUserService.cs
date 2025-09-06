@@ -11,5 +11,6 @@ namespace Dorfo.Application.Interfaces.Services
     public interface IUserService
     {
         Task<User?> UpdateAsync(Guid id, UserUpdateRequest user);
+        Task<User?> GetUserById(Guid id);
     }
 }

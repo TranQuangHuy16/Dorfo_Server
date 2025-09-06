@@ -24,7 +24,7 @@ namespace Dorfo.API.Controllers
             var check = await _serviceProvider.OtpService.RequestOtpAsync(request.PhoneNumber);
             if (!check)
             {
-                throw new UserNotFoundException($"User with id not found");
+                throw new UserNotFoundException($"User not found");
             }
             return Ok(new { Message = "OTP sent" });
         }
@@ -38,10 +38,6 @@ namespace Dorfo.API.Controllers
         }
     }
 
-    public class VerifyOtpRequest
-    {
-        public string PhoneNumber { get; set; }
-        public string Code { get; set; }
-    }
+
 
 }

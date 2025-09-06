@@ -19,6 +19,10 @@ namespace Dorfo.Infrastructure.Persistence.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<User?> GetUserById(Guid id)
+        {
+            return await _unitOfWork.UserRepository.GetUserByIdAsync(id);
+        }
 
         public async Task<User?> UpdateAsync(Guid id, UserUpdateRequest dto)
         {
