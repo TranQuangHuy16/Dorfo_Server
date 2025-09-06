@@ -10,18 +10,18 @@ namespace Dorfo.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        private readonly IOtpService _otpService;
+        private readonly IServiceProviders _serviceProvider;
 
-        public AuthController(IOtpService otpService)
+        public AuthController(IServiceProviders serviceProviders)
         {
-            _otpService = otpService;
+            _serviceProvider = serviceProviders;
         }
 
         [HttpPost("send-otp")]
         [AllowAnonymous]
         public async Task<IActionResult> RequestOtp([FromBody] OtpRequest request)
         {
-            var check = await _otpService.RequestOtpAsync(request.PhoneNumber);
+            var check = await _serviceProvider.OtpService.RequestOtpAsync(request.PhoneNumber);
             if (!check)
             {
                 throw new UserNotFoundException($"User with id not found");
@@ -33,7 +33,7 @@ namespace Dorfo.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpRequest request)
         {
-            var token = await _otpService.VerifyOtpAsync(request.PhoneNumber, request.Code);
+            var token = await _serviceProvider.OtpService.VerifyOtpAsync(request.PhoneNumber, request.Code);
             return Ok(new { Token = token });
         }
     }

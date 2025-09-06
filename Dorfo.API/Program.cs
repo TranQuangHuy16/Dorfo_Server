@@ -42,11 +42,14 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Dorfo API", Version = "v1" });
 
-    c.AddSecurityDefinition("JWT", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey, // dùng ApiKey thay vì Http
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,   // ✅ dùng Http
+        Scheme = "bearer",                                         // ✅ phải có bearer
+        BearerFormat = "JWT",                                      // ✅ format JWT
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Enter JWT token with **Bearer** prefix. Example: `Bearer {your token}`"
     });
 
     c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
@@ -57,7 +60,7 @@ builder.Services.AddSwaggerGen(c =>
                 Reference = new Microsoft.OpenApi.Models.OpenApiReference
                 {
                     Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "JWT"
+                    Id = "Bearer"   // phải trùng với tên ở trên
                 }
             },
             new string[] {}

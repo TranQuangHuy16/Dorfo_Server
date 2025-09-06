@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    [Migration("20250904032533_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250906024020_AddProductEntity")]
+    partial class AddProductEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
