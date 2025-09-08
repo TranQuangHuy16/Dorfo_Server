@@ -15,11 +15,15 @@ namespace Dorfo.Domain.Entities
         public string? Email { get; set; }
         public string? DisplayName { get; set; }
         public DateOnly? BirthDate { get; set; }
+        public bool? Gender { get; set; }
         public string? AvatarUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastLoginAt { get; set; }
         public bool IsActive { get; set; }
         public DateTime? DeletedAt { get; set; }
+
+        public string? Username { get; set; }
+        public string? Password { get; set; }
 
         public UserRoleEnum Role { get; set; }
 

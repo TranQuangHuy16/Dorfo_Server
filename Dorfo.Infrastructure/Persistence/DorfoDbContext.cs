@@ -64,9 +64,13 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.Email).HasMaxLength(200);
                 b.Property(x => x.DisplayName).HasMaxLength(200);
                 b.Property(x => x.BirthDate).HasColumnType("date");
+                b.Property(x => x.Gender).HasConversion<int?>();
                 b.Property(x => x.AvatarUrl).HasMaxLength(1000);
                 b.Property(x => x.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
                 b.Property(x => x.IsActive).HasDefaultValue(true);
+                b.Property(x => x.Username).HasMaxLength(100);
+                b.Property(x => x.Password).HasMaxLength(200);
+
                 // unique index on Phone when not null
                 b.HasIndex(x => x.Phone).IsUnique().HasFilter("[Phone] IS NOT NULL").HasDatabaseName("UX_Users_Phone");
             });
