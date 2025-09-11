@@ -13,11 +13,13 @@ namespace Dorfo.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtProvider _jwtProvider;
+        private readonly ISmsService _smsService;
 
-        public OtpService(IUnitOfWork unitOfWork, IJwtProvider jwtProvider)
+        public OtpService(IUnitOfWork unitOfWork, IJwtProvider jwtProvider, ISmsService smsService)
         {
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
+            _smsService = smsService;
         }
 
         public async Task<bool> RequestOtpAsync(string phoneNumber)
@@ -39,8 +41,8 @@ namespace Dorfo.Application.Services
 
             await _unitOfWork.OtpRepository.CreateAsync(otp);
 
-            // TODO: call SMS API (VD: Twilio, Zalo…)
-            Console.WriteLine($"Send OTP {code} to {phoneNumber}");
+            // Gửi OTP qua SMS
+            _smsService.SendOtpAsync(phoneNumber, $"Mã OTP của bạn là: {code}");
             return true;
         }
 

@@ -15,6 +15,7 @@ namespace Dorfo.Infrastructure.Persistence
         private readonly DorfoDbContext _context;
         private IUserRepository _userRepository;
         private IOtpRepository _otpRepository;
+        private IMerchantRepository _merchantRepository;
 
         public UnitOfWork()
         {
@@ -32,6 +33,11 @@ namespace Dorfo.Infrastructure.Persistence
         public IOtpRepository OtpRepository
         {
             get { return _otpRepository ??= new OtpRepository(_context); }
+        }
+
+        public IMerchantRepository MerchantRepository
+        {
+            get { return _merchantRepository ??= new MerchantRepository(_context); }
         }
 
         public void Dispose()

@@ -11,6 +11,7 @@ namespace Dorfo.Application.Interfaces.Repositories
     {
         IUserRepository UserRepository { get; }
         IOtpRepository OtpRepository { get; }
+        IMerchantRepository MerchantRepository { get; }
         int SaveChangesWithTransaction();
         Task<int> SaveChangesWithTransactionAsync();
     }

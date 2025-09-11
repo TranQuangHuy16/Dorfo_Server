@@ -29,6 +29,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOtpRepository, OtpRepository>();
+            services.AddScoped<IMerchantRepository, MerchantRepository>();
 
 
             // Đăng ký Service
@@ -36,6 +37,8 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IOtpService, OtpService>();
             services.AddScoped<IJwtProvider, JwtProvider>();
+            services.AddScoped<IMerchantService, MerchantService>();
+            services.AddScoped<ISmsService, SmsService>();
             services.AddHostedService<OtpCleanupService>();
 
 

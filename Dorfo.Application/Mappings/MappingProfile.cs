@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dorfo.Application.DTOs.Requests;
 using Dorfo.Application.DTOs.Responses;
 using Dorfo.Domain.Entities;
 using System;
@@ -14,8 +15,13 @@ namespace Dorfo.Application.Mappings
     {
         public MappingProfile()
         {
+            // User
             CreateMap<User, UserResponse>();
             CreateMap<UserResponse, User>();
+            // Merchant
+            CreateMap<Merchant, MerchantResponse>();
+            CreateMap<MerchantResponse, Merchant>();
+            CreateMap<MerchantRequest, Merchant>();
         }
     }
 }
