@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Dorfo.Application.DTOs.Requests
 {
-    public class UserUpdateRequest
+    public class UserCreateByPhoneRequest
     {
-        public string? DisplayName { get; set; }
         public string? Phone { get; set; }
+        public string Password { get; set; } = null!;
+        public string? DisplayName { get; set; }
         public string? Email { get; set; }
         public DateOnly? DateOfBirth { get; set; }
-        public string? AvatarUrl { get; set; }
         public int? Gender { get; set; }
     }
 }

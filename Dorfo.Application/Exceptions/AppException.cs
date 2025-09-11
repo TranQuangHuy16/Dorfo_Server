@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Dorfo.API.Exceptions
+﻿
+namespace Dorfo.Application.Exceptions
 {
     public abstract class AppException : Exception
     {

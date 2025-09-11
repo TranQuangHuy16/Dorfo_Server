@@ -1,4 +1,4 @@
-﻿namespace Dorfo.API.Exceptions
+﻿namespace Dorfo.Application.Exceptions
 {
     public class UserNotFoundException : AppException
     {

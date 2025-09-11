@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Dorfo.API.Exceptions;
 using Dorfo.Application.DTOs.Requests;
 using Dorfo.Application.DTOs.Responses;
+using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Services;
 using Dorfo.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;

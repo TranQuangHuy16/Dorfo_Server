@@ -11,6 +11,13 @@ namespace Dorfo.Application.Interfaces.Repositories
     {
         Task<User?> GetUserByIdAsync(Guid userId);
         Task<User?> GetUserByPhoneAsync(string phone);
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<User?> GetUserByUsernameOrPhoneOrEmailAsync(string email);
+        Task<User?> GetUserByLogin(string username);
         Task<int> UpdateAsync(User user);
+        Task<User> CreateAsync(User newUser);
+        Task<User?> GetUserByUsernameAsync(string username);
+
+
     }
 }

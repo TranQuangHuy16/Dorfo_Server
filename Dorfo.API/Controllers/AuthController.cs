@@ -1,5 +1,7 @@
-﻿using Dorfo.API.Exceptions;
+﻿using AutoMapper;
 using Dorfo.Application.DTOs.Requests;
+using Dorfo.Application.DTOs.Responses;
+using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,12 @@ namespace Dorfo.API.Controllers
     public class AuthController : Controller
     {
         private readonly IServiceProviders _serviceProvider;
+        private readonly IMapper _mapper;
 
-        public AuthController(IServiceProviders serviceProviders)
+        public AuthController(IServiceProviders serviceProviders, IMapper mapper)
         {
             _serviceProvider = serviceProviders;
+            _mapper = mapper;
         }
 
         [HttpPost("send-otp")]
@@ -36,8 +40,33 @@ namespace Dorfo.API.Controllers
             var token = await _serviceProvider.OtpService.VerifyOtpAsync(request.PhoneNumber, request.Code);
             return Ok(new { Token = token });
         }
+
+        [HttpPost("register-by-username")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterByUsername([FromBody] UserCreateRequest request)
+        {
+            var user = await _serviceProvider.UserService.RegisterByUsername(request);
+            var userResponse = _mapper.Map<UserCreateResponse>(user);
+            return Ok(userResponse);
+        }
+
+        [HttpPost("register-by-phone")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterByPhone([FromBody] UserCreateByPhoneRequest request)
+        {
+            var user = await _serviceProvider.UserService.RegisterByPhone(request);
+
+            var userResponse = _mapper.Map<UserCreateResponse>(user);
+            return Ok(userResponse);
+        }
+
+
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginRequest login)
+        {
+            var token = await _serviceProvider.UserService.Login(login);
+            return Ok(new { token = token });
+        }
     }
-
-
-
 }

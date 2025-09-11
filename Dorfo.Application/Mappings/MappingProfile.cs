@@ -16,8 +16,12 @@ namespace Dorfo.Application.Mappings
         public MappingProfile()
         {
             // User
-            CreateMap<User, UserResponse>();
+            CreateMap<User, UserResponse>()
+                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()))
+                .ForMember(dest => dest.Gender,
+                    opt => opt.MapFrom(src => src.Gender == true ? "Male" : "Female"));
             CreateMap<UserResponse, User>();
+            CreateMap<User, UserCreateResponse>();
             // Merchant
             CreateMap<Merchant, MerchantResponse>();
             CreateMap<MerchantResponse, Merchant>();

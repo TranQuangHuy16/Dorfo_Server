@@ -30,5 +30,34 @@ namespace Dorfo.Infrastructure.Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Phone == phone);
         }
+
+        public async Task<User> CreateAsync(User newUser)
+        {
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
+
+            return newUser;
+        }
+
+
+        public async Task<User?> GetUserByUsernameAsync(string username)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
+        }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        }
+
+        public Task<User?> GetUserByUsernameOrPhoneOrEmailAsync(string search)
+        {
+            return _context.Users.FirstOrDefaultAsync(x => x.Username == search || x.Phone == search || x.Email == search);
+        }
+
+        public Task<User?> GetUserByLogin(string username)
+        {
+            return _context.Users.FirstOrDefaultAsync(x => (x.Username == username || x.Phone == username) && x.IsActive == true);
+        }
     }
 }
