@@ -14,6 +14,7 @@ using Dorfo.Infrastructure.Persistence.Services;
 using Dorfo.Infrastructure.Repositories;
 using Dorfo.Infrastructure.Services;
 using Dorfo.Infrastructure.Services.Background;
+using Dorfo.Infrastructure.Configurations;
 
 namespace Dorfo.Infrastructure
 {
@@ -35,11 +36,20 @@ namespace Dorfo.Infrastructure
             // Đăng ký Service
             services.AddScoped<IServiceProviders, ServiceProviders>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IOtpService, OtpService>();
+            services.AddScoped<IOtpService, RedisOtpService>();
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddScoped<IMerchantService, MerchantService>();
             services.AddScoped<ISmsService, SmsService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddHostedService<OtpCleanupService>();
+
+            // Redis
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetConnectionString("Redis");
+                options.InstanceName = "DormF_";
+            });
 
 
 

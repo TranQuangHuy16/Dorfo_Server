@@ -8,7 +8,8 @@ namespace Dorfo.Application.Interfaces.Services
 {
     public interface IOtpService
     {
-        Task<bool> RequestOtpAsync(string phoneNumber);
-        Task<string> VerifyOtpAsync(string phoneNumber, string code);
+        Task SaveOtpAsync(string email, string otp, int expireMinutes = 5);
+        Task<string?> GetOtpAsync(string email);
+        Task RemoveOtpAsync(string email);
     }
 }

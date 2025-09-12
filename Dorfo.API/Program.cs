@@ -10,6 +10,7 @@ using System.Text;
 using Dorfo.API.Middlewares;
 using Dorfo.Application.Mappings;
 using Microsoft.Extensions.DependencyInjection;
+using Dorfo.Infrastructure.Configurations;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,10 @@ builder.Services.AddAuthentication("Bearer")
 builder.Services.AddAuthorization();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// Bind Smtp config
+builder.Services.Configure<SmtpSettings>(
+    builder.Configuration.GetSection("Smtp"));
 
 
 builder.Services.AddControllers();

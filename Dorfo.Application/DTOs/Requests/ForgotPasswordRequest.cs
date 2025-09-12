@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Dorfo.Application.DTOs.Requests
 {
-    public class VerifyOtpRequest
+    public class ForgotPasswordRequest
     {
-        public string PhoneNumber { get; set; }
-        public string Code { get; set; }
+        public string Email { get; set; } = string.Empty;
     }
 }

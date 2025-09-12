@@ -12,5 +12,6 @@ namespace Dorfo.Application.Interfaces.Services
         IUserService UserService { get; }
         IOtpService OtpService { get; }
         IMerchantService MerchantService { get; }
+        IAuthService AuthService { get; }
     }
 }
