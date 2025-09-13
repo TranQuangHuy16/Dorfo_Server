@@ -16,10 +16,12 @@ namespace Dorfo.Infrastructure.Persistence.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtProvider _jwtProvider;
-        public UserService(IUnitOfWork unitOfWork, IJwtProvider jwtProvider)
+        private readonly IRefreshTokenService _refreshTokenService;
+        public UserService(IUnitOfWork unitOfWork, IJwtProvider jwtProvider, IRefreshTokenService redisService)
         {
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
+            _refreshTokenService = redisService;
         }
 
         public async Task<User?> GetUserById(Guid id)
@@ -130,7 +132,7 @@ namespace Dorfo.Infrastructure.Persistence.Services
             return user;
         }
 
-        public async Task<string> Login(LoginRequest login)
+        public async Task<(string accessToken, string refreshToken)> Login(LoginRequest login)
         {
             // Lấy user theo Username, Phone hoặc Email
             var user = await _unitOfWork.UserRepository.GetUserByLogin(login.Username);
@@ -150,8 +152,34 @@ namespace Dorfo.Infrastructure.Persistence.Services
             user.LastLoginAt = DateTime.UtcNow;
             await _unitOfWork.UserRepository.UpdateAsync(user);
 
-            // Trả về JWT token
-            return _jwtProvider.GenerateToken(user.UserId);
+            // Sinh Access Token & Refresh Token
+            var accessToken = _jwtProvider.GenerateToken(user.UserId);
+            var refreshToken = _jwtProvider.GenerateRefreshToken();
+
+            // Lưu refresh token vào Redis
+            await _refreshTokenService.SaveRefreshTokenAsync(user.UserId, refreshToken);
+
+            return (accessToken, refreshToken);
+        }
+
+        public async Task<string> RefreshAccessToken(Guid userId, string refreshToken)
+        {
+            var storedToken = await _refreshTokenService.GetRefreshTokenAsync(userId);
+
+            if (storedToken == null || storedToken != refreshToken)
+            {
+                throw new UnauthorizedException("Invalid refresh token");
+            }
+
+            // Sinh access token mới
+            var newAccessToken = _jwtProvider.GenerateToken(userId);
+
+            return newAccessToken;
+        }
+
+        public async Task Logout(Guid userId)
+        {
+            await _refreshTokenService.RemoveRefreshTokenAsync(userId);
         }
 
     }

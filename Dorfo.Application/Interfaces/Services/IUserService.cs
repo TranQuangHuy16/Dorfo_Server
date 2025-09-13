@@ -14,6 +14,8 @@ namespace Dorfo.Application.Interfaces.Services
         Task<User?> GetUserById(Guid id);
         Task<User?> RegisterByUsername(UserCreateRequest user);
         Task<User?> RegisterByPhone(UserCreateByPhoneRequest user);
-        Task<string> Login(LoginRequest login);
+        Task<(string accessToken, string refreshToken)> Login(LoginRequest login);
+        Task<string> RefreshAccessToken(Guid userId, string refreshToken);
+        Task Logout(Guid userId);
     }
 }

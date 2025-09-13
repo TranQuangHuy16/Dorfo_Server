@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dorfo.Infrastructure.Services
+namespace Dorfo.Infrastructure.Services.Redis
 {
     public class RedisOtpService : IOtpService
     {

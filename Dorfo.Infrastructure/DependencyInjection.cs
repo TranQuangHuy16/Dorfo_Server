@@ -15,6 +15,7 @@ using Dorfo.Infrastructure.Repositories;
 using Dorfo.Infrastructure.Services;
 using Dorfo.Infrastructure.Services.Background;
 using Dorfo.Infrastructure.Configurations;
+using Dorfo.Infrastructure.Services.Redis;
 
 namespace Dorfo.Infrastructure
 {
@@ -42,6 +43,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<ISmsService, SmsService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRefreshTokenService, RedisRefreshTokenService>();
             services.AddHostedService<OtpCleanupService>();
 
             // Redis
