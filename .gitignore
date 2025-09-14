@@ -66,8 +66,10 @@ packages/*
 
 # # Configuration files   
 
-# Ignore appsettings
-appsettings*.json
+
+# Ignore all appsettings files
+Dorfo.API/appsettings*.json
+
 
   
 CinemaMVC/wwwroot/firebase-key.json
