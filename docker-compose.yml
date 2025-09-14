@@ -13,7 +13,7 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DorfoDb=Server=sqlserver;Database=DorfoDb;User Id=sa;Password=1234567890;TrustServerCertificate=True;
+      - ConnectionStrings__DorfoDb=Server=sqlserver;Database=DorfoDb;User Id=sa;Password=Strong@123456!;TrustServerCertificate=True;
       - ConnectionStrings__Redis=redis:6379
     networks:
       - dorfo-network
