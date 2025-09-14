@@ -16,6 +16,7 @@ using Dorfo.Infrastructure.Services;
 using Dorfo.Infrastructure.Services.Background;
 using Dorfo.Infrastructure.Configurations;
 using Dorfo.Infrastructure.Services.Redis;
+using StackExchange.Redis;
 
 namespace Dorfo.Infrastructure
 {
@@ -47,11 +48,12 @@ namespace Dorfo.Infrastructure
             services.AddHostedService<OtpCleanupService>();
 
             // Redis
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = configuration.GetConnectionString("Redis");
-                options.InstanceName = "DormF_";
-            });
+            //services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = configuration.GetConnectionString("Redis");
+            //    options.InstanceName = "DormF_";
+            //});
+
 
 
 

@@ -8,7 +8,7 @@ namespace Dorfo.Application.DTOs.Requests
 {
     public class MerchantRequest
     {
-        //public Guid? OwnerUserId { get; set; }
+        public Guid? OwnerUserId { get; set; }
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public string? Phone { get; set; }

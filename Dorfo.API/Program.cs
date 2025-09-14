@@ -11,6 +11,7 @@ using Dorfo.API.Middlewares;
 using Dorfo.Application.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 using Dorfo.Infrastructure.Configurations;
+using StackExchange.Redis;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -73,6 +74,13 @@ builder.Services.AddSwaggerGen(c =>
             new string[] {}
         }
     });
+});
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var config = builder.Configuration.GetSection("Redis");
+    var connectionString = $"{config["Host"]}:{config["Port"]}";
+    return ConnectionMultiplexer.Connect(connectionString);
 });
 
 builder.Services.AddStackExchangeRedisCache(options =>
