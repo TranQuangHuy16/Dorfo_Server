@@ -40,7 +40,8 @@ namespace Dorfo.Infrastructure.Persistence
         public DbSet<Voucher> Vouchers => Set<Voucher>();
         public DbSet<ChatConversation> ChatConversations => Set<ChatConversation>();
         public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
-        public DbSet<OtpCode> Otps => Set<OtpCode>();
+
+        public DbSet<Shipper> Shippers => Set<Shipper>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -376,12 +377,20 @@ namespace Dorfo.Infrastructure.Persistence
                 b.HasOne(x => x.FromUser).WithMany().HasForeignKey(x => x.FromUserId).OnDelete(DeleteBehavior.SetNull);
             });
 
-            // OtpCode
-            modelBuilder.Entity<OtpCode>(entity =>
+            // Shipper
+            modelBuilder.Entity<Shipper>(entity =>
             {
-                entity.HasKey(o => o.Id);
-                entity.Property(o => o.PhoneNumber).IsRequired().HasMaxLength(20);
-                entity.Property(o => o.Code).IsRequired().HasMaxLength(10);
+                entity.HasKey(s => s.ShipperId);
+
+                entity.HasOne(s => s.Merchant)
+                      .WithMany(m => m.Shippers)
+                      .HasForeignKey(s => s.MerchantId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.Property(s => s.FullName).IsRequired().HasMaxLength(100);
+                entity.Property(s => s.PhoneNumber).IsRequired().HasMaxLength(20);
+                entity.Property(s => s.CccdFrontUrl).HasMaxLength(255);
+                entity.Property(s => s.CccdBackUrl).HasMaxLength(255);
             });
 
             // Enum -> string hoặc int

@@ -23,6 +23,7 @@ namespace Dorfo.Domain.Entities
 
         public User? OwnerUser { get; set; }
         public MerchantSetting? MerchantSetting { get; set; }
+        public ICollection<Shipper> Shippers { get; set; } = new List<Shipper>();
         public ICollection<MerchantAddress> MerchantAddresses { get; set; } = new List<MerchantAddress>();
         public ICollection<MenuCategory> MenuCategories { get; set; } = new List<MenuCategory>();
         public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();

@@ -113,3 +113,6 @@ publish/
 # hidden mp4
 *.mp4
 *.rar
+
+# Ignore environment variables
+.env

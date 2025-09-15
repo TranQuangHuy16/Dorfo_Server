@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Dorfo.Infrastructure.Persistence.Services;
 using Dorfo.Infrastructure.Repositories;
 using Dorfo.Infrastructure.Services;
-using Dorfo.Infrastructure.Services.Background;
 using Dorfo.Infrastructure.Configurations;
 using Dorfo.Infrastructure.Services.Redis;
 using StackExchange.Redis;
@@ -31,7 +30,6 @@ namespace Dorfo.Infrastructure
             // Đăng ký Repository
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IOtpRepository, OtpRepository>();
             services.AddScoped<IMerchantRepository, MerchantRepository>();
 
 
@@ -45,7 +43,6 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRefreshTokenService, RedisRefreshTokenService>();
-            services.AddHostedService<OtpCleanupService>();
 
             // Redis
             //services.AddStackExchangeRedisCache(options =>

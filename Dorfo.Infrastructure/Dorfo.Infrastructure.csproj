@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Dorfo.Domain\Dorfo.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Background\" />
+  </ItemGroup>
+
 </Project>

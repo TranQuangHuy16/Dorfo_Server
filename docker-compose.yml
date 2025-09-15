@@ -13,8 +13,22 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DorfoDb=Server=sqlserver;Database=DorfoDb;User Id=sa;Password=Strong@123456!;TrustServerCertificate=True;
-      - ConnectionStrings__Redis=redis:6379
+      # Connection strings
+      - ConnectionStrings__DorfoDb=${DB_CONNECTION}
+      - ConnectionStrings__Redis=${REDIS_CONNECTION}
+
+      # JWT
+      - Jwt__Key=${JWT_KEY}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+
+      # SMTP
+      - Smtp__Host=${SMTP_HOST}
+      - Smtp__Port=${SMTP_PORT}
+      - Smtp__User=${SMTP_USER}
+      - Smtp__Pass=${SMTP_PASS}
+      - Smtp__EnableSsl=${SMTP_ENABLESSL}
+      - Smtp__DisplayName=${SMTP_DISPLAYNAME}
     networks:
       - dorfo-network
 
@@ -33,9 +47,14 @@ services:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Strong@123456!
+      - SA_PASSWORD=${SA_PASSWORD}
+    volumes:
+      - sqlserver-data:/var/opt/mssql  # ✅ Mount volume để dữ liệu không mất khi stop container
     networks:
       - dorfo-network
+
+volumes:
+  sqlserver-data:   # ✅ Định nghĩa volume
 
 networks:
   dorfo-network:
