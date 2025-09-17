@@ -8,5 +8,6 @@ namespace Dorfo.Shared.Helpers
 {
     internal class Class1
     {
+
     }
 }
