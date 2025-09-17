@@ -43,6 +43,8 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRefreshTokenService, RedisRefreshTokenService>();
+            services.AddScoped<IRedisCartService, RedisCartService>();
+            services.AddScoped<ICartService, CartService>();
 
             // Redis
             //services.AddStackExchangeRedisCache(options =>
