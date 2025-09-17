@@ -7,7 +7,7 @@ public class ServiceProviders : IServiceProviders
     private readonly IMerchantService _merchantService;
     private readonly IAuthService _authService;
     private readonly ICartService _cartService;
-
+    //private readonly IOrderService _orderService;
     public ServiceProviders(IUserService userService, IOtpService otpService, IMerchantService merchantService, IAuthService authService, ICartService cartService)
     {
         _userService = userService;

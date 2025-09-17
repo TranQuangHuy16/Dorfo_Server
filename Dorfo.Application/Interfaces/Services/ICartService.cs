@@ -1,4 +1,5 @@
 ﻿using Dorfo.Application.DTOs.Requests;
+using Dorfo.Application.DTOs.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Dorfo.Application.Interfaces.Services
 {
     public interface ICartService
     {
-        Task<CartRequest> AddItemsToCartAsync(Guid userId, Guid merchantId, AddCartItemsRequest request);
-        Task<CartRequest?> GetCartAsync(Guid userId);
-        Task<CartRequest?> RemoveItemAsync(Guid userId, Guid menuItemId);
+        Task<CartResponse> AddItemsToCartAsync(AddCartItemsRequest request, Guid userId);
+        Task<CartResponse?> GetCartAsync(Guid userId);
+        Task<CartResponse?> RemoveItemAsync(Guid userId, Guid cartItemId);
         Task DeleteCartAsync(Guid userId);
     }
 }

@@ -26,6 +26,12 @@ namespace Dorfo.Application.Mappings
             CreateMap<Merchant, MerchantResponse>();
             CreateMap<MerchantResponse, Merchant>();
             CreateMap<MerchantRequest, Merchant>();
+
+            //// Order -> OrderResponse
+            //CreateMap<Order, OrderResponse>();
+
+            //// OrderItem -> OrderItemResponse
+            //CreateMap<OrderItem, OrderItemResponse>();
         }
     }
 }

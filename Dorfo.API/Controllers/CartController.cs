@@ -1,7 +1,7 @@
-﻿using Dorfo.Application.DTOs.Requests;
+﻿
+using Dorfo.Application.DTOs.Requests;
 using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Services;
-using Dorfo.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,7 +10,7 @@ namespace Dorfo.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CartController : Controller
+    public class CartController : ControllerBase
     {
         private readonly IServiceProviders _serviceProviders;
 
@@ -19,9 +19,10 @@ namespace Dorfo.API.Controllers
             _serviceProviders = serviceProviders;
         }
 
-        [HttpPost("/items/{merchantId}")]
+        //[HttpPost("items/{merchantId}")]
+        [HttpPost("items")]
         [Authorize]
-        public async Task<IActionResult> AddItemsToCart(Guid merchantId, [FromBody] AddCartItemsRequest request)
+        public async Task<IActionResult> AddItemsToCart([FromBody] AddCartItemsRequest request)
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -30,11 +31,15 @@ namespace Dorfo.API.Controllers
                 throw new UnauthorizedException("Invalid token");
             }
 
-            var cart = await _serviceProviders.CartService.AddItemsToCartAsync(userId, merchantId, request);
+            // ép UserId và MerchantId từ token/route
+            //request.UserId = userId;
+            request.MerchantId = request.MerchantId;
+
+            var cart = await _serviceProviders.CartService.AddItemsToCartAsync(request, userId);
             return Ok(cart);
         }
 
-        [HttpGet()]
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetCart()
         {
@@ -46,7 +51,7 @@ namespace Dorfo.API.Controllers
             }
 
             var cart = await _serviceProviders.CartService.GetCartAsync(userId);
-            return cart == null ? NotFound(new { message = "Not found" }) : Ok(cart);
+            return cart == null ? NotFound(new { message = "Cart not found" }) : Ok(cart);
         }
 
         [HttpDelete("items/{cartItemId}")]
@@ -60,12 +65,11 @@ namespace Dorfo.API.Controllers
                 throw new UnauthorizedException("Invalid token");
             }
 
-
             var cart = await _serviceProviders.CartService.RemoveItemAsync(userId, cartItemId);
-            return cart == null ? throw new NotFoundException("Not found") : Ok(cart);
+            return cart == null ? NotFound(new { message = "Cart not found" }) : Ok(cart);
         }
 
-        [HttpDelete()]
+        [HttpDelete]
         [Authorize]
         public async Task<IActionResult> DeleteCart()
         {
@@ -77,8 +81,7 @@ namespace Dorfo.API.Controllers
             }
 
             await _serviceProviders.CartService.DeleteCartAsync(userId);
-            return Ok();
+            return Ok(new { message = "Cart deleted successfully" });
         }
     }
 }
-

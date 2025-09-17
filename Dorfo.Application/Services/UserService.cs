@@ -73,7 +73,7 @@ namespace Dorfo.Infrastructure.Persistence.Services
                 Email = email,
                 BirthDate = birthDate,
                 Gender = gender.HasValue ? gender.Value == 1 : false,
-                Role = Domain.Enums.UserRoleEnum.Customer,
+                Role = Domain.Enums.UserRoleEnum.CUSTOMER,
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow
             };

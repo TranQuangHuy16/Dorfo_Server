@@ -8,11 +8,11 @@ namespace Dorfo.Domain.Enums
 {
     public enum UserRoleEnum
     {
-        Customer = 1,
-        MerchantOwner = 2,
-        Manager = 3,
-        Staff = 4,
-        Shipper = 5,
-        Admin = 6
+        CUSTOMER = 1,
+        MERCHANT_OWNER = 2,
+        MANAGER = 3,
+        STAFF = 4,
+        SHIPPER = 5,
+        ADMIN = 6
     }
 }

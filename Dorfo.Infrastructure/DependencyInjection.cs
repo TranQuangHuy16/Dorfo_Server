@@ -31,6 +31,8 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMerchantRepository, MerchantRepository>();
+            services.AddScoped<IMenuItemOptionRepository, MenuItemOptionRepository>();
+            services.AddScoped<IMenuItemOptionValueRepository, MenuItemOptionValueRepository>();
 
 
             // Đăng ký Service

@@ -271,8 +271,8 @@ namespace Dorfo.Infrastructure.Persistence
                 b.HasIndex(x => x.ScheduledFor).HasDatabaseName("IX_Orders_ScheduledFor");
 
                 b.Property(x => x.IsScheduled)
-                    .HasComputedColumnSql("CASE WHEN [ScheduledFor] IS NULL THEN 0 ELSE 1 END", stored: true)
-                    .HasColumnType("bit");
+    .HasComputedColumnSql("CAST(CASE WHEN [ScheduledFor] IS NULL THEN 0 ELSE 1 END AS BIT)", stored: true);
+
 
                 // ✅ Enum OrderStatusEnum -> int
                 b.Property(x => x.Status)

@@ -1,12 +1,7 @@
-﻿using Dorfo.Application.Interfaces.Services;
-using Dorfo.Domain.Entities;
+﻿using Dorfo.Application.DTOs.Responses;
+using Dorfo.Application.Interfaces.Services;
 using Microsoft.Extensions.Caching.Distributed;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Dorfo.Infrastructure.Services.Redis
 {
@@ -21,7 +16,7 @@ namespace Dorfo.Infrastructure.Services.Redis
 
         private string GetCartKey(Guid userId) => $"cart:{userId}";
 
-        public async Task SaveCartAsync(Cart cart, int expireMinutes = 60)
+        public async Task SaveCartAsync(CartResponse cart, int expireMinutes = 60)
         {
             var options = new DistributedCacheEntryOptions
             {
@@ -32,17 +27,26 @@ namespace Dorfo.Infrastructure.Services.Redis
             await _cache.SetStringAsync(GetCartKey(cart.UserId), json, options);
         }
 
-        public async Task<Cart?> GetCartAsync(Guid userId)
+        public async Task<CartResponse?> GetCartAsync(Guid userId)
         {
             var json = await _cache.GetStringAsync(GetCartKey(userId));
             if (string.IsNullOrEmpty(json)) return null;
-            return JsonSerializer.Deserialize<Cart>(json);
+
+            return JsonSerializer.Deserialize<CartResponse>(json);
         }
 
         public async Task RemoveCartAsync(Guid userId)
         {
             await _cache.RemoveAsync(GetCartKey(userId));
         }
-    }
-}
 
+        public async Task<CartResponse?> GetCartByIdAsync(Guid cartId)
+        {
+            var json = await _cache.GetStringAsync($"cartid:{cartId}");
+            if (string.IsNullOrEmpty(json)) return null;
+            return JsonSerializer.Deserialize<CartResponse>(json);
+        }
+    }
+
+
+}
