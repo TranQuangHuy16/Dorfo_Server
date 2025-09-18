@@ -1,5 +1,6 @@
 ﻿using Dorfo.Application.DTOs.Requests;
 using Dorfo.Application.DTOs.Responses;
+using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Repositories;
 using Dorfo.Application.Interfaces.Services;
 using Dorfo.Domain.Entities;
@@ -11,10 +12,7 @@ namespace Dorfo.Application.Services
         private readonly IRedisCartService _redis;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CartService(
-                   IRedisCartService redis,
-                   IUnitOfWork unitOfWork
-               )
+        public CartService(IRedisCartService redis, IUnitOfWork unitOfWork)
         {
             _redis = redis;
             _unitOfWork = unitOfWork;
@@ -22,8 +20,15 @@ namespace Dorfo.Application.Services
 
         public async Task<CartResponse> AddItemsToCartAsync(AddCartItemsRequest request, Guid userId)
         {
-            var cart = await _redis.GetCartAsync(userId);
+            // Lấy cart của user theo merchant
+            var cart = await _redis.GetCartByMerchantAsync(userId, request.MerchantId);
+
             var merchant = await _unitOfWork.MerchantRepository.GetMerchantByIdAsync(request.MerchantId);
+            if (merchant == null)
+            {
+                throw new NotFoundException($"Merchant with id {request.MerchantId} not found");
+            }
+
             if (cart == null)
             {
                 cart = new CartResponse
@@ -85,15 +90,14 @@ namespace Dorfo.Application.Services
 
             cart.UpdatedAt = DateTime.UtcNow;
 
-            // phí/giảm giá
+            // Cập nhật phí/giảm giá
             cart.DeliveryFee = request.DeliveryFee;
             cart.ServiceFee = request.ServiceFee;
             cart.Discount = request.Discount;
 
-            // tính toán lại tổng (bao gồm cả PriceDelta từ option values)
+            // Tính tổng (bao gồm cả PriceDelta từ option values)
             cart.SubTotal = cart.Items.Sum(i =>
-                (i.PriceAtAdd + i.Options.SelectMany(o => o.SelectedValues).Sum(v => v.PriceDelta))
-                * i.Quantity
+                (i.PriceAtAdd + i.Options.SelectMany(o => o.SelectedValues).Sum(v => v.PriceDelta)) * i.Quantity
             );
 
             cart.TotalAmount = cart.SubTotal + cart.DeliveryFee + cart.ServiceFee - cart.Discount;
@@ -102,32 +106,39 @@ namespace Dorfo.Application.Services
             return cart;
         }
 
-
-        public async Task<CartResponse?> GetCartAsync(Guid userId)
+        public async Task<List<CartResponse>> GetAllCartsAsync(Guid userId)
         {
-            return await _redis.GetCartAsync(userId);
+            return await _redis.GetCartsAsync(userId);
         }
 
-        public async Task<CartResponse?> RemoveItemAsync(Guid userId, Guid cartItemId)
+        public async Task<CartResponse?> GetCartByMerchantAsync(Guid userId, Guid merchantId)
         {
-            var cart = await _redis.GetCartAsync(userId);
+            return await _redis.GetCartByMerchantAsync(userId, merchantId);
+        }
+
+        public async Task<CartResponse?> RemoveItemAsync(Guid userId, Guid cartItemId, Guid merchantId)
+        {
+            var cart = await _redis.GetCartByMerchantAsync(userId, merchantId);
             if (cart == null) return null;
 
             cart.Items = cart.Items.Where(i => i.CartItemId != cartItemId).ToList();
             cart.UpdatedAt = DateTime.UtcNow;
 
-            // cập nhật lại tổng
-            cart.SubTotal = cart.Items.Sum(i => i.PriceAtAdd * i.Quantity);
+            cart.SubTotal = cart.Items.Sum(i => (i.PriceAtAdd + i.Options.SelectMany(o => o.SelectedValues).Sum(v => v.PriceDelta)) * i.Quantity);
             cart.TotalAmount = cart.SubTotal + cart.DeliveryFee + cart.ServiceFee - cart.Discount;
 
             await _redis.SaveCartAsync(cart);
             return cart;
         }
 
-        public async Task DeleteCartAsync(Guid userId)
+        public async Task RemoveCartByMerchantAsync(Guid userId, Guid merchantId)
         {
-            await _redis.RemoveCartAsync(userId);
+            await _redis.RemoveCartAsync(userId, merchantId);
+        }
+
+        public async Task DeleteAllCartsAsync(Guid userId)
+        {
+            await _redis.DeleteAllCartsAsync(userId);
         }
     }
-
 }

@@ -18,6 +18,7 @@ namespace Dorfo.Infrastructure.Persistence
         //private IOrderRepository _orderRepository;
         private IMenuItemOptionRepository _menuItemOptionRepository;
         private IMenuItemOptionValueRepository _menuItemOptionValueRepository;
+        private IOrderRepository _orderRepository;
         public UnitOfWork()
         {
         }
@@ -46,6 +47,10 @@ namespace Dorfo.Infrastructure.Persistence
             get { return _menuItemOptionValueRepository ??= new MenuItemOptionValueRepository(_context); }
         }
 
+        public IOrderRepository OrderRepository
+        {
+            get { return _orderRepository ??= new OrderRepository(_context); }
+        }
         public void Dispose()
         {
             _context.Dispose();

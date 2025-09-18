@@ -13,6 +13,7 @@ namespace Dorfo.Application.Interfaces.Repositories
         IMerchantRepository MerchantRepository { get; }
         IMenuItemOptionRepository MenuItemOptionRepository { get; }
         IMenuItemOptionValueRepository MenuItemOptionValueRepository { get; }
+        IOrderRepository OrderRepository { get; }
         //IOrderRepository OrderRepository { get; }
         int SaveChangesWithTransaction();
         Task<int> SaveChangesWithTransactionAsync();
