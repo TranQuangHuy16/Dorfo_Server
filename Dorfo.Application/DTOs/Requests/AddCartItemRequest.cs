@@ -10,8 +10,8 @@ namespace Dorfo.Application.DTOs.Requests
     {
         public Guid MenuItemId { get; set; }
         public int Quantity { get; set; }
-        public string ItemName { get; set; } = null!;
-        public decimal PriceAtAdd { get; set; }
+        //public string ItemName { get; set; } = null!;
+        //public decimal PriceAtAdd { get; set; }
         public List<CartItemOptionRequest> Options { get; set; } = new();
         //public string? OptionsJson { get; set; }
         //public DateTime? ScheduledFor { get; set; }

@@ -10,5 +10,6 @@ namespace Dorfo.Application.Interfaces.Repositories
     public interface IMenuItemOptionValueRepository
     {
         Task<List<MenuItemOptionValue>> GetByIdsAsync(IEnumerable<Guid> valueIds);
+        Task<MenuItemOptionValue> GetByIdAsync(Guid valueId);
     }
 }

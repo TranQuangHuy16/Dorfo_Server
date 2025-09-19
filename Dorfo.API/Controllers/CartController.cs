@@ -51,7 +51,7 @@ namespace Dorfo.API.Controllers
                 throw new UnauthorizedException("Invalid token");
 
             var cart = await _cartService.GetCartByMerchantAsync(userId, merchantId);
-            return cart == null ? NotFound(new { message = "Cart not found" }) : Ok(cart);
+            return cart == null ? throw new NotFoundException("Not Found Cart") : Ok(cart);
         }
 
         [HttpDelete("items/{cartItemId}/{merchantId}")]
@@ -63,7 +63,7 @@ namespace Dorfo.API.Controllers
                 throw new UnauthorizedException("Invalid token");
 
             var cart = await _cartService.RemoveItemAsync(userId, cartItemId, merchantId);
-            return cart == null ? NotFound(new { message = "Cart not found" }) : Ok(cart);
+            return cart == null ? null : Ok(cart);
         }
 
         [HttpDelete("{merchantId}")]
@@ -78,6 +78,25 @@ namespace Dorfo.API.Controllers
             return Ok(new { message = "Cart removed successfully" });
         }
 
+        [HttpPost("{merchantId}/remove-selected-values")]
+        public async Task<IActionResult> RemoveSelectedValues(Guid merchantId, [FromBody] RemoveSelectedValueRequest request)
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+                throw new UnauthorizedException("Invalid token");
+            var cart = await _cartService.RemoveSelectedValueIdsAsync(
+                userId,
+                merchantId,
+                request.CartItemId,
+                request.OptionId,
+                request.SelectedValueIds
+            );
+
+            if (cart == null) throw new NotFoundException("Not Found Cart");
+
+            return Ok(cart);
+        }
+
         [HttpDelete]
         [Authorize]
         public async Task<IActionResult> DeleteAllCarts()
@@ -89,5 +108,50 @@ namespace Dorfo.API.Controllers
             await _cartService.DeleteAllCartsAsync(userId);
             return Ok(new { message = "All carts deleted successfully" });
         }
+
+        [HttpPut("{merchantId}/items/{cartItemId}/quantity")]
+        [Authorize]
+        public async Task<IActionResult> UpdateItemQuantity(Guid merchantId, Guid cartItemId, [FromBody] int newQuantity)
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+                throw new UnauthorizedException("Invalid token");
+
+            var cart = await _cartService.UpdateItemQuantityAsync(userId, merchantId, cartItemId, newQuantity);
+            return cart == null ? throw new NotFoundException("Not Found Cart") : Ok(cart);
+        }
+
+        [HttpPost("{merchantId}/items/{cartItemId}/options/{optionId}/add-value/{optionValueId}")]
+        [Authorize]
+        public async Task<IActionResult> AddOptionValue(Guid merchantId, Guid cartItemId, Guid optionId, Guid optionValueId)
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+                throw new UnauthorizedException("Invalid token");
+
+            var cart = await _cartService.AddOptionValueAsync(userId, merchantId, cartItemId, optionId, optionValueId);
+            return cart == null ? throw new NotFoundException("Not Found Cart") : Ok(cart);
+        }
+
+        [HttpPut("{merchantId}/update-selected-values")]
+        [Authorize]
+        public async Task<IActionResult> UpdateSelectedValues(Guid merchantId, [FromBody] UpdateSelectedValueRequest request)
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+                throw new UnauthorizedException("Invalid token");
+
+            var cart = await _cartService.UpdateSelectedValuesAsync(
+                userId,
+                merchantId,
+                request.CartItemId,
+                request.OptionId,
+                request.SelectedValueIds
+            );
+
+            return cart == null ? NotFound(new { message = "Cart not found" }) : Ok(cart);
+        }
+
+
     }
 }

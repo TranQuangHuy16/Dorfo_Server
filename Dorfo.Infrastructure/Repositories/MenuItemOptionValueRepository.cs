@@ -25,5 +25,11 @@ namespace Dorfo.Infrastructure.Repositories
                 .Where(v => valueIds.Contains(v.OptionValueId))
                 .ToListAsync();
         }
+
+        public async Task<MenuItemOptionValue> GetByIdAsync(Guid valueId)
+        {
+            return await _context.MenuItemOptionValues
+                .FirstOrDefaultAsync(v => v.OptionValueId == valueId);
+        }
     }
 }
