@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dorfo.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace Dorfo.Application.Interfaces.Repositories
     {
         Task AddAsync(Order order);
         Task<Order?> GetByIdAsync(Guid orderId);
-        Task<List<Order>> GetByUserAsync(Guid userId);
+        Task<IEnumerable<Order>> GetByUserAsync(Guid userId);
+        Task<IEnumerable<Order>> GetAllAsync();
+        Task<bool> UpdateStatus(Guid id, OrderStatusEnum status);
     }
 }

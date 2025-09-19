@@ -1,4 +1,5 @@
 ﻿using Dorfo.Application.Interfaces.Repositories;
+using Dorfo.Domain.Enums;
 using Dorfo.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,7 +39,7 @@ namespace Dorfo.Infrastructure.Repositories
         //        .ToListAsync();
         //}
 
-        public async Task<List<Order>> GetByUserAsync(Guid userId)
+        public async Task<IEnumerable<Order>> GetByUserAsync(Guid userId)
         {
             return await _context.Orders
                 .Where(o => o.UserId == userId)
@@ -69,5 +70,29 @@ namespace Dorfo.Infrastructure.Repositories
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
         }
 
+        public async Task<IEnumerable<Order>> GetAllAsync()
+        {
+            return await _context.Orders
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.OrderItemOptions)
+                        .ThenInclude(oo => oo.OrderItemOptionValue)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.OrderItemOptions)
+                        .ThenInclude(oo => oo.MenuItemOption)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.MenuItem)
+                .Include(o => o.Merchant)
+                .ToListAsync();
+        }
+
+        public async Task<bool> UpdateStatus(Guid id, OrderStatusEnum status)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null) return false;
+            order.Status = status;
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

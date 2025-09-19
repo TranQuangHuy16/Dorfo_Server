@@ -110,10 +110,22 @@ namespace Dorfo.Application.Services
             return MapToResponse(order, order.Merchant?.Name ?? "");
         }
 
-        public async Task<List<OrderResponse>> GetOrdersByUserAsync(Guid userId)
+        public async Task<IEnumerable<OrderResponse>> GetOrdersByUserAsync(Guid userId)
         {
             var orders = await _unitOfWork.OrderRepository.GetByUserAsync(userId);
             return orders.Select(o => MapToResponse(o, o.Merchant?.Name ?? "")).ToList();
+        }
+
+        public async Task<IEnumerable<OrderResponse>> GetAllAsync()
+        {
+            var orders = await _unitOfWork.OrderRepository.GetAllAsync();
+            return orders.Select(o => MapToResponse(o, o.Merchant?.Name ?? "")).ToList();
+        }
+
+
+        public async Task<bool> UpdateOrderStatusAsync(Guid orderId, OrderStatusEnum status)
+        {
+            return await _unitOfWork.OrderRepository.UpdateStatus(orderId, status);
         }
 
         private OrderResponse MapToResponse(Order order, string merchantName)

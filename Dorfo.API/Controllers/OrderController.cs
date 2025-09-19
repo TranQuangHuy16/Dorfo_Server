@@ -1,6 +1,8 @@
 ﻿using Dorfo.Application.DTOs.Requests;
 using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Services;
+using Dorfo.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -17,7 +19,35 @@ namespace Dorfo.API.Controllers
             _orderService = orderService;
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var orders = await _orderService.GetAllAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet("{orderId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> GetOrderById(Guid orderId)
+        {
+            var order = await _orderService.GetOrderByIdAsync(orderId);
+            if (order == null)
+                throw new NotFoundException("Order not found");
+
+            return Ok(order);
+        }
+
+        [HttpGet("/api/Orders/users/{userId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> GetOrdersByUser(Guid userId)
+        {
+            var orders = await _orderService.GetOrdersByUserAsync(userId);
+            return Ok(orders);
+        }
+
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -33,28 +63,21 @@ namespace Dorfo.API.Controllers
             var order = await _orderService.CreateOrderAsync(request, userId);
 
             if (order == null)
-                return BadRequest("Cart is empty or user not found.");
+                throw new NotFoundException("Order not found");
 
             return Ok(order);
         }
 
-
-        [HttpGet("{orderId:guid}")]
-        public async Task<IActionResult> GetOrderById(Guid orderId)
+        [HttpPut("{orderId:guid}/status")]
+        [Authorize]
+        public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromQuery] OrderStatusEnum status)
         {
-            var order = await _orderService.GetOrderByIdAsync(orderId);
-            if (order == null)
-                return NotFound();
+            var result = await _orderService.UpdateOrderStatusAsync(orderId, status);
 
-            return Ok(order);
-        }
+            if (!result)
+                throw new NotFoundException("Order not found");
 
-
-        [HttpGet("/api/users/{userId:guid}/orders")]
-        public async Task<IActionResult> GetOrdersByUser(Guid userId)
-        {
-            var orders = await _orderService.GetOrdersByUserAsync(userId);
-            return Ok(orders);
+            return Ok(new { message = "Update successfully" });
         }
     }
 }
