@@ -10,11 +10,12 @@ namespace Dorfo.Domain.Entities
     {
         public Guid MerchantAddressId { get; set; }
         public Guid MerchantId { get; set; }
-        public string? Address { get; set; }
-        public string? Building { get; set; }
-        public decimal? GeoLat { get; set; }
-        public decimal? GeoLng { get; set; }
-
+        public string? StreetNumber { get; set; }   
+        public string? StreetName { get; set; }     
+        public string? Ward { get; set; }           
+        public string? District { get; set; }       
+        public string? City { get; set; }           
         public Merchant Merchant { get; set; } = null!;
     }
+
 }

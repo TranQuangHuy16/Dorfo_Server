@@ -27,6 +27,7 @@ namespace Dorfo.Application.Services
         public async Task<MerchantResponse> CreateAsync(MerchantRequest merchantRequest)
         {
             var merchant = _mapper.Map<Merchant>(merchantRequest);
+            merchant.IsActive = true;
             await _unitOfWork.MerchantRepository.CreateAsync(merchant);
             return _mapper.Map<MerchantResponse>(merchant);
         }

@@ -12,7 +12,7 @@ namespace Dorfo.Domain.Entities
         public Guid OptionId { get; set; }
         public string? ValueName { get; set; }
         public decimal PriceDelta { get; set; }
-
+        public bool IsActive { get; set; }
         public MenuItemOption Option { get; set; } = null!;
     }
 }

@@ -4,14 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dorfo.Domain.Entities
+namespace Dorfo.Application.DTOs.Requests
 {
-    public class MerchantSetting
+    public class MerchantSettingRequest
     {
-        public Guid MerchantSettingId { get; set; }
-        public Guid MerchantId { get; set; }
         public bool SupportsScheduling { get; set; }
         public int DeliveryRadiusMeters { get; set; }
-        public Merchant Merchant { get; set; } = null!;
     }
 }

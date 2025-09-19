@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dorfo.Domain.Entities;
 
-namespace Dorfo.Domain.Entities
+namespace Dorfo.Application
 {
-    public class MenuItem
+    public class MenuItemResponse
     {
         public Guid MenuItemId { get; set; }
         public Guid MerchantId { get; set; }
@@ -22,9 +18,6 @@ namespace Dorfo.Domain.Entities
         public bool IsSpecial { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
-
-        public Merchant Merchant { get; set; } = null!;
-        public MenuCategory? Category { get; set; }
-        public ICollection<MenuItemOption> Options { get; set; } = new List<MenuItemOption>();
+        public IEnumerable<MenuItemOptionResponse> Options { get; set; } = new List<MenuItemOptionResponse>();
     }
 }

@@ -31,6 +31,8 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMerchantRepository, MerchantRepository>();
+            services.AddScoped<IMerchantOpeningDayRepository, MerchantOpeningDayRepository>();
+            services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
 
 
             // Đăng ký Service
@@ -43,6 +45,8 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRefreshTokenService, RedisRefreshTokenService>();
+            services.AddScoped<IMerchantOpeningDayService, MerchantOpeningDayService>();
+            services.AddScoped<IMenuCategoryService, MenuCategoryService>();
 
             // Redis
             //services.AddStackExchangeRedisCache(options =>

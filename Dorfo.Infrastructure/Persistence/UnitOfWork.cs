@@ -15,6 +15,8 @@ namespace Dorfo.Infrastructure.Persistence
         private readonly DorfoDbContext _context;
         private IUserRepository _userRepository;
         private IMerchantRepository _merchantRepository;
+        private IMerchantOpeningDayRepository _merchantOpeningDayRepository;
+        private IMenuCategoryRepository _menuCategoryRepository;
 
         public UnitOfWork()
         {
@@ -32,6 +34,16 @@ namespace Dorfo.Infrastructure.Persistence
         public IMerchantRepository MerchantRepository
         {
             get { return _merchantRepository ??= new MerchantRepository(_context); }
+        }
+
+        public IMerchantOpeningDayRepository MerchantOpeningDayRepository
+        {
+            get { return _merchantOpeningDayRepository ??= new MerchantOpeningDayRepository(_context); }
+        }
+
+        public IMenuCategoryRepository MenuCategoryRepository
+        {
+            get { return _menuCategoryRepository ??= new MenuCategoryRepository(_context); }
         }
 
         public void Dispose()

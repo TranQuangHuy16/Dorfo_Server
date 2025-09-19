@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace Dorfo.Domain.Entities
 {
-    public class MerchantSetting
+    public class MerchantOpeningDay
     {
-        public Guid MerchantSettingId { get; set; }
+        public Guid MerchantOpeningDayId { get; set; }
         public Guid MerchantId { get; set; }
-        public bool SupportsScheduling { get; set; }
-        public int DeliveryRadiusMeters { get; set; }
+
+        public DayOfWeek DayOfWeek { get; set; }
+        public TimeSpan OpenTime { get; set; }
+        public TimeSpan CloseTime { get; set; }
+
         public Merchant Merchant { get; set; } = null!;
     }
 }
