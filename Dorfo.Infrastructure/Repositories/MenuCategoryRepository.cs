@@ -23,12 +23,12 @@ namespace Dorfo.Infrastructure.Repositories
                 .Include(m => m.MenuItems)
                 .ThenInclude(m => m.Options)
                 .ThenInclude(m => m.Values)
-                .FirstOrDefaultAsync(m => m.MenuCategoryId == id);
+                .FirstOrDefaultAsync(m => m.MenuCategoryId == id && m.IsActive == true);
         }
 
         public async Task<IEnumerable<MenuCategory>> GetAllCategoryByMerchantIdAsync(Guid id)
         {
-            return await _context.MenuCategories.Where(m => m.MerchantId == id).ToListAsync();
+            return await _context.MenuCategories.Where(m => m.MerchantId == id && m.IsActive == true).ToListAsync();
         }
     }
 }

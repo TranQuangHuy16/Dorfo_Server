@@ -74,6 +74,20 @@ builder.Services.AddSwaggerGen(c =>
             new string[] {}
         }
     });
+
+    c.MapType<TimeSpan>(() => new Microsoft.OpenApi.Models.OpenApiSchema
+    {
+        Type = "string",
+        Example = new Microsoft.OpenApi.Any.OpenApiString("08:00:00"),
+        Format = "time"
+    });
+
+    c.MapType<TimeSpan?>(() => new Microsoft.OpenApi.Models.OpenApiSchema
+    {
+        Type = "string",
+        Example = new Microsoft.OpenApi.Any.OpenApiString("08:00:00"),
+        Format = "time"
+    });
 });
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>

@@ -38,6 +38,8 @@ namespace Dorfo.Application.Mappings
             CreateMap<MerchantSetting, MerchantSettingResponse>();
             CreateMap<MerchantSettingResponse, MerchantSetting>();
 
+
+
             CreateMap<MerchantRequest, Merchant>()
                 .ForMember(dest => dest.MerchantAddress, opt => opt.MapFrom(src => src.Address))
                 .ForMember(dest => dest.MerchantSetting, opt => opt.MapFrom(src => src.Setting));
@@ -52,6 +54,20 @@ namespace Dorfo.Application.Mappings
             // MenuCategory
             CreateMap<MenuCategoryRequest, MenuCategory>();
             CreateMap<MenuCategory, MenuCategoryResponse>();
+
+            // MenuItem
+            CreateMap<MenuItemRequest, MenuItem>()
+                .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.Options));
+
+            CreateMap<MenuItemOptionRequest, MenuItemOption>()
+                .ForMember(dest => dest.Values, opt => opt.MapFrom(src => src.Values));
+
+            CreateMap<MenuItemOptionValueRequest, MenuItemOptionValue>();
+
+
+            CreateMap<MenuItem, MenuItemResponse>();
+            CreateMap<MenuItemOption, MenuItemOptionResponse>();
+            CreateMap<MenuItemOptionValue, MenuItemOptionValueResponse>();
         }
     }
 }

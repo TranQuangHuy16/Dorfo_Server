@@ -8,13 +8,15 @@ public class ServiceProviders : IServiceProviders
     private readonly IAuthService _authService;
     private readonly IMerchantOpeningDayService _merchantOpeningDayService;
     private readonly IMenuCategoryService _menuCategoryService;
+    private readonly IMenuItemService _menuItemService;
 
     public ServiceProviders(IUserService userService, 
         IOtpService otpService, 
         IMerchantService merchantService, 
         IAuthService authService, 
         IMerchantOpeningDayService merchantOpeningDayService, 
-        IMenuCategoryService menuCategoryService)
+        IMenuCategoryService menuCategoryService,
+        IMenuItemService menuItemService)
     {
         _userService = userService;
         _otpService = otpService;
@@ -22,6 +24,7 @@ public class ServiceProviders : IServiceProviders
         _authService = authService;
         _merchantOpeningDayService = merchantOpeningDayService;
         _menuCategoryService = menuCategoryService;
+        _menuItemService = menuItemService;
     }
 
     public IUserService UserService => _userService;
@@ -30,4 +33,5 @@ public class ServiceProviders : IServiceProviders
     public IAuthService AuthService => _authService;
     public IMerchantOpeningDayService MerchantOpeningDayService => _merchantOpeningDayService;
     public IMenuCategoryService MenuCategoryService => _menuCategoryService;
+    public IMenuItemService MenuItemService => _menuItemService;
 }

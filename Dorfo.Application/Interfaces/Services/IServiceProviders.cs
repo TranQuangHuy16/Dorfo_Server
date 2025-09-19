@@ -15,5 +15,6 @@ namespace Dorfo.Application.Interfaces.Services
         IAuthService AuthService { get; }
         IMerchantOpeningDayService MerchantOpeningDayService { get; }
         IMenuCategoryService MenuCategoryService { get; }
+        IMenuItemService MenuItemService { get; }
     }
 }
