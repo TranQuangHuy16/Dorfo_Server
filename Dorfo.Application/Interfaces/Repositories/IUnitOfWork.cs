@@ -11,6 +11,10 @@ namespace Dorfo.Application.Interfaces.Repositories
     {
         IUserRepository UserRepository { get; }
         IMerchantRepository MerchantRepository { get; }
+        IMenuItemOptionRepository MenuItemOptionRepository { get; }
+        IMenuItemOptionValueRepository MenuItemOptionValueRepository { get; }
+        IOrderRepository OrderRepository { get; }
+        //IOrderRepository OrderRepository { get; }
         IMerchantOpeningDayRepository MerchantOpeningDayRepository { get; }
         IMenuCategoryRepository MenuCategoryRepository { get; }
         IMenuItemRepository MenuItemRepository { get; }

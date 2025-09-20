@@ -8,10 +8,10 @@ namespace Dorfo.Domain.Enums
 {
     public enum PaymentStatusEnum
     {
-        Pending = 1,      // Chưa thanh toán
-        Completed = 2,    // Thanh toán thành công
-        Failed = 3,       // Thanh toán thất bại
-        Refunded = 4,     // Đã hoàn tiền
-        Cancelled = 5     // Thanh toán đã bị hủy
+        PENDING = 1,      // Chưa thanh toán
+        COMPLETED = 2,    // Thanh toán thành công
+        FAILED = 3,       // Thanh toán thất bại
+        REFUNDED = 4,     // Đã hoàn tiền
+        CANCELLED = 5     // Thanh toán đã bị hủy
     }
 }

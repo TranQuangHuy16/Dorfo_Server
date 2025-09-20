@@ -36,19 +36,21 @@ namespace Dorfo.Infrastructure.Repositories
         public async Task<Merchant> GetMerchantByIdAsync(Guid id)
         {
             return await _context.Merchants
+                .Include(m => m.MenuItems)
                 .Include(m => m.MerchantAddress)
                 .Include(m => m.MerchantSetting)
                 .Include(m => m.OpeningDays)
                 .FirstOrDefaultAsync(m => m.MerchantId == id && m.IsActive == true);
-                                            
+
         }
 
         public async Task<IEnumerable<Merchant>> GetMerchantByOwnerIdAsync(Guid id)
         {
             return await _context.Merchants
-                .Where(m => m.OwnerUserId == id && m.IsActive == true)   
-                .OrderByDescending(m => m.CreatedAt)    
+                .Where(m => m.OwnerUserId == id && m.IsActive == true)
+                .OrderByDescending(m => m.CreatedAt)
                 .ToListAsync();
         }
+
     }
 }

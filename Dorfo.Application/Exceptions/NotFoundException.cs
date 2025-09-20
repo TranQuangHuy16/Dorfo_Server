@@ -8,8 +8,7 @@ namespace Dorfo.Application.Exceptions
 {
     public class NotFoundException : AppException
     {
-        public NotFoundException(string message) : base(404, message)
-        {
-        }
+        public NotFoundException(string message)
+            : base(404, message) { }
     }
 }
