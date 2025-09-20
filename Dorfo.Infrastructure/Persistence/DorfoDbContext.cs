@@ -33,6 +33,8 @@ namespace Dorfo.Infrastructure.Persistence
         public DbSet<CartItem> CartItems => Set<CartItem>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<OrderItemOption> OrderItemOptions => Set<OrderItemOption>();
+        public DbSet<OrderItemOptionValue> OrderItemOptionValues => Set<OrderItemOptionValue>();
         public DbSet<Payment> Payments => Set<Payment>();
         public DbSet<OrderStatusHistory> OrderStatusHistories => Set<OrderStatusHistory>();
         public DbSet<Ticket> Tickets => Set<Ticket>();
@@ -271,13 +273,48 @@ namespace Dorfo.Infrastructure.Persistence
                 b.HasIndex(x => x.ScheduledFor).HasDatabaseName("IX_Orders_ScheduledFor");
 
                 b.Property(x => x.IsScheduled)
-                    .HasComputedColumnSql("CASE WHEN [ScheduledFor] IS NULL THEN 0 ELSE 1 END", stored: true)
-                    .HasColumnType("bit");
+    .HasComputedColumnSql("CAST(CASE WHEN [ScheduledFor] IS NULL THEN 0 ELSE 1 END AS BIT)", stored: true);
+
 
                 // ✅ Enum OrderStatusEnum -> int
                 b.Property(x => x.Status)
                     .HasConversion<int>();
             });
+
+            modelBuilder.Entity<OrderItemOption>(entity =>
+            {
+                entity.ToTable("OrderItemOptions"); // 🔥 map rõ ràng tên bảng
+                entity.HasKey(e => e.OrderItemOptionId);
+
+                entity.HasOne(e => e.OrderItem)
+                      .WithMany(o => o.OrderItemOptions)
+                      .HasForeignKey(e => e.OrderItemId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.MenuItemOption)
+                      .WithMany()
+                      .HasForeignKey(e => e.MenuItemOptionId)
+                      .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<OrderItemOptionValue>(entity =>
+            {
+                entity.ToTable("OrderItemOptionValues"); // 🔥 map rõ ràng tên bảng
+                entity.HasKey(e => e.OrderItemOptionValueId);
+
+                entity.HasOne(e => e.OrderItemOption)
+                      .WithMany(o => o.OrderItemOptionValue)
+                      .HasForeignKey(e => e.OrderItemOptionId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.MenuItemOptionValue)
+                      .WithMany()
+                      .HasForeignKey(e => e.MenuItemOptionValueId)
+                      .OnDelete(DeleteBehavior.NoAction);
+
+                entity.Property(e => e.PriceDelta).HasPrecision(18, 2);
+            });
+
 
             modelBuilder.Entity<Payment>(b =>
             {

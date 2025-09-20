@@ -20,5 +20,6 @@ namespace Dorfo.Domain.Entities
 
         public Order Order { get; set; } = null!;
         public MenuItem MenuItem { get; set; } = null!;
+        public ICollection<OrderItemOption> OrderItemOptions { get; set; } = new List<OrderItemOption>();
     }
 }

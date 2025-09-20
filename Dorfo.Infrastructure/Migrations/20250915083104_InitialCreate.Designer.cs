@@ -4,6 +4,7 @@ using Dorfo.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    partial class DorfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250915083104_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -538,60 +541,6 @@ namespace Dorfo.Infrastructure.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("Dorfo.Domain.Entities.OrderItemOption", b =>
-                {
-                    b.Property<Guid>("OrderItemOptionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MenuItemOptionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("OptionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("OrderItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("OrderItemOptionId");
-
-                    b.HasIndex("MenuItemOptionId");
-
-                    b.HasIndex("OrderItemId");
-
-                    b.ToTable("OrderItemOptions", (string)null);
-                });
-
-            modelBuilder.Entity("Dorfo.Domain.Entities.OrderItemOptionValue", b =>
-                {
-                    b.Property<Guid>("OrderItemOptionValueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MenuItemOptionValueId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("OrderItemOptionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("PriceDelta")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ValueName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("OrderItemOptionValueId");
-
-                    b.HasIndex("MenuItemOptionValueId");
-
-                    b.HasIndex("OrderItemOptionId");
-
-                    b.ToTable("OrderItemOptionValues", (string)null);
-                });
-
             modelBuilder.Entity("Dorfo.Domain.Entities.OrderStatusHistory", b =>
                 {
                     b.Property<Guid>("HistoryId")
@@ -632,6 +581,33 @@ namespace Dorfo.Infrastructure.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderStatusHistories");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.OtpCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("ExpiredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Otps");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.Payment", b =>
@@ -709,55 +685,6 @@ namespace Dorfo.Infrastructure.Migrations
                             Code = "BANK_TRANSFER",
                             DisplayName = "Bank Transfer"
                         });
-                });
-
-            modelBuilder.Entity("Dorfo.Domain.Entities.Shipper", b =>
-                {
-                    b.Property<Guid>("ShipperId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CccdBackUrl")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("CccdFrontUrl")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsOnline")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LicensePlate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MerchantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("VehicleType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ShipperId");
-
-                    b.HasIndex("MerchantId");
-
-                    b.ToTable("Shippers");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.Ticket", b =>
@@ -950,7 +877,7 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Property<bool>("IsScheduled")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("bit")
-                        .HasComputedColumnSql("CAST(CASE WHEN [ScheduledFor] IS NULL THEN 0 ELSE 1 END AS BIT)", true);
+                        .HasComputedColumnSql("CASE WHEN [ScheduledFor] IS NULL THEN 0 ELSE 1 END", true);
 
                     b.Property<Guid>("MerchantId")
                         .HasColumnType("uniqueidentifier");
@@ -1181,44 +1108,6 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Dorfo.Domain.Entities.OrderItemOption", b =>
-                {
-                    b.HasOne("Dorfo.Domain.Entities.MenuItemOption", "MenuItemOption")
-                        .WithMany()
-                        .HasForeignKey("MenuItemOptionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Dorfo.Domain.Entities.OrderItem", "OrderItem")
-                        .WithMany("OrderItemOptions")
-                        .HasForeignKey("OrderItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MenuItemOption");
-
-                    b.Navigation("OrderItem");
-                });
-
-            modelBuilder.Entity("Dorfo.Domain.Entities.OrderItemOptionValue", b =>
-                {
-                    b.HasOne("Dorfo.Domain.Entities.MenuItemOptionValue", "MenuItemOptionValue")
-                        .WithMany()
-                        .HasForeignKey("MenuItemOptionValueId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Dorfo.Domain.Entities.OrderItemOption", "OrderItemOption")
-                        .WithMany("OrderItemOptionValue")
-                        .HasForeignKey("OrderItemOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MenuItemOptionValue");
-
-                    b.Navigation("OrderItemOption");
-                });
-
             modelBuilder.Entity("Dorfo.Domain.Entities.OrderStatusHistory", b =>
                 {
                     b.HasOne("Dorfo.Domain.Entities.User", "ChangedByUser")
@@ -1254,17 +1143,6 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("PaymentMethod");
-                });
-
-            modelBuilder.Entity("Dorfo.Domain.Entities.Shipper", b =>
-                {
-                    b.HasOne("Dorfo.Domain.Entities.Merchant", "Merchant")
-                        .WithMany("Shippers")
-                        .HasForeignKey("MerchantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Merchant");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.Ticket", b =>
@@ -1366,19 +1244,7 @@ namespace Dorfo.Infrastructure.Migrations
 
                     b.Navigation("Orders");
 
-                    b.Navigation("Shippers");
-
                     b.Navigation("Vouchers");
-                });
-
-            modelBuilder.Entity("Dorfo.Domain.Entities.OrderItem", b =>
-                {
-                    b.Navigation("OrderItemOptions");
-                });
-
-            modelBuilder.Entity("Dorfo.Domain.Entities.OrderItemOption", b =>
-                {
-                    b.Navigation("OrderItemOptionValue");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.PaymentMethod", b =>

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Dorfo.Application\Dorfo.Application.csproj" />
+    <ProjectReference Include="..\Dorfo.Infrastructure\Dorfo.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
