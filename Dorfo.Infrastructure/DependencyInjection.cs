@@ -31,6 +31,9 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMerchantRepository, MerchantRepository>();
+            services.AddScoped<IMenuItemOptionRepository, MenuItemOptionRepository>();
+            services.AddScoped<IMenuItemOptionValueRepository, MenuItemOptionValueRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IMerchantOpeningDayRepository, MerchantOpeningDayRepository>();
             services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
             services.AddScoped<IMenuItemRepository, MenuItemRepository>();
@@ -55,6 +58,9 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IMenuItemOptionService, MenuItemOptionService>();
             services.AddScoped<IMenuItemOptionValueService, MenuItemOptionValueService>();
             services.AddScoped<IShipperService, ShipperService>();
+            services.AddScoped<IRedisCartService, RedisCartService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             // Redis
             //services.AddStackExchangeRedisCache(options =>

@@ -6,6 +6,8 @@ public class ServiceProviders : IServiceProviders
     private readonly IOtpService _otpService;
     private readonly IMerchantService _merchantService;
     private readonly IAuthService _authService;
+    private readonly ICartService _cartService;
+    //private readonly IOrderService _orderService;
     private readonly IMerchantOpeningDayService _merchantOpeningDayService;
     private readonly IMenuCategoryService _menuCategoryService;
     private readonly IMenuItemService _menuItemService;
@@ -13,21 +15,23 @@ public class ServiceProviders : IServiceProviders
     private readonly IMenuItemOptionValueService _menuItemOptionValueService;
     private readonly IShipperService _shipperService;
 
-    public ServiceProviders(IUserService userService, 
-        IOtpService otpService, 
-        IMerchantService merchantService, 
-        IAuthService authService, 
-        IMerchantOpeningDayService merchantOpeningDayService, 
+    public ServiceProviders(IUserService userService,
+        IOtpService otpService,
+        IMerchantService merchantService,
+        IAuthService authService,
+        IMerchantOpeningDayService merchantOpeningDayService,
         IMenuCategoryService menuCategoryService,
         IMenuItemService menuItemService,
         IMenuItemOptionService menuItemOptionService,
         IMenuItemOptionValueService menuItemOptionValueService,
-        IShipperService shipperService) 
+        IShipperService shipperService,
+        ICartService cartService)
     {
         _userService = userService;
         _otpService = otpService;
         _merchantService = merchantService;
         _authService = authService;
+        _cartService = cartService;
         _merchantOpeningDayService = merchantOpeningDayService;
         _menuCategoryService = menuCategoryService;
         _menuItemService = menuItemService;
@@ -46,4 +50,5 @@ public class ServiceProviders : IServiceProviders
     public IMenuItemOptionService MenuItemOptionService => _menuItemOptionService;
     public IMenuItemOptionValueService MenuItemOptionValueService => _menuItemOptionValueService;
     public IShipperService ShipperService => _shipperService;
+    public ICartService CartService => _cartService;
 }

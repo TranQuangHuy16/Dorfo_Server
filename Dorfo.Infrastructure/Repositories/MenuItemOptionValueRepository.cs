@@ -26,5 +26,18 @@ namespace Dorfo.Infrastructure.Repositories
         {
             return await _context.MenuItemOptionValues.FirstOrDefaultAsync(m => m.OptionValueId == id && m.IsActive == true);
         }
+
+        public async Task<List<MenuItemOptionValue>> GetByIdsAsync(IEnumerable<Guid> valueIds)
+        {
+            return await _context.MenuItemOptionValues
+                .Where(v => valueIds.Contains(v.OptionValueId))
+                .ToListAsync();
+        }
+
+        public async Task<MenuItemOptionValue> GetByIdAsync(Guid valueId)
+        {
+            return await _context.MenuItemOptionValues
+                .FirstOrDefaultAsync(v => v.OptionValueId == valueId);
+        }
     }
 }

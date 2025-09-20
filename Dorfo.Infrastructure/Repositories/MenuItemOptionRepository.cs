@@ -26,5 +26,12 @@ namespace Dorfo.Infrastructure.Repositories
         {
             return await _context.MenuItemOptions.Include(m => m.Values).FirstOrDefaultAsync(m => m.OptionId == id && m.IsActive == true);
         }
+
+        public async Task<MenuItemOption?> GetByIdAsync(Guid optionId)
+        {
+            return await _context.MenuItemOptions
+                .Include(o => o.Values) // load luôn danh sách value
+                .FirstOrDefaultAsync(o => o.OptionId == optionId);
+        }
     }
 }

@@ -13,5 +13,7 @@ namespace Dorfo.Application.Interfaces.Repositories
         Task<int> UpdateAsync(MenuItemOptionValue itemOptionValue);
         Task<IEnumerable<MenuItemOptionValue>> GetAllMenuItemOptionValueByOptionIdAsync(Guid id);
         Task<MenuItemOptionValue> GetMenuItemOptionValueByIdAsync(Guid id);
+        Task<List<MenuItemOptionValue>> GetByIdsAsync(IEnumerable<Guid> valueIds);
+        Task<MenuItemOptionValue> GetByIdAsync(Guid valueId);
     }
 }

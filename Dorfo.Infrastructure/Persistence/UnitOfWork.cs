@@ -15,11 +15,13 @@ namespace Dorfo.Infrastructure.Persistence
         private readonly DorfoDbContext _context;
         private IUserRepository _userRepository;
         private IMerchantRepository _merchantRepository;
+        //private IOrderRepository _orderRepository;
+        private IMenuItemOptionRepository _menuItemOptionRepository;
+        private IMenuItemOptionValueRepository _menuItemOptionValueRepository;
+        private IOrderRepository _orderRepository;
         private IMerchantOpeningDayRepository _merchantOpeningDayRepository;
         private IMenuCategoryRepository _menuCategoryRepository;
         private IMenuItemRepository _menuItemRepository;
-        private IMenuItemOptionRepository _menuItemOptionRepository;
-        private IMenuItemOptionValueRepository _menuItemOptionValueRepository;
         private IShipperRepository _shipperRepository;
 
         public UnitOfWork()
@@ -70,6 +72,10 @@ namespace Dorfo.Infrastructure.Persistence
             get { return _shipperRepository ??= new ShipperRepository(_context); }
         }
 
+        public IOrderRepository OrderRepository
+        {
+            get { return _orderRepository ??= new OrderRepository(_context); }
+        }
         public void Dispose()
         {
             _context.Dispose();
