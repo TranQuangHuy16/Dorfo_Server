@@ -18,6 +18,9 @@ namespace Dorfo.Infrastructure.Persistence
         private IMerchantOpeningDayRepository _merchantOpeningDayRepository;
         private IMenuCategoryRepository _menuCategoryRepository;
         private IMenuItemRepository _menuItemRepository;
+        private IMenuItemOptionRepository _menuItemOptionRepository;
+        private IMenuItemOptionValueRepository _menuItemOptionValueRepository;
+        private IShipperRepository _shipperRepository;
 
         public UnitOfWork()
         {
@@ -50,6 +53,21 @@ namespace Dorfo.Infrastructure.Persistence
         public IMenuItemRepository MenuItemRepository
         {
             get { return _menuItemRepository ??= new MenuItemRepository(_context); }
+        }
+
+        public IMenuItemOptionRepository MenuItemOptionRepository
+        {
+            get { return _menuItemOptionRepository ??= new MenuItemOptionRepository(_context); }
+        }
+
+        public IMenuItemOptionValueRepository MenuItemOptionValueRepository
+        {
+            get { return _menuItemOptionValueRepository ??= new MenuItemOptionValueRepository(_context); }
+        }
+
+        public IShipperRepository ShipperRepository
+        {
+            get { return _shipperRepository ??= new ShipperRepository(_context); }
         }
 
         public void Dispose()

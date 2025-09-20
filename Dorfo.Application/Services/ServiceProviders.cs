@@ -9,6 +9,9 @@ public class ServiceProviders : IServiceProviders
     private readonly IMerchantOpeningDayService _merchantOpeningDayService;
     private readonly IMenuCategoryService _menuCategoryService;
     private readonly IMenuItemService _menuItemService;
+    private readonly IMenuItemOptionService _menuItemOptionService;
+    private readonly IMenuItemOptionValueService _menuItemOptionValueService;
+    private readonly IShipperService _shipperService;
 
     public ServiceProviders(IUserService userService, 
         IOtpService otpService, 
@@ -16,7 +19,10 @@ public class ServiceProviders : IServiceProviders
         IAuthService authService, 
         IMerchantOpeningDayService merchantOpeningDayService, 
         IMenuCategoryService menuCategoryService,
-        IMenuItemService menuItemService)
+        IMenuItemService menuItemService,
+        IMenuItemOptionService menuItemOptionService,
+        IMenuItemOptionValueService menuItemOptionValueService,
+        IShipperService shipperService) 
     {
         _userService = userService;
         _otpService = otpService;
@@ -25,6 +31,9 @@ public class ServiceProviders : IServiceProviders
         _merchantOpeningDayService = merchantOpeningDayService;
         _menuCategoryService = menuCategoryService;
         _menuItemService = menuItemService;
+        _menuItemOptionService = menuItemOptionService;
+        _menuItemOptionValueService = menuItemOptionValueService;
+        _shipperService = shipperService;
     }
 
     public IUserService UserService => _userService;
@@ -34,4 +43,7 @@ public class ServiceProviders : IServiceProviders
     public IMerchantOpeningDayService MerchantOpeningDayService => _merchantOpeningDayService;
     public IMenuCategoryService MenuCategoryService => _menuCategoryService;
     public IMenuItemService MenuItemService => _menuItemService;
+    public IMenuItemOptionService MenuItemOptionService => _menuItemOptionService;
+    public IMenuItemOptionValueService MenuItemOptionValueService => _menuItemOptionValueService;
+    public IShipperService ShipperService => _shipperService;
 }

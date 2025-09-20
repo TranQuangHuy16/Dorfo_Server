@@ -24,7 +24,7 @@ namespace Dorfo.Infrastructure.Repositories
 
         public async Task<IEnumerable<MenuItem>> GetAllMenuItemByMerchantIdAsync(Guid id)
         {
-            return await _context.MenuItems.Where(m => m.MenuItemId == id && m.IsActive == true).ToListAsync();
+            return await _context.MenuItems.Where(m => m.MerchantId == id && m.IsActive == true).ToListAsync();
         }
 
         public async Task<MenuItem> GetMenuItemByIdAsync(Guid id)

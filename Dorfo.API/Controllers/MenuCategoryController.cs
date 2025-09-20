@@ -10,18 +10,18 @@ namespace Dorfo.API.Controllers
     [Authorize]
     public class MenuCategoryController : ControllerBase
     {
-        private readonly IMenuCategoryService _menuCategoryService;
+        private readonly IServiceProviders _serviceProvider;
 
-        public MenuCategoryController(IMenuCategoryService menuCategoryService)
+        public MenuCategoryController(IServiceProviders serviceProvider)
         {
-            _menuCategoryService = menuCategoryService;
+            _serviceProvider = serviceProvider;
         }
 
         // GET: api/MenuCategory?merchantId
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MenuCategoryResponse>>> GetAllCategories([FromQuery] Guid merchantId)
         {
-            var result = await _menuCategoryService.GetAllCategoryByMerchantIdAsync(merchantId);
+            var result = await _serviceProvider.MenuCategoryService.GetAllCategoryByMerchantIdAsync(merchantId);
             return Ok(result);
         }
 
@@ -30,7 +30,7 @@ namespace Dorfo.API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<MenuCategoryResponse>> GetCategoryById(Guid id)
         {
-            var result = await _menuCategoryService.GetCategoryByIdAsync(id);
+            var result = await _serviceProvider.MenuCategoryService.GetCategoryByIdAsync(id);
             return Ok(result);
         }
 
@@ -38,7 +38,7 @@ namespace Dorfo.API.Controllers
         [HttpPost]
         public async Task<ActionResult<MenuCategoryResponse>> Create(MenuCategoryRequest request)
         {
-            var result = await _menuCategoryService.CreateAsync(request);
+            var result = await _serviceProvider.MenuCategoryService.CreateAsync(request);
             return CreatedAtAction(nameof(GetCategoryById), new { id = result.MenuCategoryId }, result);
         }
 
@@ -46,7 +46,7 @@ namespace Dorfo.API.Controllers
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<MenuCategoryResponse>> Update(Guid id, MenuCategoryRequest request)
         {
-            var result = await _menuCategoryService.UpdateAsync(id, request);
+            var result = await _serviceProvider.MenuCategoryService.UpdateAsync(id, request);
             return Ok(result);
         }
 
@@ -54,7 +54,7 @@ namespace Dorfo.API.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<MenuCategoryResponse>> Delete(Guid id)
         {
-            var result = await _menuCategoryService.DeleteAsync(id);
+            var result = await _serviceProvider.MenuCategoryService.DeleteAsync(id);
             return Ok(result);
         }
     }

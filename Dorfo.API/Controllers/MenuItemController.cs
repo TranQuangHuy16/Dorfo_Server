@@ -8,18 +8,18 @@ namespace Dorfo.API.Controllers
     [Route("api/[controller]")]
     public class MenuItemController : ControllerBase
     {
-        private readonly IMenuItemService _menuItemService;
+        private readonly IServiceProviders _serviceProvider;
 
-        public MenuItemController(IMenuItemService menuItemService)
+        public MenuItemController(IServiceProviders serviceProvider)
         {
-            _menuItemService = menuItemService;
+            _serviceProvider = serviceProvider;
         }
 
         // GET: api/MenuItem/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<MenuItemResponse>> GetMenuItemById(Guid id)
         {
-            var result = await _menuItemService.GetMenuItemByIdAsync(id);
+            var result = await _serviceProvider.MenuItemService.GetMenuItemByIdAsync(id);
             return Ok(result);
         }
 
@@ -27,7 +27,7 @@ namespace Dorfo.API.Controllers
         [HttpGet("merchant/{merchantId}")]
         public async Task<ActionResult<IEnumerable<MenuItemResponse>>> GetAllByMerchantId(Guid merchantId)
         {
-            var result = await _menuItemService.GetAllMenuItemByMerchantIdAsync(merchantId);
+            var result = await _serviceProvider.MenuItemService.GetAllMenuItemByMerchantIdAsync(merchantId);
             return Ok(result);
         }
 
@@ -35,7 +35,7 @@ namespace Dorfo.API.Controllers
         [HttpGet("category/{categoryId}")]
         public async Task<ActionResult<IEnumerable<MenuItemResponse>>> GetAllByCategoryId(Guid categoryId)
         {
-            var result = await _menuItemService.GetAllMenuItemByCategoryIdAsync(categoryId);
+            var result = await _serviceProvider.MenuItemService.GetAllMenuItemByCategoryIdAsync(categoryId);
             return Ok(result);
         }
 
@@ -43,7 +43,7 @@ namespace Dorfo.API.Controllers
         [HttpPost]
         public async Task<ActionResult<MenuItemResponse>> Create([FromBody] MenuItemRequest request)
         {
-            var result = await _menuItemService.CreateAsync(request);
+            var result = await _serviceProvider.MenuItemService.CreateAsync(request);
             return CreatedAtAction(nameof(GetMenuItemById), new { id = result.MenuItemId }, result);
         }
 
@@ -51,7 +51,7 @@ namespace Dorfo.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<MenuItemResponse>> Update(Guid id, [FromBody] MenuItemRequest request)
         {
-            var result = await _menuItemService.UpdateAsync(id, request);
+            var result = await _serviceProvider.MenuItemService.UpdateAsync(id, request);
             return Ok(result);
         }
 
@@ -59,7 +59,7 @@ namespace Dorfo.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<MenuItemResponse>> Delete(Guid id)
         {
-            var result = await _menuItemService.DeleteAsync(id);
+            var result = await _serviceProvider.MenuItemService.DeleteAsync(id);
             return Ok(result);
         }
     }

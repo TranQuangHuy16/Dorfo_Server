@@ -28,15 +28,15 @@ namespace Dorfo.Application.Mappings
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.MerchantAddress))
                 .ForMember(dest => dest.Setting, opt => opt.MapFrom(src => src.MerchantSetting));
 
-            CreateMap<MerchantResponse, Merchant>()
-                .ForMember(dest => dest.MerchantAddress, opt => opt.MapFrom(src => src.Address))
-                .ForMember(dest => dest.MerchantSetting, opt => opt.MapFrom(src => src.Setting));
+            //CreateMap<MerchantResponse, Merchant>()
+            //    .ForMember(dest => dest.MerchantAddress, opt => opt.MapFrom(src => src.Address))
+            //    .ForMember(dest => dest.MerchantSetting, opt => opt.MapFrom(src => src.Setting));
 
             CreateMap<MerchantAddress, MerchantAddressResponse>();
-            CreateMap<MerchantAddressResponse, MerchantAddress>();
+            //CreateMap<MerchantAddressResponse, MerchantAddress>();
 
             CreateMap<MerchantSetting, MerchantSettingResponse>();
-            CreateMap<MerchantSettingResponse, MerchantSetting>();
+            //CreateMap<MerchantSettingResponse, MerchantSetting>();
 
 
 
@@ -68,6 +68,10 @@ namespace Dorfo.Application.Mappings
             CreateMap<MenuItem, MenuItemResponse>();
             CreateMap<MenuItemOption, MenuItemOptionResponse>();
             CreateMap<MenuItemOptionValue, MenuItemOptionValueResponse>();
+
+            // Shipper
+            CreateMap<ShipperRequest, Shipper>();
+            CreateMap<Shipper, ShipperResponse>();
         }
     }
 }
