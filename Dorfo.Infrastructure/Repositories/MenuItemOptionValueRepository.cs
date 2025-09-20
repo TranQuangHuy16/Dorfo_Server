@@ -1,6 +1,7 @@
 ﻿using Dorfo.Application.Interfaces.Repositories;
 using Dorfo.Domain.Entities;
 using Dorfo.Infrastructure.Persistence;
+using Dorfo.Infrastructure.Repositories.Basic;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,20 @@ using System.Threading.Tasks;
 
 namespace Dorfo.Infrastructure.Repositories
 {
-    public class MenuItemOptionValueRepository : IMenuItemOptionValueRepository
+    public class MenuItemOptionValueRepository : GenericRepository<MenuItemOptionValue>, IMenuItemOptionValueRepository
     {
-        private readonly DorfoDbContext _context;
+        public MenuItemOptionValueRepository() { }
 
-        public MenuItemOptionValueRepository(DorfoDbContext context)
+        public MenuItemOptionValueRepository(DorfoDbContext context) => _context = context;
+
+        public async Task<IEnumerable<MenuItemOptionValue>> GetAllMenuItemOptionValueByOptionIdAsync(Guid id)
         {
-            _context = context;
+           return await _context.MenuItemOptionValues.Where(m => m.OptionId == id && m.IsActive ==  true).ToListAsync(); 
+        }
+
+        public async Task<MenuItemOptionValue> GetMenuItemOptionValueByIdAsync(Guid id)
+        {
+            return await _context.MenuItemOptionValues.FirstOrDefaultAsync(m => m.OptionValueId == id && m.IsActive == true);
         }
 
         public async Task<List<MenuItemOptionValue>> GetByIdsAsync(IEnumerable<Guid> valueIds)

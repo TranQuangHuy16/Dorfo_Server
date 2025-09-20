@@ -1,34 +1,31 @@
-﻿using AutoMapper;
-using Dorfo.Application.DTOs.Requests;
+﻿using Dorfo.Application.DTOs.Requests;
 using Dorfo.Application.DTOs.Responses;
 using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Services;
 using Dorfo.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dorfo.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class MerchantController : ControllerBase
     {
         private readonly IServiceProviders _serviceProvider;
-        private readonly IMapper _mapper;
 
-        public MerchantController(IServiceProviders serviceProvider, IMapper mapper)
+        public MerchantController(IServiceProviders serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _mapper = mapper;
         }
-
-
 
         // GET: api/merchant
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var merchants = await _serviceProvider.MerchantService.GetAllAsync();
-            if (merchants == null || !merchants.Any())
+            if (merchants != null || !merchants.Any())
                 return Ok(merchants);
             else throw new MerchantException($"Not Found Merchants");
         }

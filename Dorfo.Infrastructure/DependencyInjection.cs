@@ -34,6 +34,12 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IMenuItemOptionRepository, MenuItemOptionRepository>();
             services.AddScoped<IMenuItemOptionValueRepository, MenuItemOptionValueRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IMerchantOpeningDayRepository, MerchantOpeningDayRepository>();
+            services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
+            services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+            services.AddScoped<IMenuItemOptionRepository, MenuItemOptionRepository>();
+            services.AddScoped<IMenuItemOptionValueRepository, MenuItemOptionValueRepository>();
+            services.AddScoped<IShipperRepository, ShipperRepository>();
 
 
             // Đăng ký Service
@@ -46,6 +52,12 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRefreshTokenService, RedisRefreshTokenService>();
+            services.AddScoped<IMerchantOpeningDayService, MerchantOpeningDayService>();
+            services.AddScoped<IMenuCategoryService, MenuCategoryService>();
+            services.AddScoped<IMenuItemService, MenuItemService>();
+            services.AddScoped<IMenuItemOptionService, MenuItemOptionService>();
+            services.AddScoped<IMenuItemOptionValueService, MenuItemOptionValueService>();
+            services.AddScoped<IShipperService, ShipperService>();
             services.AddScoped<IRedisCartService, RedisCartService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();

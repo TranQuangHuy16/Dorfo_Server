@@ -22,16 +22,56 @@ namespace Dorfo.Application.Mappings
                     opt => opt.MapFrom(src => src.Gender == true ? "Male" : "Female"));
             CreateMap<UserResponse, User>();
             CreateMap<User, UserCreateResponse>();
+
             // Merchant
-            CreateMap<Merchant, MerchantResponse>();
-            CreateMap<MerchantResponse, Merchant>();
-            CreateMap<MerchantRequest, Merchant>();
+            CreateMap<Merchant, MerchantResponse>()
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.MerchantAddress))
+                .ForMember(dest => dest.Setting, opt => opt.MapFrom(src => src.MerchantSetting));
 
-            //// Order -> OrderResponse
-            //CreateMap<Order, OrderResponse>();
+            //CreateMap<MerchantResponse, Merchant>()
+            //    .ForMember(dest => dest.MerchantAddress, opt => opt.MapFrom(src => src.Address))
+            //    .ForMember(dest => dest.MerchantSetting, opt => opt.MapFrom(src => src.Setting));
 
-            //// OrderItem -> OrderItemResponse
-            //CreateMap<OrderItem, OrderItemResponse>();
+            CreateMap<MerchantAddress, MerchantAddressResponse>();
+            //CreateMap<MerchantAddressResponse, MerchantAddress>();
+
+            CreateMap<MerchantSetting, MerchantSettingResponse>();
+            //CreateMap<MerchantSettingResponse, MerchantSetting>();
+
+
+
+            CreateMap<MerchantRequest, Merchant>()
+                .ForMember(dest => dest.MerchantAddress, opt => opt.MapFrom(src => src.Address))
+                .ForMember(dest => dest.MerchantSetting, opt => opt.MapFrom(src => src.Setting));
+
+            CreateMap<MerchantAddressRequest, MerchantAddress>();
+            CreateMap<MerchantSettingRequest, MerchantSetting>();
+
+            // MerchantOpeningDay
+            CreateMap<MerchantOpeningDayRequest, MerchantOpeningDay>();
+            CreateMap<MerchantOpeningDay, MerchantOpeningDayResponse>();
+
+            // MenuCategory
+            CreateMap<MenuCategoryRequest, MenuCategory>();
+            CreateMap<MenuCategory, MenuCategoryResponse>();
+
+            // MenuItem
+            CreateMap<MenuItemRequest, MenuItem>()
+                .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.Options));
+
+            CreateMap<MenuItemOptionRequest, MenuItemOption>()
+                .ForMember(dest => dest.Values, opt => opt.MapFrom(src => src.Values));
+
+            CreateMap<MenuItemOptionValueRequest, MenuItemOptionValue>();
+
+
+            CreateMap<MenuItem, MenuItemResponse>();
+            CreateMap<MenuItemOption, MenuItemOptionResponse>();
+            CreateMap<MenuItemOptionValue, MenuItemOptionValueResponse>();
+
+            // Shipper
+            CreateMap<ShipperRequest, Shipper>();
+            CreateMap<Shipper, ShipperResponse>();
         }
     }
 }

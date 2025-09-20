@@ -20,8 +20,7 @@ namespace Dorfo.Domain.Entities
         public TimeSpan? AvailableTo { get; set; }
         public bool IsAvailable { get; set; }
         public bool IsSpecial { get; set; }
-        public int MinQty { get; set; }
-        public string? Tags { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public Merchant Merchant { get; set; } = null!;

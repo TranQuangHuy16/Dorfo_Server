@@ -25,6 +25,7 @@ namespace Dorfo.Infrastructure.Persistence
         public DbSet<Merchant> Merchants => Set<Merchant>();
         public DbSet<MerchantAddress> MerchantAddresses => Set<MerchantAddress>();
         public DbSet<MerchantSetting> MerchantSettings => Set<MerchantSetting>();
+        public DbSet<MerchantOpeningDay> MerchantOpeningDays => Set<MerchantOpeningDay>();
         public DbSet<MenuCategory> MenuCategories => Set<MenuCategory>();
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();
         public DbSet<MenuItemOption> MenuItemOptions => Set<MenuItemOption>();
@@ -84,16 +85,24 @@ namespace Dorfo.Infrastructure.Persistence
             modelBuilder.Entity<Address>(b =>
             {
                 b.HasKey(x => x.AddressId);
+
                 b.Property(x => x.AddressLabel).HasMaxLength(200);
-                b.Property(x => x.Building).HasMaxLength(100);
-                b.Property(x => x.Floor).HasMaxLength(50);
-                b.Property(x => x.GeoLat).HasColumnType("decimal(9,6)");
-                b.Property(x => x.GeoLng).HasColumnType("decimal(9,6)");
+                b.Property(x => x.Street).HasMaxLength(300).IsRequired();
+                b.Property(x => x.Ward).HasMaxLength(100);
+                b.Property(x => x.District).HasMaxLength(100);
+                b.Property(x => x.City).HasMaxLength(100);
+                b.Property(x => x.Country).HasMaxLength(100).HasDefaultValue("Vietnam");
+
                 b.Property(x => x.IsDefault).HasDefaultValue(false);
+                b.Property(x => x.IsActive).HasDefaultValue(true);
                 b.Property(x => x.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
-                b.HasOne(x => x.User).WithMany(u => u.Addresses).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
-                // Merchant relationship optional: we'll configure navigation from Merchant if needed
+
+                b.HasOne(x => x.User)
+                    .WithMany(u => u.Addresses)
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
+
 
             // Merchants
             modelBuilder.Entity<Merchant>(b =>
@@ -104,43 +113,71 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.Phone).HasMaxLength(50);
                 b.Property(x => x.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
                 b.Property(x => x.IsActive).HasDefaultValue(true);
-                b.Property(x => x.SupportsScheduling).HasDefaultValue(false);
-                b.Property(x => x.FreeShipThreshold).HasColumnType("decimal(18,2)");
-                b.Property(x => x.MinOrderAmount).HasColumnType("decimal(18,2)");
+                b.Property(x => x.IsOpen).HasDefaultValue(true);
                 b.Property(x => x.CommissionRate).HasColumnType("decimal(5,2)").HasDefaultValue(0m);
-                b.HasOne(x => x.OwnerUser).WithMany().HasForeignKey(x => x.OwnerUserId).OnDelete(DeleteBehavior.SetNull);
+
+                b.HasOne(x => x.OwnerUser)
+                    .WithMany()
+                    .HasForeignKey(x => x.OwnerUserId)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.HasMany(x => x.OpeningDays)
+                    .WithOne(d => d.Merchant)
+                    .HasForeignKey(d => d.MerchantId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             // MerchantAddresses
             modelBuilder.Entity<MerchantAddress>(b =>
             {
                 b.HasKey(x => x.MerchantAddressId);
-                b.Property(x => x.Address).HasMaxLength(500);
-                b.Property(x => x.Building).HasMaxLength(100);
-                b.Property(x => x.GeoLat).HasColumnType("decimal(9,6)");
-                b.Property(x => x.GeoLng).HasColumnType("decimal(9,6)");
-                b.HasOne(x => x.Merchant).WithMany(m => m.MerchantAddresses).HasForeignKey(x => x.MerchantId).OnDelete(DeleteBehavior.Cascade);
+                b.Property(x => x.StreetNumber).HasMaxLength(50);
+                b.Property(x => x.StreetName).HasMaxLength(200);
+                b.Property(x => x.Ward).HasMaxLength(100);
+                b.Property(x => x.District).HasMaxLength(100);
+                b.Property(x => x.City).HasMaxLength(100);
+
+                b.HasOne(x => x.Merchant)
+                 .WithOne(m => m.MerchantAddress)
+                 .HasForeignKey<MerchantAddress>(x => x.MerchantId)
+                 .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // MerchantSettings (MerchantId unique)
+            // MerchantSettings
             modelBuilder.Entity<MerchantSetting>(b =>
             {
                 b.HasKey(x => x.MerchantSettingId);
                 b.Property(x => x.SupportsScheduling).HasDefaultValue(false);
-                b.Property(x => x.FreeShipThreshold).HasColumnType("decimal(18,2)");
-                b.Property(x => x.MinOrderAmount).HasColumnType("decimal(18,2)");
-                b.Property(x => x.PrepWindowMinutes).HasDefaultValue(30);
                 b.Property(x => x.DeliveryRadiusMeters).HasDefaultValue(3000);
-                b.Property(x => x.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
+
                 b.HasIndex(x => x.MerchantId).IsUnique();
-                b.HasOne(x => x.Merchant).WithOne(m => m.MerchantSetting).HasForeignKey<MerchantSetting>(x => x.MerchantId).OnDelete(DeleteBehavior.Cascade);
+
+                b.HasOne(x => x.Merchant)
+                    .WithOne(m => m.MerchantSetting)
+                    .HasForeignKey<MerchantSetting>(x => x.MerchantId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
+
+            // MerchantOpeningDays
+            modelBuilder.Entity<MerchantOpeningDay>(b =>
+            {
+                b.HasKey(x => x.MerchantOpeningDayId);
+
+                b.Property(x => x.DayOfWeek)
+                    .HasConversion<int>();
+
+                b.Property(x => x.OpenTime).IsRequired();
+                b.Property(x => x.CloseTime).IsRequired();
+            });
+
 
             // MenuCategory
             modelBuilder.Entity<MenuCategory>(b =>
             {
                 b.HasKey(x => x.MenuCategoryId);
                 b.Property(x => x.Name).HasMaxLength(200).IsRequired();
+                b.Property(x => x.Name).HasMaxLength(1000);
+                b.Property(x => x.IsActive).HasDefaultValue(true);
                 b.Property(x => x.SortOrder).HasDefaultValue(0);
                 b.HasOne(x => x.Merchant).WithMany(m => m.MenuCategories).HasForeignKey(x => x.MerchantId).OnDelete(DeleteBehavior.Cascade);
             });
@@ -174,8 +211,7 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.SupportsScheduling).HasDefaultValue(false);
                 b.Property(x => x.IsAvailable).HasDefaultValue(true);
                 b.Property(x => x.IsSpecial).HasDefaultValue(false);
-                b.Property(x => x.MinQty).HasDefaultValue(1);
-                b.Property(x => x.Tags).HasMaxLength(500);
+                b.Property(x => x.IsActive).HasDefaultValue(true);
                 b.Property(x => x.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
 
                 // Direct link to Merchant: NO cascade
@@ -202,6 +238,7 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.OptionName).HasMaxLength(200).IsRequired();
                 b.Property(x => x.IsMultipleChoice).HasDefaultValue(false);
                 b.Property(x => x.Required).HasDefaultValue(false);
+                b.Property(x => x.IsActive).HasDefaultValue(true);
                 b.HasOne(x => x.MenuItem).WithMany(m => m.Options).HasForeignKey(x => x.MenuItemId).OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -210,6 +247,7 @@ namespace Dorfo.Infrastructure.Persistence
             {
                 b.HasKey(x => x.OptionValueId);
                 b.Property(x => x.ValueName).HasMaxLength(200);
+                b.Property(x => x.IsActive).HasDefaultValue(true);
                 b.Property(x => x.PriceDelta).HasColumnType("decimal(18,2)").HasDefaultValue(0m);
                 b.HasOne(x => x.Option).WithMany(o => o.Values).HasForeignKey(x => x.OptionId).OnDelete(DeleteBehavior.Cascade);
             });
@@ -419,16 +457,29 @@ namespace Dorfo.Infrastructure.Persistence
             {
                 entity.HasKey(s => s.ShipperId);
 
+                
                 entity.HasOne(s => s.Merchant)
                       .WithMany(m => m.Shippers)
                       .HasForeignKey(s => s.MerchantId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.Property(s => s.FullName).IsRequired().HasMaxLength(100);
-                entity.Property(s => s.PhoneNumber).IsRequired().HasMaxLength(20);
+                
+                entity.HasOne(s => s.User)
+                      .WithOne()
+                      .HasForeignKey<Shipper>(s => s.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.Property(s => s.VehicleType).HasMaxLength(50);
+                entity.Property(s => s.LicensePlate).HasMaxLength(20);
+
                 entity.Property(s => s.CccdFrontUrl).HasMaxLength(255);
                 entity.Property(s => s.CccdBackUrl).HasMaxLength(255);
+
+                entity.Property(s => s.IsActive).HasDefaultValue(true);
+                entity.Property(s => s.IsOnline).HasDefaultValue(false);
+                entity.Property(s => s.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
             });
+
 
             // Enum -> string hoặc int
             modelBuilder.Entity<User>()

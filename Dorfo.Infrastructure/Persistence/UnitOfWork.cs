@@ -19,6 +19,11 @@ namespace Dorfo.Infrastructure.Persistence
         private IMenuItemOptionRepository _menuItemOptionRepository;
         private IMenuItemOptionValueRepository _menuItemOptionValueRepository;
         private IOrderRepository _orderRepository;
+        private IMerchantOpeningDayRepository _merchantOpeningDayRepository;
+        private IMenuCategoryRepository _menuCategoryRepository;
+        private IMenuItemRepository _menuItemRepository;
+        private IShipperRepository _shipperRepository;
+
         public UnitOfWork()
         {
         }
@@ -37,6 +42,21 @@ namespace Dorfo.Infrastructure.Persistence
             get { return _merchantRepository ??= new MerchantRepository(_context); }
         }
 
+        public IMerchantOpeningDayRepository MerchantOpeningDayRepository
+        {
+            get { return _merchantOpeningDayRepository ??= new MerchantOpeningDayRepository(_context); }
+        }
+
+        public IMenuCategoryRepository MenuCategoryRepository
+        {
+            get { return _menuCategoryRepository ??= new MenuCategoryRepository(_context); }
+        }
+
+        public IMenuItemRepository MenuItemRepository
+        {
+            get { return _menuItemRepository ??= new MenuItemRepository(_context); }
+        }
+
         public IMenuItemOptionRepository MenuItemOptionRepository
         {
             get { return _menuItemOptionRepository ??= new MenuItemOptionRepository(_context); }
@@ -45,6 +65,11 @@ namespace Dorfo.Infrastructure.Persistence
         public IMenuItemOptionValueRepository MenuItemOptionValueRepository
         {
             get { return _menuItemOptionValueRepository ??= new MenuItemOptionValueRepository(_context); }
+        }
+
+        public IShipperRepository ShipperRepository
+        {
+            get { return _shipperRepository ??= new ShipperRepository(_context); }
         }
 
         public IOrderRepository OrderRepository

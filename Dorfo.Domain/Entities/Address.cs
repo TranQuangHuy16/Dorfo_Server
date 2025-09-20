@@ -10,14 +10,19 @@ namespace Dorfo.Domain.Entities
     {
         public Guid AddressId { get; set; }
         public Guid? UserId { get; set; }
-        public string? AddressLabel { get; set; }
-        public string? Building { get; set; }
-        public string? Floor { get; set; }
-        public decimal? GeoLat { get; set; }  // DECIMAL(9,6)
-        public decimal? GeoLng { get; set; }  // DECIMAL(9,6)
+
+        public string? AddressLabel { get; set; } 
+        public string Street { get; set; } = null!; 
+        public string? Ward { get; set; }
+        public string? District { get; set; } 
+        public string? City { get; set; } 
+        public string? Country { get; set; } 
+
         public bool IsDefault { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public User? User { get; set; }
     }
+
 }

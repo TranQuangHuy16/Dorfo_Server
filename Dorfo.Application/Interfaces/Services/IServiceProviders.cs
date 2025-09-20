@@ -15,5 +15,11 @@ namespace Dorfo.Application.Interfaces.Services
         IAuthService AuthService { get; }
         ICartService CartService { get; }
         //IOrderService OrderService { get; }
+        IMerchantOpeningDayService MerchantOpeningDayService { get; }
+        IMenuCategoryService MenuCategoryService { get; }
+        IMenuItemService MenuItemService { get; }
+        IMenuItemOptionService MenuItemOptionService { get; }
+        IMenuItemOptionValueService MenuItemOptionValueService { get; }
+        IShipperService ShipperService { get; }
     }
 }

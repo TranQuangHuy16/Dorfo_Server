@@ -13,7 +13,7 @@ namespace Dorfo.Domain.Entities
         public string OptionName { get; set; } = null!;
         public bool IsMultipleChoice { get; set; }
         public bool Required { get; set; }
-
+        public bool IsActive { get; set; }
         public MenuItem MenuItem { get; set; } = null!;
         public ICollection<MenuItemOptionValue> Values { get; set; } = new List<MenuItemOptionValue>();
     }

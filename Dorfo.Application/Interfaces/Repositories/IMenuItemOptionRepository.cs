@@ -9,6 +9,10 @@ namespace Dorfo.Application.Interfaces.Repositories
 {
     public interface IMenuItemOptionRepository
     {
+        Task<int> CreateAsync(MenuItemOption itemOption);
+        Task<int> UpdateAsync(MenuItemOption itemOption);
+        Task<IEnumerable<MenuItemOption>> GetAllMenuItemOptionByMenuItemIdAsync(Guid id);
+        Task<MenuItemOption> GetMenuItemOptionByIdAsync(Guid id);
         Task<MenuItemOption?> GetByIdAsync(Guid optionId);
     }
 }

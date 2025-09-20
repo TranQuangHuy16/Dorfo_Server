@@ -11,12 +11,7 @@ namespace Dorfo.Domain.Entities
         public Guid MerchantSettingId { get; set; }
         public Guid MerchantId { get; set; }
         public bool SupportsScheduling { get; set; }
-        public decimal? FreeShipThreshold { get; set; }
-        public decimal? MinOrderAmount { get; set; }
-        public int PrepWindowMinutes { get; set; }
         public int DeliveryRadiusMeters { get; set; }
-        public DateTime CreatedAt { get; set; }
-
         public Merchant Merchant { get; set; } = null!;
     }
 }

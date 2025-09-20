@@ -15,16 +15,13 @@ namespace Dorfo.Domain.Entities
         public string? Phone { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
-        public bool SupportsScheduling { get; set; }
-        public decimal? FreeShipThreshold { get; set; }
-        public decimal? MinOrderAmount { get; set; }
-        public int? PrepWindowMinutes { get; set; }
+        public bool IsOpen { get; set; }
         public decimal CommissionRate { get; set; }
-
         public User? OwnerUser { get; set; }
         public MerchantSetting? MerchantSetting { get; set; }
+        public MerchantAddress MerchantAddress { get; set; } = null!;
+        public ICollection<MerchantOpeningDay> OpeningDays { get; set; } = new List<MerchantOpeningDay>();
         public ICollection<Shipper> Shippers { get; set; } = new List<Shipper>();
-        public ICollection<MerchantAddress> MerchantAddresses { get; set; } = new List<MerchantAddress>();
         public ICollection<MenuCategory> MenuCategories { get; set; } = new List<MenuCategory>();
         public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
         public ICollection<Order> Orders { get; set; } = new List<Order>();
