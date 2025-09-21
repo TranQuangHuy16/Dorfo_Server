@@ -14,6 +14,7 @@ public class ServiceProviders : IServiceProviders
     private readonly IMenuItemOptionService _menuItemOptionService;
     private readonly IMenuItemOptionValueService _menuItemOptionValueService;
     private readonly IShipperService _shipperService;
+    private readonly IAddressService _addressService;
 
     public ServiceProviders(IUserService userService,
         IOtpService otpService,
@@ -25,7 +26,8 @@ public class ServiceProviders : IServiceProviders
         IMenuItemOptionService menuItemOptionService,
         IMenuItemOptionValueService menuItemOptionValueService,
         IShipperService shipperService,
-        ICartService cartService)
+        ICartService cartService,
+        IAddressService addressService)
     {
         _userService = userService;
         _otpService = otpService;
@@ -38,6 +40,7 @@ public class ServiceProviders : IServiceProviders
         _menuItemOptionService = menuItemOptionService;
         _menuItemOptionValueService = menuItemOptionValueService;
         _shipperService = shipperService;
+        _addressService = addressService;
     }
 
     public IUserService UserService => _userService;
@@ -51,4 +54,5 @@ public class ServiceProviders : IServiceProviders
     public IMenuItemOptionValueService MenuItemOptionValueService => _menuItemOptionValueService;
     public IShipperService ShipperService => _shipperService;
     public ICartService CartService => _cartService;
+    public IAddressService AddressService => _addressService;
 }

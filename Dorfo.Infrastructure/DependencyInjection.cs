@@ -40,6 +40,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IMenuItemOptionRepository, MenuItemOptionRepository>();
             services.AddScoped<IMenuItemOptionValueRepository, MenuItemOptionValueRepository>();
             services.AddScoped<IShipperRepository, ShipperRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
 
 
             // Đăng ký Service
@@ -61,6 +62,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IRedisCartService, RedisCartService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IAddressService, AddressService>();
 
             // Redis
             //services.AddStackExchangeRedisCache(options =>
