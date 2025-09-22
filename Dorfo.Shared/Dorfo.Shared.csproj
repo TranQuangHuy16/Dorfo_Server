@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dorfo.Application\Dorfo.Application.csproj" />
-    <ProjectReference Include="..\Dorfo.Infrastructure\Dorfo.Infrastructure.csproj" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

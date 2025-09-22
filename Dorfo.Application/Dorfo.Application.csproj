@@ -7,12 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dorfo.Domain\Dorfo.Domain.csproj" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+    <ProjectReference Include="..\Dorfo.Domain\Dorfo.Domain.csproj" />
+    <ProjectReference Include="..\Dorfo.Shared\Dorfo.Shared.csproj" />
   </ItemGroup>
 
 </Project>
