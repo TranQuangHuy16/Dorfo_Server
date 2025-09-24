@@ -62,13 +62,25 @@ namespace Dorfo.Infrastructure.Services.Redis
             return carts.FirstOrDefault(c => c.Merchant.MerchantId == merchantId);
         }
 
+        //public async Task RemoveCartAsync(Guid userId, Guid merchantId)
+        //{
+        //    var carts = await GetCartsAsync(userId);
+        //    carts = carts.Where(c => c.Merchant.MerchantId != merchantId).ToList();
+        //    var json = JsonSerializer.Serialize(carts);
+        //    await _cache.SetStringAsync(GetCartKey(userId), json);
+        //}
+
         public async Task RemoveCartAsync(Guid userId, Guid merchantId)
         {
             var carts = await GetCartsAsync(userId);
-            carts = carts.Where(c => c.Merchant.MerchantId != merchantId).ToList();
+
+            // Xoá cart có MerchantId trùng khớp
+            carts.RemoveAll(c => c.Merchant.MerchantId == merchantId);
+
             var json = JsonSerializer.Serialize(carts);
             await _cache.SetStringAsync(GetCartKey(userId), json);
         }
+
 
         public async Task DeleteAllCartsAsync(Guid userId)
         {

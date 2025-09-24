@@ -31,20 +31,22 @@ namespace Dorfo.Application.Services
             IConfiguration config,
             IUnitOfWork unitOfWork,
             IRedisCartService redis,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            PayOS payOS)
         {
             _unitOfWork = unitOfWork;
             _redis = redis;
             _config = configuration;
 
-            var clientId = config["PayOS:ClientId"] ?? throw new ArgumentNullException("PayOS:ClientId");
-            var apiKey = config["PayOS:ApiKey"] ?? throw new ArgumentNullException("PayOS:ApiKey");
-            var checksumKey = config["PayOS:ChecksumKey"] ?? throw new ArgumentNullException("PayOS:ChecksumKey");
+            //var clientId = config["PayOS:ClientId"] ?? throw new ArgumentNullException("PayOS:ClientId");
+            //var apiKey = config["PayOS:ApiKey"] ?? throw new ArgumentNullException("PayOS:ApiKey");
+            //var checksumKey = config["PayOS:ChecksumKey"] ?? throw new ArgumentNullException("PayOS:ChecksumKey");
 
-            _returnUrl = config["PayOS:ReturnUrl"] ?? "";
-            _cancelUrl = _returnUrl + "?status=cancelled";
+            //_returnUrl = config["PayOS:ReturnUrl"] ?? "";
+            //_cancelUrl = _returnUrl + "?status=cancelled";
 
-            _payOsClient = new PayOS(clientId, apiKey, checksumKey);
+            //_payOsClient = new PayOS(clientId, apiKey, checksumKey);
+            _payOsClient = payOS;
         }
 
         public async Task<PaymentResponse> CheckoutAsync(Guid userId, Guid merchantId)
@@ -108,8 +110,10 @@ namespace Dorfo.Application.Services
                 amount: (int)Math.Round(order.TotalAmount),
                 description: order.OrderRef,
                 items: items,
-                cancelUrl: _cancelUrl,
-                returnUrl: _returnUrl
+                returnUrl: _config["PayOS:ReturnUrl"],
+                 cancelUrl: _config["PayOS:CallbackUrl"]
+            //cancelUrl: _cancelUrl,
+            //returnUrl: _returnUrl
             );
 
             // 3. Tạo link thanh toán với SDK

@@ -31,4 +31,5 @@ namespace Dorfo.Infrastructure.Repositories
             return await _context.MenuCategories.Where(m => m.MerchantId == id && m.IsActive == true).ToListAsync();
         }
     }
+
 }
