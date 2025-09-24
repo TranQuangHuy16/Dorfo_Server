@@ -24,6 +24,7 @@ namespace Dorfo.Infrastructure.Persistence
         private IMenuItemRepository _menuItemRepository;
         private IShipperRepository _shipperRepository;
         private IAddressRepository _addressRepository;
+        private IPaymentRepository _paymentRepository;
         public UnitOfWork()
         {
         }
@@ -80,6 +81,11 @@ namespace Dorfo.Infrastructure.Persistence
         public IAddressRepository AddressRepository
         {
             get { return _addressRepository ??= new AddressRepository(_context); }
+        }
+
+        public IPaymentRepository PaymentRepository
+        {
+            get { return _paymentRepository ??= new PaymentRepository(_context); }
         }
 
         public void Dispose()

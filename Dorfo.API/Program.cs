@@ -12,6 +12,7 @@ using Dorfo.Application.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 using Dorfo.Infrastructure.Configurations;
 using StackExchange.Redis;
+using Net.payOS;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,9 +38,18 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+var payosConfig = builder.Configuration.GetSection("PayOS");
+builder.Services.AddSingleton(sp => new PayOS(
+                payosConfig["ClientId"] ?? throw new Exception("Missing ClientId"),
+                payosConfig["ApiKey"] ?? throw new Exception("Missing ApiKey"),
+                payosConfig["ChecksumKey"] ?? throw new Exception("Missing ChecksumKey")
+            ));
+
 // Bind Smtp config
 builder.Services.Configure<SmtpSettings>(
     builder.Configuration.GetSection("Smtp"));
+
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 
 builder.Services.AddControllers()

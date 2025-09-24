@@ -22,5 +22,6 @@ namespace Dorfo.Application.Interfaces.Services
         IMenuItemOptionValueService MenuItemOptionValueService { get; }
         IShipperService ShipperService { get; }
         IAddressService AddressService { get; }
+        IOrderService OrderService { get; }
     }
 }

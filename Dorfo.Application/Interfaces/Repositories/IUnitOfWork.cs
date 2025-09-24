@@ -20,6 +20,7 @@ namespace Dorfo.Application.Interfaces.Repositories
         IMenuItemRepository MenuItemRepository { get; }
         IShipperRepository ShipperRepository { get; }
         IAddressRepository AddressRepository { get; }
+        IPaymentRepository PaymentRepository { get; }
         int SaveChangesWithTransaction();
         Task<int> SaveChangesWithTransactionAsync();
     }

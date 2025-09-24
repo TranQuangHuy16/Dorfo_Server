@@ -94,5 +94,21 @@ namespace Dorfo.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<Order> GetOrderByOrderCode(long orderCode)
+        {
+            return await _context.Orders
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.OrderItemOptions)
+                        .ThenInclude(oo => oo.OrderItemOptionValue)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.OrderItemOptions)
+                        .ThenInclude(oo => oo.MenuItemOption)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.MenuItem)
+                .Include(o => o.Merchant)
+                .Include(o => o.Payments)
+                .FirstOrDefaultAsync(o => o.OrderCode == orderCode);
+        }
     }
 }
