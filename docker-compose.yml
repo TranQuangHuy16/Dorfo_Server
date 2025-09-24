@@ -1,65 +1,3 @@
-# version: '3.9'
-
-# services:
-#   backend:
-#     build: 
-#       context: .
-#       dockerfile: Dockerfile
-#     ports:
-#       - "5000:80"
-#     depends_on:
-#       - sqlserver
-#       - redis
-#     environment:
-#       - ASPNETCORE_URLS=http://+:80
-#       - ASPNETCORE_ENVIRONMENT=Development
-#       # Connection strings
-#       - ConnectionStrings__DorfoDb=${DB_CONNECTION}
-#       - ConnectionStrings__Redis=${REDIS_CONNECTION}
-
-#       # JWT
-#       - Jwt__Key=${JWT_KEY}
-#       - Jwt__Issuer=${JWT_ISSUER}
-#       - Jwt__Audience=${JWT_AUDIENCE}
-
-#       # SMTP
-#       - Smtp__Host=${SMTP_HOST}
-#       - Smtp__Port=${SMTP_PORT}
-#       - Smtp__User=${SMTP_USER}
-#       - Smtp__Pass=${SMTP_PASS}
-#       - Smtp__EnableSsl=${SMTP_ENABLESSL}
-#       - Smtp__DisplayName=${SMTP_DISPLAYNAME}
-#     networks:
-#       - dorfo-network
-
-#   redis:
-#     image: redis:7.4
-#     container_name: redis
-#     ports:
-#       - "6379:6379"
-#     networks:
-#       - dorfo-network
-
-#   sqlserver:
-#     image: mcr.microsoft.com/mssql/server:2022-latest
-#     container_name: sqlserver
-#     ports:
-#       - "1433:1433"
-#     environment:
-#       - ACCEPT_EULA=Y
-#       - SA_PASSWORD=${SA_PASSWORD}
-#     volumes:
-#       - sqlserver-data:/var/opt/mssql  # ✅ Mount volume để dữ liệu không mất khi stop container
-#     networks:
-#       - dorfo-network
-
-# volumes:
-#   sqlserver-data:   # ✅ Định nghĩa volume
-
-# networks:
-#   dorfo-network:
-#     driver: bridge
-
 version: '3.9'
 
 services:
@@ -70,12 +8,11 @@ services:
     ports:
       - "5000:80"
     depends_on:
-      - postgres
+      - sqlserver
       - redis
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Development
-
       # Connection strings
       - ConnectionStrings__DorfoDb=${DB_CONNECTION}
       - ConnectionStrings__Redis=${REDIS_CONNECTION}
@@ -116,23 +53,21 @@ services:
     networks:
       - dorfo-network
 
-  postgres:
-    image: postgres:16
-    container_name: postgres
-    restart: always
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
     ports:
-      - "5432:5432"
+      - "1433:1433"
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SA_PASSWORD}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - sqlserver-data:/var/opt/mssql  # ✅ Mount volume để dữ liệu không mất khi stop container
     networks:
       - dorfo-network
 
 volumes:
-  postgres-data:
+  sqlserver-data:   # ✅ Định nghĩa volume
 
 networks:
   dorfo-network:

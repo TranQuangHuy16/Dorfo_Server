@@ -25,7 +25,7 @@ namespace Dorfo.Infrastructure
         {
             // Đăng ký DbContext
             services.AddDbContext<DorfoDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DorfoDb")));
+                options.UseSqlServer(configuration.GetConnectionString("DorfoDb")));
 
             // Đăng ký Repository
             services.AddScoped<IUnitOfWork, UnitOfWork>();
