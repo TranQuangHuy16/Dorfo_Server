@@ -93,7 +93,7 @@ services:
       - Smtp__EnableSsl=${SMTP_ENABLESSL}
       - Smtp__DisplayName=${SMTP_DISPLAYNAME}
 
-       # PayOS
+      # PayOS
       - PayOS__BaseUrl=${PAYOS_BASEURL}
       - PayOS__ClientId=${PAYOS_CLIENTID}
       - PayOS__ApiKey=${PAYOS_APIKEY}
