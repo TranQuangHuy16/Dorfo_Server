@@ -117,6 +117,7 @@ public class PaymentsController : ControllerBase
                 // Thanh toán thành công
                 await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.PENDING);
                 await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.SUCCESS);
+                await _serviceProviders.CartService.RemoveCartByMerchantAsync(order.MerchantId, order.UserId);
             }
             else
             {
