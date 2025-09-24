@@ -140,6 +140,7 @@ namespace Dorfo.Application.Services
                 Provider = "PayOS",
                 ProviderReference = result.orderCode.ToString(),
                 QrImage = imageUrl,
+                PaymentUrl = result.checkoutUrl ?? null,
                 Amount = order.TotalAmount,
                 OrderRef = order.OrderRef
             };

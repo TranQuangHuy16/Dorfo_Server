@@ -67,6 +67,11 @@ public class PaymentsController : ControllerBase
             {
                 var orderCode = webhookData.orderCode;
                 var order = await _serviceProviders.OrderService.GetOrderByOrderCode(orderCode);
+                if (order == null)
+                {
+                    // Log lỗi không tìm thấy đơn hàng hoặc cập nhật thất bại
+                    return BadRequest(new { code = "-1", message = "Order not found or update failed" });
+                }
                 var updatePayment = await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.FAILED);
 
                 var updateResult = await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.CANCELLED);
