@@ -36,58 +36,106 @@ public class PaymentsController : ControllerBase
         return Ok(result);
     }
 
+    //[HttpPost("webhook")]
+    //public async Task<IActionResult> Webhook([FromBody] WebhookType webhookBody)
+    //{
+    //    try
+    //    {
+    //        // verifyPaymentWebhookData trả về WebhookData (những trường: orderCode, amount, description, ...)
+    //        WebhookData webhookData = _payOS.verifyPaymentWebhookData(webhookBody);
+
+    //        // Bạn có thể kiểm tra success ở phần gốc (webhookBody) hoặc kiểm tra webhookData.code == "00"
+    //        if (webhookBody != null && webhookBody.success)
+    //        {
+    //            // truy cập trực tiếp các trường trong WebhookData (camelCase)
+    //            var orderCode = webhookData.orderCode;   // long
+
+    //            // Cập nhật trạng thái thanh toán trong hệ thống của bạn
+
+    //            var order = await _serviceProviders.OrderService.GetOrderByOrderCode(orderCode);
+    //            if (order == null)
+    //            {
+    //                // Log lỗi không tìm thấy đơn hàng hoặc cập nhật thất bại
+    //                return BadRequest(new { code = "-1", message = "Order not found or update failed" });
+    //            }
+    //            var updateResult = await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.PENDING);
+    //            var updatePayment = await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.SUCCESS);
+
+
+    //        }
+    //        else if (webhookBody != null && !webhookBody.success)
+    //        {
+    //            var orderCode = webhookData.orderCode;
+    //            var order = await _serviceProviders.OrderService.GetOrderByOrderCode(orderCode);
+    //            if (order == null)
+    //            {
+    //                // Log lỗi không tìm thấy đơn hàng hoặc cập nhật thất bại
+    //                return BadRequest(new { code = "-1", message = "Order not found or update failed" });
+    //            }
+    //            var updatePayment = await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.FAILED);
+
+    //            var updateResult = await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.CANCELLED);
+
+    //        }
+
+    //        // trả 200 để payOS biết đã nhận
+    //        return Ok(new { code = "00", message = "processed" });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // SDK có thể throw nếu signature không hợp lệ -> log để debug
+    //        Console.WriteLine(ex);
+    //        return BadRequest(new { code = "-1", message = ex.Message });
+    //    }
+    //}
+
     [HttpPost("webhook")]
     public async Task<IActionResult> Webhook([FromBody] WebhookType webhookBody)
     {
         try
         {
-            // verifyPaymentWebhookData trả về WebhookData (những trường: orderCode, amount, description, ...)
+            // Verify chữ ký để chắc chắn request từ PayOS
             WebhookData webhookData = _payOS.verifyPaymentWebhookData(webhookBody);
 
-            // Bạn có thể kiểm tra success ở phần gốc (webhookBody) hoặc kiểm tra webhookData.code == "00"
-            if (webhookBody != null && webhookBody.success)
+            if (webhookBody == null)
             {
-                // truy cập trực tiếp các trường trong WebhookData (camelCase)
-                var orderCode = webhookData.orderCode;   // long
-
-                // Cập nhật trạng thái thanh toán trong hệ thống của bạn
-
-                var order = await _serviceProviders.OrderService.GetOrderByOrderCode(orderCode);
-                if (order == null)
-                {
-                    // Log lỗi không tìm thấy đơn hàng hoặc cập nhật thất bại
-                    return BadRequest(new { code = "-1", message = "Order not found or update failed" });
-                }
-                var updateResult = await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.PENDING);
-                var updatePayment = await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.SUCCESS);
-
-
-            }
-            else if (webhookBody != null && !webhookBody.success)
-            {
-                var orderCode = webhookData.orderCode;
-                var order = await _serviceProviders.OrderService.GetOrderByOrderCode(orderCode);
-                if (order == null)
-                {
-                    // Log lỗi không tìm thấy đơn hàng hoặc cập nhật thất bại
-                    return BadRequest(new { code = "-1", message = "Order not found or update failed" });
-                }
-                var updatePayment = await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.FAILED);
-
-                var updateResult = await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.CANCELLED);
-
+                // vẫn trả 200 nhưng log lỗi
+                return Ok(new { code = "-1", message = "Empty webhook body" });
             }
 
-            // trả 200 để payOS biết đã nhận
+            var orderCode = webhookData.orderCode;
+            var order = await _serviceProviders.OrderService.GetOrderByOrderCode(orderCode);
+
+            if (order == null)
+            {
+                // Không tìm thấy đơn -> log lại, vẫn trả 200
+                return Ok(new { code = "-1", message = $"Order {orderCode} not found" });
+            }
+
+            if (webhookBody.success)
+            {
+                // Thanh toán thành công
+                await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.PENDING);
+                await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.SUCCESS);
+            }
+            else
+            {
+                // Thanh toán thất bại/hủy
+                await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.CANCELLED);
+                await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.FAILED);
+            }
+
+            // Quan trọng: luôn trả về HTTP 200 cho PayOS
             return Ok(new { code = "00", message = "processed" });
         }
         catch (Exception ex)
         {
-            // SDK có thể throw nếu signature không hợp lệ -> log để debug
+            // SDK có thể throw nếu signature không hợp lệ hoặc bug
             Console.WriteLine(ex);
-            return BadRequest(new { code = "-1", message = ex.Message });
+            return Ok(new { code = "-1", message = "Exception: " + ex.Message });
         }
     }
+
 
     //// POST api/payments/callback
     //[HttpPost("callback")]
