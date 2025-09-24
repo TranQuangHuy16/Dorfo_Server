@@ -110,8 +110,8 @@ namespace Dorfo.Application.Services
                 amount: (int)Math.Round(order.TotalAmount),
                 description: order.OrderRef,
                 items: items,
-                cancelUrl: "null",
-                returnUrl: "null"
+                returnUrl: _config["PayOS:ReturnUrl"],
+                 cancelUrl: _config["PayOS:CallbackUrl"]
             //cancelUrl: _cancelUrl,
             //returnUrl: _returnUrl
             );
