@@ -63,7 +63,7 @@ public class PaymentsController : ControllerBase
 
 
             }
-            else
+            else if (webhookBody != null && !webhookBody.success)
             {
                 var orderCode = webhookData.orderCode;
                 var order = await _serviceProviders.OrderService.GetOrderByOrderCode(orderCode);
