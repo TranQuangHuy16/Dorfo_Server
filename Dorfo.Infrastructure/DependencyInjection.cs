@@ -63,6 +63,8 @@ namespace Dorfo.Infrastructure
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<IPaymentService, PayOsPaymentService>();
+
 
             // Redis
             //services.AddStackExchangeRedisCache(options =>

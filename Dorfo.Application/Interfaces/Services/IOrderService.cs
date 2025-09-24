@@ -16,5 +16,6 @@ namespace Dorfo.Application.Interfaces.Services
         Task<IEnumerable<OrderResponse>> GetOrdersByUserAsync(Guid userId);
         Task<IEnumerable<OrderResponse>> GetAllAsync();
         Task<bool> UpdateOrderStatusAsync(Guid orderId, OrderStatusEnum status);
+        Task<Order> GetOrderByOrderCode(long orderCode);
     }
 }

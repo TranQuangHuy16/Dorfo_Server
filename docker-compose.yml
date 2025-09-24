@@ -92,6 +92,19 @@ services:
       - Smtp__Pass=${SMTP_PASS}
       - Smtp__EnableSsl=${SMTP_ENABLESSL}
       - Smtp__DisplayName=${SMTP_DISPLAYNAME}
+
+       # PayOS
+      - PayOS__BaseUrl=${PAYOS_BASEURL}
+      - PayOS__ClientId=${PAYOS_CLIENTID}
+      - PayOS__ApiKey=${PAYOS_APIKEY}
+      - PayOS__ReturnUrl=${PAYOS_RETURNURL}
+      - PayOS__CallbackUrl=${PAYOS_CALLBACKURL}
+      - PayOS__ChecksumKey=${PAYOS_CHECKSUMKEY}
+
+      # Cloudinary
+      - Cloudinary__CloudName=${CLOUDINARY_CLOUDNAME}
+      - Cloudinary__ApiKey=${CLOUDINARY_APIKEY}
+      - Cloudinary__ApiSecret=${CLOUDINARY_APISECRET}
     networks:
       - dorfo-network
 

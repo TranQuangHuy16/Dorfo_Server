@@ -5,6 +5,7 @@ public class Order
 {
     public Guid OrderId { get; set; }
     public string OrderRef { get; set; } = null!;
+    public long OrderCode { get; set; }
     public Guid UserId { get; set; }
     public Guid MerchantId { get; set; }
     public Guid? DeliveryAddressId { get; set; }

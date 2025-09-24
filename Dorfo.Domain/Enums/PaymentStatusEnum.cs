@@ -9,7 +9,7 @@ namespace Dorfo.Domain.Enums
     public enum PaymentStatusEnum
     {
         PENDING = 1,      // Chưa thanh toán
-        COMPLETED = 2,    // Thanh toán thành công
+        SUCCESS = 2,    // Thanh toán thành công
         FAILED = 3,       // Thanh toán thất bại
         REFUNDED = 4,     // Đã hoàn tiền
         CANCELLED = 5     // Thanh toán đã bị hủy

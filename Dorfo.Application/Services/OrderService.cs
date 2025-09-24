@@ -164,5 +164,10 @@ namespace Dorfo.Application.Services
                 }).ToList()
             };
         }
+
+        public async Task<Order> GetOrderByOrderCode(long orderCode)
+        {
+            return await _unitOfWork.OrderRepository.GetOrderByOrderCode(orderCode);
+        }
     }
 }

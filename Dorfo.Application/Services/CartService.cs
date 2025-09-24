@@ -54,52 +54,6 @@ namespace Dorfo.Application.Services
                 };
             }
 
-            //foreach (var dto in request.Items)
-            //{
-            //    var existingItem = cart.Items.FirstOrDefault(i => i.MenuItemId == dto.MenuItemId);
-            //    if (existingItem != null)
-            //    {
-            //        existingItem.Quantity += dto.Quantity;
-            //    }
-            //    else
-            //    {
-            //        var optionResponses = new List<CartItemOptionResponse>();
-
-            //        foreach (var opt in dto.Options)
-            //        {
-            //            var optionEntity = await _unitOfWork.MenuItemOptionRepository.GetByIdAsync(opt.OptionId);
-            //            if (optionEntity == null) continue;
-
-            //            var valueEntities = await _unitOfWork.MenuItemOptionValueRepository.GetByIdsAsync(opt.SelectedValueIds);
-
-            //            optionResponses.Add(new CartItemOptionResponse
-            //            {
-            //                OptionId = optionEntity.OptionId,
-            //                OptionName = optionEntity.OptionName,
-            //                SelectedValues = valueEntities.Select(v => new CartItemOptionValueResponse
-            //                {
-            //                    OptionValueId = v.OptionValueId,
-            //                    ValueName = v.ValueName,
-            //                    PriceDelta = v.PriceDelta
-            //                }).ToList()
-            //            });
-            //        }
-
-            //        cart.Items.Add(new CartItemResponse
-            //        {
-            //            CartItemId = Guid.NewGuid(),
-            //            MenuItemId = dto.MenuItemId,
-            //            Quantity = dto.Quantity,
-            //            //MenuItemName = dto.ItemName,
-            //            //PriceAtAdd = dto.PriceAtAdd,
-            //            MenuItemName = menuItems.Name,
-            //            PriceAtAdd = menuItems.Price,
-
-            //            Options = optionResponses
-            //        });
-            //    }
-            //}
-
             foreach (var dto in request.Items)
             {
                 // build options
