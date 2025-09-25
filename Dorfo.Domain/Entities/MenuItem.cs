@@ -14,6 +14,7 @@ namespace Dorfo.Domain.Entities
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public decimal Price { get; set; }
+        public string? ImgUrl { get; set; }
         public int? PrepTimeMinutes { get; set; }
         public bool SupportsScheduling { get; set; }
         public TimeSpan? AvailableFrom { get; set; }

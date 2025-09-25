@@ -115,6 +115,8 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.IsActive).HasDefaultValue(true);
                 b.Property(x => x.IsOpen).HasDefaultValue(true);
                 b.Property(x => x.CommissionRate).HasColumnType("decimal(5,2)").HasDefaultValue(0m);
+                b.Property(x => x.ImgUrl).HasMaxLength(1000);
+
 
                 b.HasOne(x => x.OwnerUser)
                     .WithMany()
@@ -207,6 +209,7 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.Name).HasMaxLength(300).IsRequired();
                 b.Property(x => x.Description).HasMaxLength(2000);
                 b.Property(x => x.Price).HasColumnType("decimal(18,2)").IsRequired();
+                b.Property(x => x.ImgUrl).HasMaxLength(1000);
                 b.Property(x => x.PrepTimeMinutes);
                 b.Property(x => x.SupportsScheduling).HasDefaultValue(false);
                 b.Property(x => x.IsAvailable).HasDefaultValue(true);

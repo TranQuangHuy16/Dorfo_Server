@@ -64,6 +64,11 @@ namespace Dorfo.Application.Mappings
 
             CreateMap<MenuItemOptionValueRequest, MenuItemOptionValue>();
 
+            CreateMap<MenuItemOptionReq, MenuItemOption>()
+                .ForMember(dest => dest.Values, opt => opt.MapFrom(src => src.Values));
+
+            CreateMap<MenuItemOptionValueReq, MenuItemOptionValue>();
+
 
             CreateMap<MenuItem, MenuItemResponse>();
             CreateMap<MenuItemOption, MenuItemOptionResponse>();

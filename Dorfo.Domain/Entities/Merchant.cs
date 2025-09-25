@@ -17,6 +17,7 @@ namespace Dorfo.Domain.Entities
         public bool IsActive { get; set; }
         public bool IsOpen { get; set; }
         public decimal CommissionRate { get; set; }
+        public string? ImgUrl { get; set; }
         public User? OwnerUser { get; set; }
         public MerchantSetting? MerchantSetting { get; set; }
         public MerchantAddress MerchantAddress { get; set; } = null!;

@@ -39,7 +39,7 @@ namespace Dorfo.Application.Services
             {
                 return null;
             }
-            _unitOfWork.MerchantRepository.DeleteAsync(id);
+            await _unitOfWork.MerchantRepository.DeleteAsync(id);
             return _mapper.Map<MerchantResponse>(merchant);
 
         }
