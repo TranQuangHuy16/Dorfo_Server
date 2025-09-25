@@ -16,6 +16,7 @@ using Dorfo.Infrastructure.Services;
 using Dorfo.Infrastructure.Configurations;
 using Dorfo.Infrastructure.Services.Redis;
 using StackExchange.Redis;
+using Dorfo.Shared.Helpers;
 
 namespace Dorfo.Infrastructure
 {
@@ -64,6 +65,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IPaymentService, PayOsPaymentService>();
+            services.AddScoped<CloudinaryStorageHelper>();
 
 
             // Redis

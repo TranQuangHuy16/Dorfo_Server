@@ -12,6 +12,7 @@ namespace Dorfo.Application.DTOs.Requests
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public string? Phone { get; set; }
+        public string? ImgUrl { get; set; }
         public decimal CommissionRate { get; set; }
         public MerchantAddressRequest Address { get; set; }
         public MerchantSettingRequest Setting { get; set; }
