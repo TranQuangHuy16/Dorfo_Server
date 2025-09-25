@@ -1,4 +1,5 @@
-﻿using Dorfo.Application.Exceptions;
+﻿using Dorfo.Application.DTOs.Requests;
+using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Services;
 using Dorfo.Application.Services;
 using Dorfo.Domain.Enums;
@@ -135,6 +136,20 @@ public class PaymentsController : ControllerBase
             Console.WriteLine(ex);
             return Ok(new { code = "-1", message = "Exception: " + ex.Message });
         }
+    }
+
+    [HttpPost("check-order-status")]
+    public async Task<IActionResult> CheckOrderStatus([FromQuery] CheckOrderStatusRequest request)
+    {
+
+        var result = await _serviceProviders.OrderService.GetOrderByIdAsync(Guid.Parse(request.OrderId));
+        if (result == null) throw new NotFoundException("Order not found");
+        var status = result.Status;
+        return Ok(new
+        {
+            orderId = result.OrderId,
+            status = status
+        });
     }
 
 

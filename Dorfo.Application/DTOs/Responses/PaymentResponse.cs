@@ -14,6 +14,7 @@ namespace Dorfo.Application.DTOs.Responses
         public string QrImage { get; set; }    // nếu cổng trả về QR base64
         public decimal Amount { get; set; }
         public string OrderRef { get; set; } = null!;
+        public Guid OrderId { get; set; }
     }
 
 }

@@ -146,7 +146,8 @@ namespace Dorfo.Application.Services
                 QrImage = imageUrl,
                 PaymentUrl = result.checkoutUrl ?? null,
                 Amount = order.TotalAmount,
-                OrderRef = order.OrderRef
+                OrderRef = order.OrderRef,
+                OrderId = order.OrderId
             };
 
 
