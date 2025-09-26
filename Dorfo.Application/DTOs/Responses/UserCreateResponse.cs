@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dorfo.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,6 @@ namespace Dorfo.Application.DTOs.Responses
         public DateTime? DeletedAt { get; set; }
         public string? Username { get; set; }
         public string Password { get; set; } = null!; // đã hash
-        public int Role { get; set; }
+        public UserRoleEnum Role { get; set; }
     }
 }

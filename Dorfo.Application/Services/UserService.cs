@@ -3,6 +3,7 @@ using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Repositories;
 using Dorfo.Application.Interfaces.Services;
 using Dorfo.Domain.Entities;
+using Dorfo.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,8 @@ namespace Dorfo.Infrastructure.Persistence.Services
                                 string? email,
                                 string? displayName,
                                 DateOnly? birthDate,
-                                int? gender)
+                                int? gender,
+                            UserRoleEnum role)
         {
             // Kiểm tra trùng phone
             if (!string.IsNullOrEmpty(phone))
@@ -73,7 +75,7 @@ namespace Dorfo.Infrastructure.Persistence.Services
                 Email = email,
                 BirthDate = birthDate,
                 Gender = gender.HasValue ? gender.Value == 1 : false,
-                Role = Domain.Enums.UserRoleEnum.CUSTOMER,
+                Role = role,
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow
             };
@@ -93,7 +95,8 @@ namespace Dorfo.Infrastructure.Persistence.Services
                 dto.Email,
                 dto.DisplayName,
                 dto.DateOfBirth,
-                dto.Gender
+                dto.Gender,
+                dto.Role
             );
         }
 
@@ -106,7 +109,8 @@ namespace Dorfo.Infrastructure.Persistence.Services
                 dto.Email,
                 dto.DisplayName,
                 dto.DateOfBirth,
-                dto.Gender
+                dto.Gender,
+                dto.Role
             );
         }
 
