@@ -9,7 +9,7 @@ namespace Dorfo.Application.DTOs.Requests
 {
     public class UserCreateRequest
     {
-        public string UserName { get; set; } = null!;
+        public string? UserName { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string? DisplayName { get; set; }
         public string? Phone { get; set; }
