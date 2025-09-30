@@ -23,5 +23,6 @@ namespace Dorfo.Application.Interfaces.Services
         IShipperService ShipperService { get; }
         IAddressService AddressService { get; }
         IOrderService OrderService { get; }
+        IMerchantCategoryService MerchantCategoryService { get; }
     }
 }

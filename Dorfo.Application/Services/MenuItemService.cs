@@ -38,6 +38,13 @@ namespace Dorfo.Application.Services
             return _mapper.Map<MenuItemResponse>(menuItem);
         }
 
+        public async Task<IEnumerable<MenuItemResponse>> GetAllMenuItemAsync()
+        {
+            var menuItems = await _unitOfWork.MenuItemRepository.GetAllMenuItemAsync();
+            if (menuItems == null || !menuItems.Any()) throw new NotFoundException("Not Found MenuItem");
+            return _mapper.Map<IEnumerable<MenuItemResponse>>(menuItems);
+        }
+
         public async Task<IEnumerable<MenuItemResponse>> GetAllMenuItemByCategoryIdAsync(Guid id)
         {
             var menuItems = await _unitOfWork.MenuItemRepository.GetAllMenuItemByCategoryIdAsync(id);

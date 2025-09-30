@@ -77,6 +77,10 @@ namespace Dorfo.Application.Mappings
             // Shipper
             CreateMap<ShipperRequest, Shipper>();
             CreateMap<Shipper, ShipperResponse>();
+
+            // MerchantCategory
+            CreateMap<MerchantCategoryRequest, MerchantCategory>();
+            CreateMap<MerchantCategory, MerchantCategoryResponse>();
         }
     }
 }

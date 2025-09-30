@@ -45,6 +45,7 @@ namespace Dorfo.Infrastructure.Persistence
         public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
 
         public DbSet<Shipper> Shippers => Set<Shipper>();
+        public DbSet<MerchantCategory> MerchantCategories => Set<MerchantCategory>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -481,6 +482,27 @@ namespace Dorfo.Infrastructure.Persistence
                 entity.Property(s => s.IsActive).HasDefaultValue(true);
                 entity.Property(s => s.IsOnline).HasDefaultValue(false);
                 entity.Property(s => s.CreatedAt).HasDefaultValueSql("SYSUTCDATETIME()");
+            });
+
+            modelBuilder.Entity<MerchantCategory>(entity =>
+            {
+                entity.HasKey(mc => mc.MerchantCategoryId);
+
+                entity.Property(mc => mc.Name)
+                      .IsRequired()
+                      .HasMaxLength(100);
+
+                entity.Property(mc => mc.Description)
+                      .HasMaxLength(255);
+
+                entity.Property(mc => mc.IsActive)
+                  .HasDefaultValue(true);
+
+                // Quan hệ 1-n: Category - Merchants
+                entity.HasMany(mc => mc.Merchants)
+                      .WithOne(m => m.MerchantCategory)
+                      .HasForeignKey(m => m.MerchantCategoryId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
 

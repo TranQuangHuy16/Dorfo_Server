@@ -2,6 +2,7 @@
 using Dorfo.Application.DTOs.Responses;
 using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Services;
+using Dorfo.Application.Services;
 using Dorfo.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,14 @@ namespace Dorfo.API.Controllers
         public MerchantController(IServiceProviders serviceProvider)
         {
             _serviceProvider = serviceProvider;
+        }
+
+        // GET: api/merchant/category/5
+        [HttpGet("category/{id}")]
+        public async Task<IActionResult> GetAllMerchantByMerchantCategoryIdAsync(int id)
+        {
+            var merchants = await _serviceProvider.MerchantService.GetAllMerchantByMerchantCategoryIdAsync(id);
+            return Ok(merchants);
         }
 
         // GET: api/merchant

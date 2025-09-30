@@ -42,6 +42,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IMenuItemOptionValueRepository, MenuItemOptionValueRepository>();
             services.AddScoped<IShipperRepository, ShipperRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IMerchantCategoryRepository, MerchantCategoryRepository>();
 
 
             // Đăng ký Service
@@ -60,6 +61,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IMenuItemOptionService, MenuItemOptionService>();
             services.AddScoped<IMenuItemOptionValueService, MenuItemOptionValueService>();
             services.AddScoped<IShipperService, ShipperService>();
+            services.AddScoped<IMerchantCategoryService, MerchantCategoryService>();
             services.AddScoped<IRedisCartService, RedisCartService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();

@@ -1,6 +1,7 @@
 ﻿using Dorfo.Application.Interfaces.Services;
 using Dorfo.Application;
 using Microsoft.AspNetCore.Mvc;
+using Dorfo.Application.Services;
 
 namespace Dorfo.API.Controllers
 {
@@ -13,6 +14,14 @@ namespace Dorfo.API.Controllers
         public MenuItemController(IServiceProviders serviceProvider)
         {
             _serviceProvider = serviceProvider;
+        }
+
+        // GET: api/menuitem
+        [HttpGet]
+        public async Task<IActionResult> GetAllMenuItemAsync()
+        {
+            var items = await _serviceProvider.MenuItemService.GetAllMenuItemAsync();
+            return Ok(items);
         }
 
         // GET: api/MenuItem/{id}
