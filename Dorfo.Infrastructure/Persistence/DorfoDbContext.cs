@@ -142,6 +142,7 @@ namespace Dorfo.Infrastructure.Persistence
 
                 b.Property(x => x.Name).HasMaxLength(200).IsRequired();
                 b.Property(x => x.Description).HasMaxLength(1000);
+                b.Property(x => x.ImageUrl).HasMaxLength(1000);
                 b.Property(x => x.IsActive).HasDefaultValue(true);
 
                 // Quan hệ 1-n với Merchant
