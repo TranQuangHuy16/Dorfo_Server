@@ -12,7 +12,7 @@ namespace Dorfo.Domain.Entities
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public bool IsActive { get; set; }
-
+        public string? ImageUrl { get; set; }
         public ICollection<Merchant> Merchants { get; set; } = new List<Merchant>();
     }
 

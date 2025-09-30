@@ -498,6 +498,9 @@ namespace Dorfo.Infrastructure.Persistence
                 entity.Property(mc => mc.IsActive)
                   .HasDefaultValue(true);
 
+                entity.Property(mc => mc.ImageUrl)
+                    .HasMaxLength(255); // giới hạn độ dài URL, tuỳ bạn
+
                 // Quan hệ 1-n: Category - Merchants
                 entity.HasMany(mc => mc.Merchants)
                       .WithOne(m => m.MerchantCategory)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    [Migration("20250930101349_InitialCreate")]
+    [Migration("20250930123931_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -506,6 +506,10 @@ namespace Dorfo.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MerchantCategoryId"));
 
                     b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ImageUrl")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
