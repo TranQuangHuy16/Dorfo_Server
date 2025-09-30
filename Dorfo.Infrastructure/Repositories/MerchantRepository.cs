@@ -33,6 +33,11 @@ namespace Dorfo.Infrastructure.Repositories
                                            .ToListAsync();
         }
 
+        public async Task<IEnumerable<Merchant>> GetAllMerchantByMerchantCategoryIdAsync(int id)
+        {
+            return await _context.Merchants.Where(m => m.MerchantCategoryId == id).ToListAsync();
+        }
+
         public async Task<Merchant> GetMerchantByIdAsync(Guid id)
         {
             return await _context.Merchants

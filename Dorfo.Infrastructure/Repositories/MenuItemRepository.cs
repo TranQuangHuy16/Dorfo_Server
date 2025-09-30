@@ -17,6 +17,13 @@ namespace Dorfo.Infrastructure.Repositories
 
         public MenuItemRepository(DorfoDbContext context) => _context = context;
 
+        public async Task<IEnumerable<MenuItem>> GetAllMenuItemAsync()
+        {
+            return await _context.MenuItems
+                .Where(m => m.IsActive == true && m.IsAvailable == true)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<MenuItem>> GetAllMenuItemByCategoryIdAsync(Guid id)
         {
             return await _context.MenuItems.Where(m => m.CategoryId == id && m.IsActive == true).ToListAsync();

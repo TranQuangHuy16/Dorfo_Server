@@ -12,7 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
+<<<<<<<< HEAD:Dorfo.Infrastructure/Migrations/20250925095653_InitialCreate.Designer.cs
     [Migration("20250925095653_InitialCreate")]
+========
+    [Migration("20250930101349_InitialCreate")]
+>>>>>>>> 18fd898817017292b9cd39927c9359f1e5094115:Dorfo.Infrastructure/Migrations/20250930101349_InitialCreate.Designer.cs
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -422,6 +426,9 @@ namespace Dorfo.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
+                    b.Property<int?>("MerchantCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -435,6 +442,8 @@ namespace Dorfo.Infrastructure.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.HasKey("MerchantId");
+
+                    b.HasIndex("MerchantCategoryId");
 
                     b.HasIndex("OwnerUserId");
 
@@ -471,6 +480,33 @@ namespace Dorfo.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("MerchantAddresses");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.MerchantCategory", b =>
+                {
+                    b.Property<int>("MerchantCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MerchantCategoryId"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("MerchantCategoryId");
+
+                    b.ToTable("MerchantCategories");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.MerchantOpeningDay", b =>
@@ -1124,9 +1160,16 @@ namespace Dorfo.Infrastructure.Migrations
 
             modelBuilder.Entity("Dorfo.Domain.Entities.Merchant", b =>
                 {
+                    b.HasOne("Dorfo.Domain.Entities.MerchantCategory", "MerchantCategory")
+                        .WithMany("Merchants")
+                        .HasForeignKey("MerchantCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Dorfo.Domain.Entities.User", "OwnerUser")
                         .WithMany()
                         .HasForeignKey("OwnerUserId");
+
+                    b.Navigation("MerchantCategory");
 
                     b.Navigation("OwnerUser");
                 });
@@ -1378,6 +1421,11 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Navigation("Shippers");
 
                     b.Navigation("Vouchers");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.MerchantCategory", b =>
+                {
+                    b.Navigation("Merchants");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.OrderItem", b =>

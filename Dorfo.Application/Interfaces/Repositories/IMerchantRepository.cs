@@ -15,5 +15,6 @@ namespace Dorfo.Application.Interfaces.Repositories
         Task <IEnumerable<Merchant>> GetAllAsync();
         Task <Merchant> GetMerchantByIdAsync(Guid id);
         Task <IEnumerable<Merchant>> GetMerchantByOwnerIdAsync(Guid id);
+        Task<IEnumerable<Merchant>> GetAllMerchantByMerchantCategoryIdAsync(int id);
     }
 }

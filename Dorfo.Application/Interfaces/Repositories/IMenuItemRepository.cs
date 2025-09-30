@@ -14,5 +14,6 @@ namespace Dorfo.Application.Interfaces.Repositories
         Task<IEnumerable<MenuItem>> GetAllMenuItemByMerchantIdAsync(Guid id);
         Task<IEnumerable<MenuItem>> GetAllMenuItemByCategoryIdAsync(Guid id);
         Task<MenuItem> GetMenuItemByIdAsync(Guid id);
+        Task<IEnumerable<MenuItem>> GetAllMenuItemAsync();
     }
 }

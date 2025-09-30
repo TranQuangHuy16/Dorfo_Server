@@ -10,6 +10,7 @@ namespace Dorfo.Domain.Entities
     {
         public Guid MerchantId { get; set; }
         public Guid? OwnerUserId { get; set; }
+        public int? MerchantCategoryId { get; set; }
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public string? Phone { get; set; }
@@ -21,6 +22,7 @@ namespace Dorfo.Domain.Entities
         public User? OwnerUser { get; set; }
         public MerchantSetting? MerchantSetting { get; set; }
         public MerchantAddress MerchantAddress { get; set; } = null!;
+        public MerchantCategory? MerchantCategory { get; set; } = null!;
         public ICollection<MerchantOpeningDay> OpeningDays { get; set; } = new List<MerchantOpeningDay>();
         public ICollection<Shipper> Shippers { get; set; } = new List<Shipper>();
         public ICollection<MenuCategory> MenuCategories { get; set; } = new List<MenuCategory>();

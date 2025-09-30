@@ -35,6 +35,7 @@ namespace Dorfo.Infrastructure.Persistence
         public DbSet<ChatConversation> ChatConversations => Set<ChatConversation>();
         public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
         public DbSet<Shipper> Shippers => Set<Shipper>();
+        public DbSet<MerchantCategory> MerchantCategories => Set<MerchantCategory>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -103,6 +104,51 @@ namespace Dorfo.Infrastructure.Persistence
                 b.Property(x => x.IsActive).HasDefaultValue(true);
                 b.Property(x => x.IsOpen).HasDefaultValue(true);
                 b.Property(x => x.CommissionRate).HasColumnType("numeric(5,2)").HasDefaultValue(0m);
+
+                b.HasOne(m => m.MerchantCategory)
+                    .WithMany(mc => mc.Merchants)
+                    .HasForeignKey(m => m.MerchantCategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                b.HasMany(m => m.OpeningDays)
+                    .WithOne(od => od.Merchant)
+                    .HasForeignKey(od => od.MerchantId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ================= MerchantOpeningDay =================
+            modelBuilder.Entity<MerchantOpeningDay>(b =>
+            {
+                b.HasKey(x => x.MerchantOpeningDayId);
+                b.Property(x => x.MerchantOpeningDayId).HasColumnType("uuid");
+
+                b.Property(x => x.DayOfWeek).HasConversion<int>(); // enum -> int
+                b.Property(x => x.OpenTime).HasColumnType("interval").IsRequired();
+                b.Property(x => x.CloseTime).HasColumnType("interval").IsRequired();
+
+                // Quan hệ N-1 với Merchant
+                b.HasOne(x => x.Merchant)
+                    .WithMany(m => m.OpeningDays)
+                    .HasForeignKey(x => x.MerchantId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ================= MerchantCategory =================
+            modelBuilder.Entity<MerchantCategory>(b =>
+            {
+                b.HasKey(x => x.MerchantCategoryId);
+                b.Property(x => x.MerchantCategoryId)
+                    .UseIdentityAlwaysColumn(); // PostgreSQL identity column
+
+                b.Property(x => x.Name).HasMaxLength(200).IsRequired();
+                b.Property(x => x.Description).HasMaxLength(1000);
+                b.Property(x => x.IsActive).HasDefaultValue(true);
+
+                // Quan hệ 1-n với Merchant
+                b.HasMany(mc => mc.Merchants)
+                    .WithOne(m => m.MerchantCategory)
+                    .HasForeignKey(m => m.MerchantCategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // ================= MenuItem =================
