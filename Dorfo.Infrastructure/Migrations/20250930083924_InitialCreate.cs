@@ -27,6 +27,21 @@ namespace Dorfo.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MerchantCategories",
+                columns: table => new
+                {
+                    MerchantCategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MerchantCategories", x => x.MerchantCategoryId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PaymentMethods",
                 columns: table => new
                 {
@@ -168,6 +183,7 @@ namespace Dorfo.Infrastructure.Migrations
                 {
                     MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OwnerUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MerchantCategoryId = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -180,6 +196,12 @@ namespace Dorfo.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Merchants", x => x.MerchantId);
+                    table.ForeignKey(
+                        name: "FK_Merchants_MerchantCategories_MerchantCategoryId",
+                        column: x => x.MerchantCategoryId,
+                        principalTable: "MerchantCategories",
+                        principalColumn: "MerchantCategoryId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Merchants_Users_OwnerUserId",
                         column: x => x.OwnerUserId,
@@ -750,6 +772,11 @@ namespace Dorfo.Infrastructure.Migrations
                 column: "MerchantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Merchants_MerchantCategoryId",
+                table: "Merchants",
+                column: "MerchantCategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Merchants_OwnerUserId",
                 table: "Merchants",
                 column: "OwnerUserId");
@@ -961,6 +988,9 @@ namespace Dorfo.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Merchants");
+
+            migrationBuilder.DropTable(
+                name: "MerchantCategories");
 
             migrationBuilder.DropTable(
                 name: "Users");

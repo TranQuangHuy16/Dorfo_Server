@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dorfo.Application.DTOs.Requests;
 using Dorfo.Application.DTOs.Responses;
+using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Repositories;
 using Dorfo.Application.Interfaces.Services;
 using Dorfo.Domain.Entities;
@@ -47,6 +48,13 @@ namespace Dorfo.Application.Services
         public async Task<IEnumerable<MerchantResponse>> GetAllAsync()
         {
             var merchants = await _unitOfWork.MerchantRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<MerchantResponse>>(merchants);
+        }
+
+        public async Task<IEnumerable<MerchantResponse>> GetAllMerchantByMerchantCategoryIdAsync(int id)
+        {
+            var merchants = await _unitOfWork.MerchantRepository.GetAllMerchantByMerchantCategoryIdAsync(id);
+            if (merchants == null || !merchants.Any()) throw new NotFoundException("Not Found Merchant");
             return _mapper.Map<IEnumerable<MerchantResponse>>(merchants);
         }
 
