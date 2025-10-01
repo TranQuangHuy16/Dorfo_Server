@@ -11,6 +11,7 @@ namespace Dorfo.Application.DTOs.Responses
     {
         public Guid MerchantId { get; set; }
         public Guid? OwnerUserId { get; set; }
+        public int? MerchantCategoryId { get; set; }
         public string Name { get; set; } = null!;
         public string? ImgUrl { get; set; }
         public string? Description { get; set; }
