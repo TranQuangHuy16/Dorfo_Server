@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    [Migration("20250930123931_InitialCreate")]
+    [Migration("20251001085711_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
