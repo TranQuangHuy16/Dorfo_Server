@@ -63,7 +63,10 @@ namespace Dorfo.API.Controllers
                 throw new UnauthorizedException("Invalid token");
 
             var cart = await _cartService.RemoveItemAsync(userId, cartItemId, merchantId);
-            return cart == null ? null : Ok(cart);
+            if (cart == null)
+                return Ok(new { message = "Item removed successfully, cart is now empty" });
+
+            return Ok(cart);
         }
 
         [HttpDelete("{merchantId}")]
