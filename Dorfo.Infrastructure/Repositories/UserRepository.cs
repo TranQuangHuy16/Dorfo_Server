@@ -58,5 +58,10 @@ namespace Dorfo.Infrastructure.Repositories
         {
             return _context.Users.FirstOrDefaultAsync(x => (x.Username == username || x.Phone == username) && x.IsActive == true);
         }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _context.Users.ToListAsync();
+        }
     }
 }
