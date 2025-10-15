@@ -23,6 +23,9 @@ namespace Dorfo.Application.Services
         }
         public async Task<ShipperResponse> CreateAsync(ShipperRequest request)
         {
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(request.UserId);
+            user.Role = Domain.Enums.UserRoleEnum.SHIPPER;
+            await _unitOfWork.UserRepository.UpdateAsync(user);
             var shipper = _mapper.Map<Shipper>(request);
             await _unitOfWork.ShipperRepository.CreateAsync(shipper);
             return _mapper.Map<ShipperResponse>(request);
