@@ -186,5 +186,9 @@ namespace Dorfo.Infrastructure.Persistence.Services
             await _refreshTokenService.RemoveRefreshTokenAsync(userId);
         }
 
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _unitOfWork.UserRepository.GetAllAsync();
+        }
     }
 }

@@ -65,5 +65,22 @@ namespace Dorfo.API.Controllers
 
             return Ok(userDto);
         }
+
+        [HttpGet("all")]
+        [Authorize]
+        public async Task<IActionResult> GetAllUser()
+        {
+
+            // Tìm user theo Id
+            var user = await _serviceProvider.UserService.GetAllAsync();
+
+
+            if (user == null)
+                throw new UserNotFoundException($"User not found");
+
+            var userDto = _mapper.Map<IEnumerable<UserResponse>>(user);
+
+            return Ok(userDto);
+        }
     }
 }

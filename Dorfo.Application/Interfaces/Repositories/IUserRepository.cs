@@ -17,6 +17,7 @@ namespace Dorfo.Application.Interfaces.Repositories
         Task<int> UpdateAsync(User user);
         Task<User> CreateAsync(User newUser);
         Task<User?> GetUserByUsernameAsync(string username);
+        Task<IEnumerable<User>> GetAllAsync();
 
 
     }
