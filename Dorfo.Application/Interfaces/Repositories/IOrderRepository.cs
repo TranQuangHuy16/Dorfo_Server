@@ -15,5 +15,6 @@ namespace Dorfo.Application.Interfaces.Repositories
         Task<IEnumerable<Order>> GetAllAsync();
         Task<bool> UpdateStatus(Guid id, OrderStatusEnum status);
         Task<Order> GetOrderByOrderCode(long orderCode);
+        Task<IEnumerable<Order>> GetOrderByMerchant(Guid merchantId);
     }
 }

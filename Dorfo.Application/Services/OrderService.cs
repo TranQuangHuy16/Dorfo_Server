@@ -5,6 +5,7 @@ using Dorfo.Application.Interfaces.Services;
 using Dorfo.Domain.Entities;
 using Dorfo.Domain.Enums;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -103,11 +104,18 @@ namespace Dorfo.Application.Services
             return MapToResponse(order, cart.Merchant.MerchantName);
         }
 
+
         public async Task<OrderResponse?> GetOrderByIdAsync(Guid orderId)
         {
             var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
             if (order == null) return null;
             return MapToResponse(order, order.Merchant?.Name ?? "");
+        }
+
+        public async Task<IEnumerable<OrderResponse>> GetOrderByMerchantAsync(Guid merchantId)
+        {
+            var orders = await _unitOfWork.OrderRepository.GetOrderByMerchant(merchantId);
+            return orders.Select(o => MapToResponse(o, o.Merchant?.Name ?? "")).ToList();
         }
 
         public async Task<IEnumerable<OrderResponse>> GetOrdersByUserAsync(Guid userId)

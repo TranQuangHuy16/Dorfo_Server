@@ -46,6 +46,14 @@ namespace Dorfo.API.Controllers
             return Ok(orders);
         }
 
+        [HttpGet("/api/Orders/merchant/{merchantId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> GetOrdersByMerchant(Guid merchantId)
+        {
+            var orders = await _orderService.GetOrderByMerchantAsync(merchantId);
+            return Ok(orders);
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)

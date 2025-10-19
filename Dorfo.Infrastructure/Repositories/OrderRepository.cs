@@ -1,7 +1,9 @@
 ﻿using Dorfo.Application.Interfaces.Repositories;
+using Dorfo.Domain.Entities;
 using Dorfo.Domain.Enums;
 using Dorfo.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,6 +111,22 @@ namespace Dorfo.Infrastructure.Repositories
                 .Include(o => o.Merchant)
                 .Include(o => o.Payments)
                 .FirstOrDefaultAsync(o => o.OrderCode == orderCode);
+        }
+
+        public async Task<IEnumerable<Order>> GetOrderByMerchant(Guid merchantId)
+        {
+            return await _context.Orders
+                .Where(o => o.MerchantId == merchantId)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.OrderItemOptions)
+                        .ThenInclude(oo => oo.OrderItemOptionValue)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.OrderItemOptions)
+                        .ThenInclude(oo => oo.MenuItemOption)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.MenuItem)
+                .Include(o => o.Merchant)
+                .ToListAsync();
         }
     }
 }
