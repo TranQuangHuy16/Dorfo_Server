@@ -74,6 +74,82 @@
 #     driver: bridge
 
 
+# version: '3.9'
+
+# services:
+#   backend:
+#     build: 
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - "5000:80"
+#     depends_on:
+#       - postgres
+#       - redis
+#     environment:
+#       - ASPNETCORE_URLS=http://+:80
+#       - ASPNETCORE_ENVIRONMENT=Development
+      
+#       # Connection strings
+#       - ConnectionStrings__DorfoDb=${DB_CONNECTION}   # ví dụ: Host=postgres;Port=5432;Database=dorfo;Username=postgres;Password=${POSTGRES_PASSWORD}
+#       - ConnectionStrings__Redis=${REDIS_CONNECTION}
+
+#       # JWT
+#       - Jwt__Key=${JWT_KEY}
+#       - Jwt__Issuer=${JWT_ISSUER}
+#       - Jwt__Audience=${JWT_AUDIENCE}
+
+#       # SMTP
+#       - Smtp__Host=${SMTP_HOST}
+#       - Smtp__Port=${SMTP_PORT}
+#       - Smtp__User=${SMTP_USER}
+#       - Smtp__Pass=${SMTP_PASS}
+#       - Smtp__EnableSsl=${SMTP_ENABLESSL}
+#       - Smtp__DisplayName=${SMTP_DISPLAYNAME}
+
+#       # PayOS
+#       - PayOS__BaseUrl=${PAYOS_BASEURL}
+#       - PayOS__ClientId=${PAYOS_CLIENTID}
+#       - PayOS__ApiKey=${PAYOS_APIKEY}
+#       - PayOS__ReturnUrl=${PAYOS_RETURNURL}
+#       - PayOS__CallbackUrl=${PAYOS_CALLBACKURL}
+#       - PayOS__ChecksumKey=${PAYOS_CHECKSUMKEY}
+
+#       # Cloudinary
+#       - Cloudinary__CloudName=${CLOUDINARY_CLOUDNAME}
+#       - Cloudinary__ApiKey=${CLOUDINARY_APIKEY}
+#       - Cloudinary__ApiSecret=${CLOUDINARY_APISECRET}
+#     networks:
+#       - dorfo-network
+
+#   redis:
+#     image: redis:7.4
+#     container_name: redis
+#     ports:
+#       - "6379:6379"
+#     networks:
+#       - dorfo-network
+
+#   postgres:
+#     image: postgres:16
+#     container_name: postgres
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       - POSTGRES_USER=${POSTGRES_USER}
+#       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#       - POSTGRES_DB=${POSTGRES_DB}
+#     volumes:
+#       - postgres-data:/var/lib/postgresql/data  # ✅ Mount volume để giữ dữ liệu
+#     networks:
+#       - dorfo-network
+
+# volumes:
+#   postgres-data:   # ✅ Định nghĩa volume
+
+# networks:
+#   dorfo-network:
+#     driver: bridge
 version: '3.9'
 
 services:
@@ -81,6 +157,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    container_name: backend
     ports:
       - "5000:80"
     depends_on:
@@ -89,33 +166,23 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Development
-      
-      # Connection strings
-      - ConnectionStrings__DorfoDb=${DB_CONNECTION}   # ví dụ: Host=postgres;Port=5432;Database=dorfo;Username=postgres;Password=${POSTGRES_PASSWORD}
+      - ConnectionStrings__DorfoDb=${DB_CONNECTION}
       - ConnectionStrings__Redis=${REDIS_CONNECTION}
-
-      # JWT
       - Jwt__Key=${JWT_KEY}
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
-
-      # SMTP
       - Smtp__Host=${SMTP_HOST}
       - Smtp__Port=${SMTP_PORT}
       - Smtp__User=${SMTP_USER}
       - Smtp__Pass=${SMTP_PASS}
       - Smtp__EnableSsl=${SMTP_ENABLESSL}
       - Smtp__DisplayName=${SMTP_DISPLAYNAME}
-
-      # PayOS
       - PayOS__BaseUrl=${PAYOS_BASEURL}
       - PayOS__ClientId=${PAYOS_CLIENTID}
       - PayOS__ApiKey=${PAYOS_APIKEY}
       - PayOS__ReturnUrl=${PAYOS_RETURNURL}
       - PayOS__CallbackUrl=${PAYOS_CALLBACKURL}
       - PayOS__ChecksumKey=${PAYOS_CHECKSUMKEY}
-
-      # Cloudinary
       - Cloudinary__CloudName=${CLOUDINARY_CLOUDNAME}
       - Cloudinary__ApiKey=${CLOUDINARY_APIKEY}
       - Cloudinary__ApiSecret=${CLOUDINARY_APISECRET}
@@ -140,12 +207,27 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - postgres-data:/var/lib/postgresql/data  # ✅ Mount volume để giữ dữ liệu
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - dorfo-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/ssl/certs
+      - ./certs:/etc/ssl/private
+    depends_on:
+      - backend
     networks:
       - dorfo-network
 
 volumes:
-  postgres-data:   # ✅ Định nghĩa volume
+  postgres-data:
 
 networks:
   dorfo-network:
