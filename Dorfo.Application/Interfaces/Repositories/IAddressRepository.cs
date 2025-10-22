@@ -14,5 +14,6 @@ namespace Dorfo.Application.Interfaces.Repositories
         Task<Address> UpdateAddressAsync(Address address);
         Task<bool> RemoveAddressAsync(Guid id);
         Task<Address?> GetByIdAsync(Guid id);
+        Task<Address> GetAddressByUserId(Guid userId);
     }
 }

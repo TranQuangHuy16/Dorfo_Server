@@ -143,6 +143,7 @@ namespace Dorfo.Application.Services
                 OrderId = order.OrderId,
                 OrderRef = order.OrderRef,
                 MerchantId = order.MerchantId,
+                AddressId = order.DeliveryAddressId ?? Guid.Empty,
                 MerchantName = merchantName,
                 SubTotal = order.SubTotal,
                 DeliveryFee = order.DeliveryFee,
@@ -151,6 +152,7 @@ namespace Dorfo.Application.Services
                 TotalAmount = order.TotalAmount,
                 Status = order.Status.ToString(),
                 CreatedAt = order.CreatedAt,
+
                 Items = order.Items.Select(i => new OrderItemResponse
                 {
                     OrderItemId = i.OrderItemId,

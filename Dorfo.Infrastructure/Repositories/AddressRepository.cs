@@ -55,5 +55,11 @@ namespace Dorfo.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<Address> GetAddressByUserId(Guid userId)
+        {
+            return await _context.Addresses.FirstOrDefaultAsync(a => a.UserId == userId && a.IsActive == true);
+
+        }
     }
 }

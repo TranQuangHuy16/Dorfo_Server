@@ -53,6 +53,7 @@ namespace Dorfo.Application.Services
         {
             var cart = await _redis.GetCartByMerchantAsync(userId, merchantId);
             if (cart == null) throw new Exception("Cart not found");
+            var address = await _unitOfWork.AddressRepository.GetAddressByUserId(userId);
 
             // 1. Tạo Order trong DB
             var orderRef = $"ORD-{DateTime.UtcNow:yyyyMMddHHmmss}-{Guid.NewGuid():N}".Substring(0, 24);
@@ -71,6 +72,7 @@ namespace Dorfo.Application.Services
                 TotalAmount = cart.TotalAmount,
                 Status = OrderStatusEnum.WAITING_FOR_PAYMENT,
                 CreatedAt = DateTime.UtcNow,
+                DeliveryAddressId = address != null ? address.AddressId : null,
                 PaymentMethodId = 2, // PayOS
                 Items = cart.Items.Select(i => new OrderItem
                 {
