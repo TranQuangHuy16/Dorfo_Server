@@ -11,6 +11,7 @@ namespace Dorfo.Application.DTOs.Responses
         public Guid OrderId { get; set; }
         public string OrderRef { get; set; } = null!;
         public Guid MerchantId { get; set; }
+        public Guid AddressId { get; set; }
         public string MerchantName { get; set; } = null!;
         public decimal SubTotal { get; set; }
         public decimal DeliveryFee { get; set; }
