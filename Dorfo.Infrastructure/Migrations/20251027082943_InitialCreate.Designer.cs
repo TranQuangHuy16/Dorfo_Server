@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    [Migration("20251027081820_InitialCreate")]
+    [Migration("20251027082943_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
