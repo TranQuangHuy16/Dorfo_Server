@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    [Migration("20251018052604_InitialCreate")]
+    [Migration("20251027081820_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -198,6 +198,34 @@ namespace Dorfo.Infrastructure.Migrations
                     b.HasIndex("FromUserId");
 
                     b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.FavoriteShop", b =>
+                {
+                    b.Property<Guid>("FavoriteShopId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AddedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("FavoriteShopId");
+
+                    b.HasIndex("MerchantId");
+
+                    b.HasIndex("CustomerId", "MerchantId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_FavoriteShop_Customer_Merchant");
+
+                    b.ToTable("FavoriteShops");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.LoyaltyAccount", b =>
@@ -768,6 +796,61 @@ namespace Dorfo.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Dorfo.Domain.Entities.Review", b =>
+                {
+                    b.Property<Guid>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("RatingProduct")
+                        .HasColumnType("numeric(3,2)");
+
+                    b.Property<DateTime>("SentAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("MerchantId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.ReviewImage", b =>
+                {
+                    b.Property<Guid>("ReviewImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ImgUrl")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ReviewImageId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("ReviewImages");
+                });
+
             modelBuilder.Entity("Dorfo.Domain.Entities.Shipper", b =>
                 {
                     b.Property<Guid>("ShipperId")
@@ -808,6 +891,38 @@ namespace Dorfo.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Shippers");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.ShopReply", b =>
+                {
+                    b.Property<Guid>("ShopReplyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime>("RepliedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ShopReplyId");
+
+                    b.HasIndex("MerchantId");
+
+                    b.HasIndex("ReviewId")
+                        .IsUnique();
+
+                    b.ToTable("ShopReplies");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.Ticket", b =>
@@ -1097,6 +1212,25 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Navigation("FromUser");
                 });
 
+            modelBuilder.Entity("Dorfo.Domain.Entities.FavoriteShop", b =>
+                {
+                    b.HasOne("Dorfo.Domain.Entities.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Dorfo.Domain.Entities.Merchant", "Merchant")
+                        .WithMany()
+                        .HasForeignKey("MerchantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Merchant");
+                });
+
             modelBuilder.Entity("Dorfo.Domain.Entities.LoyaltyAccount", b =>
                 {
                     b.HasOne("Dorfo.Domain.Entities.User", "User")
@@ -1300,6 +1434,36 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Navigation("PaymentMethod");
                 });
 
+            modelBuilder.Entity("Dorfo.Domain.Entities.Review", b =>
+                {
+                    b.HasOne("Dorfo.Domain.Entities.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Dorfo.Domain.Entities.Merchant", "Merchant")
+                        .WithMany()
+                        .HasForeignKey("MerchantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Merchant");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.ReviewImage", b =>
+                {
+                    b.HasOne("Dorfo.Domain.Entities.Review", "Review")
+                        .WithMany("Images")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Review");
+                });
+
             modelBuilder.Entity("Dorfo.Domain.Entities.Shipper", b =>
                 {
                     b.HasOne("Dorfo.Domain.Entities.Merchant", "Merchant")
@@ -1317,6 +1481,25 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Navigation("Merchant");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.ShopReply", b =>
+                {
+                    b.HasOne("Dorfo.Domain.Entities.Merchant", "Merchant")
+                        .WithMany()
+                        .HasForeignKey("MerchantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Dorfo.Domain.Entities.Review", "Review")
+                        .WithOne("ShopReply")
+                        .HasForeignKey("Dorfo.Domain.Entities.ShopReply", "ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Merchant");
+
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.Ticket", b =>
@@ -1443,6 +1626,13 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("Dorfo.Domain.Entities.Review", b =>
+                {
+                    b.Navigation("Images");
+
+                    b.Navigation("ShopReply");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.User", b =>

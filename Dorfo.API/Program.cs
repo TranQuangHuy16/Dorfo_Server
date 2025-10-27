@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Dorfo.Infrastructure.Configurations;
 using StackExchange.Redis;
 using Net.payOS;
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,6 +57,9 @@ builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.WriteIndented = true;
+
     });
 
 builder.Services.AddCors(options =>
