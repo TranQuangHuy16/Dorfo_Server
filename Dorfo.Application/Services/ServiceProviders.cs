@@ -17,6 +17,7 @@ public class ServiceProviders : IServiceProviders
     private readonly IAddressService _addressService;
     private readonly IOrderService _orderService;
     private readonly IMerchantCategoryService _merchantCategoryService;
+    private readonly IReviewService _reviewService;
 
     public ServiceProviders(IUserService userService,
         IOtpService otpService,
@@ -31,7 +32,8 @@ public class ServiceProviders : IServiceProviders
         ICartService cartService,
         IAddressService addressService,
         IOrderService orderService,
-        IMerchantCategoryService merchantCategoryService)
+        IMerchantCategoryService merchantCategoryService,
+        IReviewService reviewService)
     {
         _userService = userService;
         _otpService = otpService;
@@ -47,6 +49,7 @@ public class ServiceProviders : IServiceProviders
         _addressService = addressService;
         _orderService = orderService;
         _merchantCategoryService = merchantCategoryService;
+        _reviewService = reviewService;
     }
 
     public IUserService UserService => _userService;
@@ -63,4 +66,5 @@ public class ServiceProviders : IServiceProviders
     public IAddressService AddressService => _addressService;
     public IOrderService OrderService => _orderService;
     public IMerchantCategoryService MerchantCategoryService => _merchantCategoryService;
+    public IReviewService ReviewService => _reviewService;
 }

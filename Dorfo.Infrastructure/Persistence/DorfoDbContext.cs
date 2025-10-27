@@ -47,6 +47,11 @@ namespace Dorfo.Infrastructure.Persistence
         public DbSet<Shipper> Shippers => Set<Shipper>();
         public DbSet<MerchantCategory> MerchantCategories => Set<MerchantCategory>();
 
+        public DbSet<Review> Reviews => Set<Review>();
+        public DbSet<ReviewImage> ReviewImages => Set<ReviewImage>();
+        public DbSet<ShopReply> ShopReplies => Set<ShopReply>();
+        public DbSet<FavoriteShop> FavoriteShops => Set<FavoriteShop>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -506,6 +511,83 @@ namespace Dorfo.Infrastructure.Persistence
                       .WithOne(m => m.MerchantCategory)
                       .HasForeignKey(m => m.MerchantCategoryId)
                       .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // ===========================
+            // Reviews
+            // ===========================
+            modelBuilder.Entity<Review>(b =>
+            {
+                b.HasKey(x => x.ReviewId);
+                b.Property(x => x.Comment).HasMaxLength(2000);
+                b.Property(x => x.SentAt).HasDefaultValueSql("SYSUTCDATETIME()");
+
+                b.HasOne(x => x.Customer)
+                    .WithMany() // nếu bạn có List<Review> trong User, có thể đổi sang .WithMany(u => u.Reviews)
+                    .HasForeignKey(x => x.CustomerId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // 🔹 Liên kết với Merchant
+                b.HasOne(x => x.Merchant)
+                    .WithMany() // hoặc .WithMany(m => m.Reviews) nếu Merchant có List<Review>
+                    .HasForeignKey(x => x.MerchantId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ===========================
+            // ReviewImages
+            // ===========================
+            modelBuilder.Entity<ReviewImage>(b =>
+            {
+                b.HasKey(x => x.ReviewImageId);
+                b.Property(x => x.ImgUrl).HasMaxLength(1000).IsRequired();
+
+                b.HasOne(x => x.Review)
+                    .WithMany(r => r.Images)
+                    .HasForeignKey(x => x.ReviewId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ===========================
+            // ShopReplies
+            // ===========================
+            modelBuilder.Entity<ShopReply>(b =>
+            {
+                b.HasKey(x => x.ShopReplyId);
+                b.Property(x => x.Message).HasMaxLength(2000).IsRequired();
+                b.Property(x => x.RepliedAt).HasDefaultValueSql("SYSUTCDATETIME()");
+
+                b.HasOne(x => x.Review)
+                .WithOne(r => r.ShopReply)
+                .HasForeignKey<ShopReply>(x => x.ReviewId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                b.HasOne(x => x.Merchant)
+                    .WithMany() // nếu Merchant có List<ShopReply> thì đổi thành .WithMany(m => m.Replies)
+                    .HasForeignKey(x => x.MerchantId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ===========================
+            // FavoriteShops
+            // ===========================
+            modelBuilder.Entity<FavoriteShop>(b =>
+            {
+                b.HasKey(x => x.FavoriteShopId);
+                b.Property(x => x.AddedAt).HasDefaultValueSql("SYSUTCDATETIME()");
+
+                b.HasOne(x => x.Customer)
+                    .WithMany() // nếu User có List<FavoriteShop> thì đổi thành .WithMany(u => u.FavoriteShops)
+                    .HasForeignKey(x => x.CustomerId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                b.HasOne(x => x.Merchant)
+                    .WithMany() // hoặc .WithMany(m => m.FavoritedBy)
+                    .HasForeignKey(x => x.MerchantId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Mỗi khách hàng chỉ có thể yêu thích 1 shop 1 lần
+                b.HasIndex(x => new { x.CustomerId, x.MerchantId }).IsUnique();
             });
 
 
