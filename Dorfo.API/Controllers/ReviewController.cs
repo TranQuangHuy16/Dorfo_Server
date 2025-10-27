@@ -14,7 +14,7 @@ namespace Dorfo.API.Controllers
 
         public ReviewController(IServiceProviders serviceProviders)
         {
-            _serviceProviders = serviceProviders
+            _serviceProviders = serviceProviders;
         }
 
         [HttpGet("merchant/{merchantId}")]

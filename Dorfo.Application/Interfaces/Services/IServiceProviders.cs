@@ -25,5 +25,6 @@ namespace Dorfo.Application.Interfaces.Services
         IOrderService OrderService { get; }
         IMerchantCategoryService MerchantCategoryService { get; }
         IReviewService ReviewService { get; }
+        IFavoriteShopService FavoriteShopService { get; }
     }
 }

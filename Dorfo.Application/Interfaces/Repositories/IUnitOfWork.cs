@@ -24,6 +24,7 @@ namespace Dorfo.Application.Interfaces.Repositories
         IMerchantCategoryRepository MerchantCategory { get; }
         IReviewRepository ReviewRepository { get; }
         IShopReplyRepository ShopReplyRepository { get; }
+        IFavoriteShopRepository FavoriteShopRepository { get; }
         int SaveChangesWithTransaction();
         Task<int> SaveChangesWithTransactionAsync();
     }

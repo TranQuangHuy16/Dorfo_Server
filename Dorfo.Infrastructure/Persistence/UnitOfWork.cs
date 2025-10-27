@@ -28,6 +28,7 @@ namespace Dorfo.Infrastructure.Persistence
         private IMerchantCategoryRepository _merchantCategoryRepository;
         private IShopReplyRepository _shopReplyRepository;
         private IReviewRepository _reviewRepository;
+        private IFavoriteShopRepository _favoriteShopRepository;
         public UnitOfWork()
         {
         }
@@ -105,7 +106,10 @@ namespace Dorfo.Infrastructure.Persistence
         {
             get { return _shopReplyRepository ??= new ShopReplyRepository(_context); }
         }
-
+        public IFavoriteShopRepository FavoriteShopRepository
+        {
+            get { return _favoriteShopRepository ??= new FavoriteShopRepository(_context); }
+        }
         public void Dispose()
         {
             _context.Dispose();
