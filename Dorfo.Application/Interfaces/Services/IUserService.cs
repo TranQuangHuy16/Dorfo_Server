@@ -18,5 +18,8 @@ namespace Dorfo.Application.Interfaces.Services
         Task<(string accessToken, string refreshToken)> Login(LoginRequest login);
         Task<string> RefreshAccessToken(Guid userId, string refreshToken);
         Task Logout(Guid userId);
+        Task<int> UpdateFcmTokenAsync(Guid userId, UpdateFcmTokenRequest request);
+        Task<User> GetUserByMerchantId(Guid merchantId);
+        Task<bool> DeleteFcmToken(Guid userId);
     }
 }

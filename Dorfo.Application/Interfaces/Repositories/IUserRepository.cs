@@ -18,7 +18,7 @@ namespace Dorfo.Application.Interfaces.Repositories
         Task<User> CreateAsync(User newUser);
         Task<User?> GetUserByUsernameAsync(string username);
         Task<IEnumerable<User>> GetAllAsync();
-
-
+        Task<User> GetUserByMerchantId(Guid merchantId);
+        Task<bool> DeleteFcmToken(Guid userId);
     }
 }

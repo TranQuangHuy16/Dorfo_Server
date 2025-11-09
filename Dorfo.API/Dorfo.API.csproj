@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Dorfo.Infrastructure\Dorfo.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configs\" />
+  </ItemGroup>
+
 </Project>

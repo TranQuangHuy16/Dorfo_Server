@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    [Migration("20251027082943_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251109081107_UpdateFcmToken")]
+    partial class UpdateFcmToken
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -994,6 +994,9 @@ namespace Dorfo.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<string>("FcmToken")
+                        .HasColumnType("text");
 
                     b.Property<int?>("Gender")
                         .HasColumnType("integer");

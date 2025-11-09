@@ -72,6 +72,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IPaymentService, PayOsPaymentService>();
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<CloudinaryStorageHelper>();
 
 

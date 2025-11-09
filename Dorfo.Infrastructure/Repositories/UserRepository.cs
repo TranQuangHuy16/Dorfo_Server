@@ -63,5 +63,24 @@ namespace Dorfo.Infrastructure.Repositories
         {
             return await _context.Users.ToListAsync();
         }
+
+        public async Task<User> GetUserByMerchantId(Guid merchantId)
+        {
+            var userId = await _context.Merchants
+                .Where(m => m.MerchantId == merchantId)
+                .Select(m => m.OwnerUserId)
+                .FirstOrDefaultAsync();
+
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId == userId);
+        }
+
+        public async Task<bool> DeleteFcmToken(Guid userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            user.FcmToken = null;
+
+            return true;
+        }
     }
 }

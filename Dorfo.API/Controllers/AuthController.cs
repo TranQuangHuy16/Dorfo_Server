@@ -123,6 +123,8 @@ namespace Dorfo.API.Controllers
                 throw new UnauthorizedException("Invalid token");
             }
 
+            var isDeletedFcmToken = await _serviceProvider.UserService.DeleteFcmToken(userId);
+
             await _serviceProvider.UserService.Logout(userId);
 
             return Ok(new { message = "Logged out successfully" });

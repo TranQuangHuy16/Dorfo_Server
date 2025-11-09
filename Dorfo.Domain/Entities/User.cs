@@ -25,6 +25,8 @@ namespace Dorfo.Domain.Entities
         public string? Username { get; set; }
         public string? Password { get; set; }
 
+        public string? FcmToken { get; set; }
+
         public UserRoleEnum Role { get; set; }
 
         public ICollection<Address> Addresses { get; set; } = new List<Address>();

@@ -992,6 +992,9 @@ namespace Dorfo.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<string>("FcmToken")
+                        .HasColumnType("text");
+
                     b.Property<int?>("Gender")
                         .HasColumnType("integer");
 

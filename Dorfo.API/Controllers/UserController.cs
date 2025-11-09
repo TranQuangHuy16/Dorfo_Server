@@ -42,6 +42,18 @@ namespace Dorfo.API.Controllers
             return Ok(userDto);
         }
 
+        [HttpPut("fcm-token/{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateFcmToken([FromRoute] Guid id, [FromBody] UpdateFcmTokenRequest request)
+        {
+            var result = await _serviceProvider.UserService.UpdateFcmTokenAsync(id, request);
+            var message = result > 0 ? "Update Fcm token successfully" : "Update Fcm token failed";
+            return Ok(new
+            {
+                message = message
+            });
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetCurrentUser()
