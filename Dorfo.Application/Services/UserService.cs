@@ -190,5 +190,24 @@ namespace Dorfo.Infrastructure.Persistence.Services
         {
             return await _unitOfWork.UserRepository.GetAllAsync();
         }
+
+        public async Task<int> UpdateFcmTokenAsync(Guid userId, UpdateFcmTokenRequest request)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(userId);
+
+            user.FcmToken = request.FcmToken;
+
+            return await _unitOfWork.UserRepository.UpdateAsync(user);
+        }
+
+        public async Task<User> GetUserByMerchantId(Guid merchantId)
+        {
+            return await _unitOfWork.UserRepository.GetUserByMerchantId(merchantId);
+        }
+
+        public async Task<bool> DeleteFcmToken(Guid userId)
+        {
+            return await _unitOfWork.UserRepository.DeleteFcmToken(userId);
+        }
     }
 }

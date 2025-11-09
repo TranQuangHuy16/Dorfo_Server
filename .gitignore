@@ -116,3 +116,5 @@ publish/
 
 # Ignore environment variables
 .env
+
+firebase-service-account.json

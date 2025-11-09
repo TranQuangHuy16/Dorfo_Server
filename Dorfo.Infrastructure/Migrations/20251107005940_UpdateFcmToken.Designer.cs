@@ -4,6 +4,7 @@ using Dorfo.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dorfo.Infrastructure.Migrations
 {
     [DbContext(typeof(DorfoDbContext))]
-    partial class DorfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251107005940_UpdateFcmToken")]
+    partial class UpdateFcmToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1035,6 +1038,9 @@ namespace Dorfo.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("FcmToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 
@@ -1552,7 +1558,7 @@ namespace Dorfo.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Dorfo.Domain.Entities.Review", "Review")
-                        .WithOne()
+                        .WithOne("ShopReply")
                         .HasForeignKey("Dorfo.Domain.Entities.ShopReply", "ReviewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1694,6 +1700,8 @@ namespace Dorfo.Infrastructure.Migrations
             modelBuilder.Entity("Dorfo.Domain.Entities.Review", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("ShopReply");
                 });
 
             modelBuilder.Entity("Dorfo.Domain.Entities.User", b =>
