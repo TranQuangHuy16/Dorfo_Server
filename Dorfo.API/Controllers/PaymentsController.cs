@@ -17,12 +17,15 @@ public class PaymentsController : ControllerBase
     private readonly IPaymentService _paymentService;
     private readonly IServiceProviders _serviceProviders;
     private readonly PayOS _payOS;
+    private readonly INotificationService _notificationService;
 
-    public PaymentsController(IPaymentService paymentService, PayOS payOS, IServiceProviders serviceProviders)
+
+    public PaymentsController(IPaymentService paymentService, PayOS payOS, IServiceProviders serviceProviders, INotificationService notificationService)
     {
         _payOS = payOS;
         _paymentService = paymentService;
         _serviceProviders = serviceProviders;
+        _notificationService = notificationService;
     }
 
     // POST api/payments/checkout/{merchantId}
@@ -33,7 +36,20 @@ public class PaymentsController : ControllerBase
         if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
             throw new UnauthorizedException("Invalid token");
 
+        var user = await _serviceProviders.UserService.GetUserById(userId);
+        var userMerchant = await _serviceProviders.UserService.GetUserByMerchantId(merchantId);
+
         var result = await _paymentService.CheckoutAsync(userId, merchantId);
+
+        if (result != null)
+        {
+            await _notificationService.SendNotificationAsync(user.FcmToken, "Thanh toán", $"Thanh toán thành công. Đơn hàng đã được tạo. Xin vui lòng chờ quán xác nhận");
+            await _notificationService.SendNotificationAsync(userMerchant.FcmToken, "Thanh toán", $"Bạn có đơn hàng mới");
+
+        }
+
+
+
         return Ok(result);
     }
 

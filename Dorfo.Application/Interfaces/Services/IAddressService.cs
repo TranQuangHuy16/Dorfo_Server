@@ -15,5 +15,6 @@ namespace Dorfo.Application.Interfaces.Services
         Task<bool> RemoveAddressAsync(Guid userId, Guid addressId);
         Task<AddressResponse?> UpdateAddressAsync(Guid userId, Guid addressId, AddressRequest addressRequest);
         Task<IEnumerable<AddressResponse>> GetAllAddressesByUserAsync(Guid userId);
+        Task<AddressResponse> GetAddressByAddressId(Guid addressId);
     }
 }

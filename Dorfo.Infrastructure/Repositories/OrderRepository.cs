@@ -54,6 +54,8 @@ namespace Dorfo.Infrastructure.Repositories
                 .Include(o => o.Items)
                     .ThenInclude(i => i.MenuItem)
                 .Include(o => o.Merchant)
+                .Include(o => o.DeliveryAddress)
+                    .ThenInclude(da => da.User)
                 .ToListAsync();
         }
 
@@ -69,6 +71,8 @@ namespace Dorfo.Infrastructure.Repositories
                 .Include(o => o.Items)
                     .ThenInclude(i => i.MenuItem)
                 .Include(o => o.Merchant)
+                .Include(o => o.DeliveryAddress)
+                    .ThenInclude(da => da.User)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
         }
 
@@ -84,6 +88,8 @@ namespace Dorfo.Infrastructure.Repositories
                 .Include(o => o.Items)
                     .ThenInclude(i => i.MenuItem)
                 .Include(o => o.Merchant)
+                .Include(o => o.DeliveryAddress)
+                    .ThenInclude(da => da.User)
                 .ToListAsync();
         }
 
@@ -110,6 +116,8 @@ namespace Dorfo.Infrastructure.Repositories
                     .ThenInclude(i => i.MenuItem)
                 .Include(o => o.Merchant)
                 .Include(o => o.Payments)
+                .Include(o => o.DeliveryAddress)
+                    .ThenInclude(da => da.User)
                 .FirstOrDefaultAsync(o => o.OrderCode == orderCode);
         }
 
@@ -126,6 +134,8 @@ namespace Dorfo.Infrastructure.Repositories
                 .Include(o => o.Items)
                     .ThenInclude(i => i.MenuItem)
                 .Include(o => o.Merchant)
+                .Include(o => o.DeliveryAddress)
+                    .ThenInclude(da => da.User)
                 .ToListAsync();
         }
     }

@@ -9,6 +9,7 @@ namespace Dorfo.Application.DTOs.Responses
     public class AddressResponse
     {
         public Guid AddressId { get; set; }
+        public Guid UserId { get; set; }
         public string? AddressLabel { get; set; }
         public string Street { get; set; } = null!;
         public string? Ward { get; set; }
