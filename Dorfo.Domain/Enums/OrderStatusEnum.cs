@@ -11,7 +11,8 @@ namespace Dorfo.Domain.Enums
         WAITING_FOR_PAYMENT = 0,
         PENDING = 1,
         IN_PROGRESS = 2,
-        COMPLETED = 3,
-        CANCELLED = 4,
+        DELIVERING = 3,
+        COMPLETED = 4,
+        CANCELLED = 5,
     }
 }

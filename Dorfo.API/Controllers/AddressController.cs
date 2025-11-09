@@ -33,6 +33,17 @@ namespace Dorfo.API.Controllers
             return Ok(addresses);
         }
 
+        [HttpGet("{addressId}")]
+        [Authorize]
+        public async Task<ActionResult<AddressResponse>> GetById(Guid addressId)
+        {
+
+            var address = await _serviceProviders.AddressService.GetAddressByAddressId(addressId);
+            if (address == null) throw new NotFoundException("Address not found");
+
+            return Ok(address);
+        }
+
         // POST: api/users/{userId}/address
         [HttpPost]
         [Authorize]

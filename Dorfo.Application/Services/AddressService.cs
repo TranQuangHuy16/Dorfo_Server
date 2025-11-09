@@ -96,11 +96,18 @@ namespace Dorfo.Application.Services
             return addresses.Select(MapToResponse).ToList();
         }
 
+        public async Task<AddressResponse> GetAddressByAddressId(Guid addressId)
+        {
+            var address = await _unitOfWork.AddressRepository.GetByIdAsync(addressId);
+            return MapToResponse(address);
+        }
+
         private AddressResponse MapToResponse(Address address)
         {
             return new AddressResponse
             {
                 AddressId = address.AddressId,
+                UserId = (Guid)address.UserId,
                 AddressLabel = address.AddressLabel,
                 Street = address.Street,
                 Ward = address.Ward,
