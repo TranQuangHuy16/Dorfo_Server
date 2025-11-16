@@ -551,22 +551,17 @@ namespace Dorfo.Infrastructure.Persistence
             // ===========================
             // ShopReplies
             // ===========================
-            modelBuilder.Entity<ShopReply>(b =>
-            {
-                b.HasKey(x => x.ShopReplyId);
-                b.Property(x => x.Message).HasMaxLength(2000).IsRequired();
-                b.Property(x => x.RepliedAt).HasDefaultValueSql("SYSUTCDATETIME()");
+            modelBuilder.Entity<ShopReply>()
+                .HasOne(sr => sr.Merchant)
+                .WithMany() // Giả sử Merchant không cần list các ShopReplies
+                .HasForeignKey(sr => sr.MerchantId)
+                .OnDelete(DeleteBehavior.NoAction); // <-- Chỉ định NoAction ở đây
 
-                b.HasOne(x => x.Review)
-                .WithOne(r => r.ShopReply)
-                .HasForeignKey<ShopReply>(x => x.ReviewId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                b.HasOne(x => x.Merchant)
-                    .WithMany() // nếu Merchant có List<ShopReply> thì đổi thành .WithMany(m => m.Replies)
-                    .HasForeignKey(x => x.MerchantId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+            modelBuilder.Entity<ShopReply>()
+                .HasOne(sr => sr.Review)
+                .WithOne(r => r.ShopReply) // Giả sử là 1-1
+                .HasForeignKey<ShopReply>(sr => sr.ReviewId)
+                .OnDelete(DeleteBehavior.Cascade); // Giữ Cascade này
 
             // ===========================
             // FavoriteShops

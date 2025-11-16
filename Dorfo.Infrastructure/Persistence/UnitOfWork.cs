@@ -29,6 +29,7 @@ namespace Dorfo.Infrastructure.Persistence
         private IShopReplyRepository _shopReplyRepository;
         private IReviewRepository _reviewRepository;
         private IFavoriteShopRepository _favoriteShopRepository;
+        private IDashboardRepository _dashboardRepository;
         public UnitOfWork()
         {
         }
@@ -110,6 +111,12 @@ namespace Dorfo.Infrastructure.Persistence
         {
             get { return _favoriteShopRepository ??= new FavoriteShopRepository(_context); }
         }
+
+        public IDashboardRepository DashboardRepository
+        {
+            get { return _dashboardRepository ??= new DashboardRepository(_context); }
+        }
+
         public void Dispose()
         {
             _context.Dispose();
