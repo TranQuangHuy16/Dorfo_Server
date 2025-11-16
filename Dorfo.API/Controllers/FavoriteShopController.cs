@@ -63,6 +63,26 @@ namespace Dorfo.API.Controllers
                 result.AddedAt
             });
         }
+
+        [HttpDelete("{merchantId}")]
+        public async Task<IActionResult> RemoveFavorite(Guid merchantId)
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+            {
+                throw new UnauthorizedException("Invalid token");
+            }
+
+            var success = await _serviceProviders.FavoriteShopService.RemoveFavoriteShopAsync(userId, merchantId);
+
+            if (!success)
+            {
+                return NotFound("Favorite shop not found.");
+            }
+
+            return Ok(new { Message = "Favorite shop removed successfully." });
+        }
     }
 
     public class AddFavoriteRequest

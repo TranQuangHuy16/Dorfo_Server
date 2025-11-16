@@ -13,5 +13,6 @@ namespace Dorfo.Application.Interfaces.Repositories
         Task<FavoriteShop?> GetByCustomerAndMerchantAsync(Guid customerId, Guid merchantId);
         Task AddAsync(FavoriteShop entity);
         Task SaveChangesAsync();
+        Task RemoveAsync(FavoriteShop entity);
     }
 }

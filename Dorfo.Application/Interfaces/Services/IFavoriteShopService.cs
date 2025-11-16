@@ -11,5 +11,6 @@ namespace Dorfo.Application.Interfaces.Services
     {
         Task<List<FavoriteShop>> GetFavoriteShopsByCustomerAsync(Guid customerId);
         Task<FavoriteShop?> AddFavoriteShopAsync(Guid customerId, Guid merchantId);
+        Task<bool> RemoveFavoriteShopAsync(Guid customerId, Guid merchantId);
     }
 }
