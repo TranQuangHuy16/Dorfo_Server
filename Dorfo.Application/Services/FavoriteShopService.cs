@@ -43,5 +43,20 @@ namespace Dorfo.Application.Services
 
             return favorite;
         }
+
+        public async Task<bool> RemoveFavoriteShopAsync(Guid customerId, Guid merchantId)
+        {
+            var existing = await _unitOfWork.FavoriteShopRepository
+                .GetByCustomerAndMerchantAsync(customerId, merchantId);
+
+            if (existing == null)
+                return false;
+
+            await _unitOfWork.FavoriteShopRepository.RemoveAsync(existing);
+            await _unitOfWork.FavoriteShopRepository.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }

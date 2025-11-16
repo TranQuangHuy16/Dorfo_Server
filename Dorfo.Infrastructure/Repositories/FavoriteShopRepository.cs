@@ -42,5 +42,10 @@ namespace Dorfo.Infrastructure.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task RemoveAsync(FavoriteShop entity)
+        {
+            _context.FavoriteShops.Remove(entity);
+        }
     }
 }

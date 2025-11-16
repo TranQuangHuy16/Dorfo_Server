@@ -326,6 +326,7 @@ namespace Dorfo.Infrastructure.Persistence
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+
             // ===========================
             // FavoriteShops
             // ===========================

@@ -25,6 +25,7 @@ namespace Dorfo.Application.Interfaces.Repositories
         IReviewRepository ReviewRepository { get; }
         IShopReplyRepository ShopReplyRepository { get; }
         IFavoriteShopRepository FavoriteShopRepository { get; }
+        IDashboardRepository DashboardRepository { get; }
         int SaveChangesWithTransaction();
         Task<int> SaveChangesWithTransactionAsync();
     }

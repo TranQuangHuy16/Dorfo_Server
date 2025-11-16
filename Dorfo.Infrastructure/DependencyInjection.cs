@@ -17,6 +17,7 @@ using Dorfo.Infrastructure.Configurations;
 using Dorfo.Infrastructure.Services.Redis;
 using StackExchange.Redis;
 using Dorfo.Shared.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace Dorfo.Infrastructure
 {
@@ -46,6 +47,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IShopReplyRepository, ShopReplyRepository>();
             services.AddScoped<IFavoriteShopRepository, FavoriteShopRepository>();
+            services.AddScoped<IDashboardRepository, DashboardRepository>();
 
 
             // Đăng ký Service
@@ -73,6 +75,7 @@ namespace Dorfo.Infrastructure
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IPaymentService, PayOsPaymentService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<CloudinaryStorageHelper>();
 
 
