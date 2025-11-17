@@ -132,6 +132,7 @@ namespace Dorfo.API.Controllers
 
 
         [HttpPost("forgot-password")]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
         {
             await _serviceProvider.AuthService.ForgotPasswordAsync(request);
@@ -139,6 +140,7 @@ namespace Dorfo.API.Controllers
         }
 
         [HttpPost("reset-password")]
+        [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
         {
             await _serviceProvider.AuthService.ResetPasswordAsync(request);
