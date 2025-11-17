@@ -221,8 +221,8 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certs:/etc/ssl/certs
-      - ./certs:/etc/ssl/private
+      - ./certbot/www:/var/www/certbot   # folder cho webroot Certbot
+      - ./certbot/conf:/etc/letsencrypt  # certificate
     depends_on:
       - backend
     networks:
