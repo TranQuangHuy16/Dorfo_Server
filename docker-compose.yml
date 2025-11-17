@@ -232,11 +232,11 @@ services:
       - ./certbot/archive:/etc/letsencrypt/archive
       - ./certbot/renewal:/etc/letsencrypt/renewal
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     networks:
       - dorfo-network
     restart: unless-stopped
+
 
   certbot:
     image: certbot/certbot
