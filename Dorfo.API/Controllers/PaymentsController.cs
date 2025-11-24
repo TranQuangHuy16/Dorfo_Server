@@ -2,6 +2,7 @@
 using Dorfo.Application.Exceptions;
 using Dorfo.Application.Interfaces.Services;
 using Dorfo.Application.Services;
+using Dorfo.Domain.Entities;
 using Dorfo.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Net.payOS;
@@ -41,12 +42,12 @@ public class PaymentsController : ControllerBase
 
         var result = await _paymentService.CheckoutAsync(userId, merchantId);
 
-        if (result != null)
-        {
-            await _notificationService.SendNotificationAsync(user.FcmToken, "Thanh toán", $"Thanh toán thành công. Đơn hàng đã được tạo. Xin vui lòng chờ quán xác nhận");
-            await _notificationService.SendNotificationAsync(userMerchant.FcmToken, "Thanh toán", $"Bạn có đơn hàng mới");
+        //if (result != null)
+        //{
+        //    await _notificationService.SendNotificationAsync(user.FcmToken, "Thanh toán", $"Thanh toán thành công. Đơn hàng đã được tạo. Xin vui lòng chờ quán xác nhận");
+        //    await _notificationService.SendNotificationAsync(userMerchant.FcmToken, "Thanh toán", $"Bạn có đơn hàng mới");
 
-        }
+        //}
 
 
 
@@ -129,12 +130,21 @@ public class PaymentsController : ControllerBase
                 return Ok(new { code = "-1", message = $"Order {orderCode} not found" });
             }
 
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+                throw new UnauthorizedException("Invalid token");
+
+            var user = await _serviceProviders.UserService.GetUserById(userId);
+            var userMerchant = await _serviceProviders.UserService.GetUserByMerchantId(order.MerchantId);
+
             if (webhookBody.success)
             {
                 // Thanh toán thành công
                 await _serviceProviders.OrderService.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.PENDING);
                 await _paymentService.UpdatePaymentStatus(order.OrderId, PaymentStatusEnum.SUCCESS);
                 await _serviceProviders.CartService.RemoveCartByMerchantAsync(order.UserId, order.MerchantId);
+                await _notificationService.SendNotificationAsync(user.FcmToken, "Thanh toán", $"Thanh toán thành công. Đơn hàng đã được tạo. Xin vui lòng chờ quán xác nhận");
+                await _notificationService.SendNotificationAsync(userMerchant.FcmToken, "Thanh toán", $"Bạn có đơn hàng mới");
             }
             else
             {
