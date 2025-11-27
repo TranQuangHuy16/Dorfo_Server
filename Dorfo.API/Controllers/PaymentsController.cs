@@ -130,11 +130,7 @@ public class PaymentsController : ControllerBase
                 return Ok(new { code = "-1", message = $"Order {orderCode} not found" });
             }
 
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
-                throw new UnauthorizedException("Invalid token");
-
-            var user = await _serviceProviders.UserService.GetUserById(userId);
+            var user = await _serviceProviders.UserService.GetUserById(order.UserId);
             var userMerchant = await _serviceProviders.UserService.GetUserByMerchantId(order.MerchantId);
 
             if (webhookBody.success)
